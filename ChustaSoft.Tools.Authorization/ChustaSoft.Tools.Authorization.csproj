@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <PackageId>ChustaSoft.StaticData</PackageId>
+    <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ChustaSoft.Common" Version="1.0.18" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>System</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Services\CredentialsService.cs">
+      <DependentUpon>ICredentialsService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Services\UserAuthenticationService.cs">
+      <DependentUpon>IUserAuthenticationService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Services\TokenService.cs">
+      <DependentUpon>ITokenService.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
