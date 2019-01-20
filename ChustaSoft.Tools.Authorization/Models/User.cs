@@ -5,6 +5,6 @@ namespace ChustaSoft.Tools.Authorization.Models
 {
     public class User : IdentityUser<Guid>
     {
-        public string DefaultCulture { get; set; }
+        public string Culture { get; set; }
     }
 }

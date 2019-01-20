@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Helpers;
+using ChustaSoft.Tools.Authorization.Configuration;
 using ChustaSoft.Tools.Authorization.Models;
 
 
@@ -7,11 +8,21 @@ namespace ChustaSoft.Tools.Authorization.Helpers
     public class CredentialsMapper : IMapper<User, Credentials>
     {
 
+        private AuthorizationSettings _authorizationSettings;
+
+
+        public CredentialsMapper(AuthorizationSettings authorizationSettings)
+        {
+            _authorizationSettings = authorizationSettings;
+        }
+
+
         public Credentials MapFromSource(User user)
             => new Credentials
                 {
                     Username = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    Culture = user.Culture
                 };
 
         public User MapToSource(Credentials credentials)
@@ -20,7 +31,8 @@ namespace ChustaSoft.Tools.Authorization.Helpers
                     UserName = credentials.Username,
                     Email = credentials.Email,
                     PasswordHash = credentials.Password,
-                };
+                    Culture = string.IsNullOrEmpty(credentials.Culture) ? _authorizationSettings.DefaultCulture : credentials.Culture
+            };
 
     }
 }

@@ -12,5 +12,7 @@ namespace ChustaSoft.Tools.Authorization.Models
 
         public string Password { get; set; }
 
+        public string Culture { get; set; }
+
     }
 }

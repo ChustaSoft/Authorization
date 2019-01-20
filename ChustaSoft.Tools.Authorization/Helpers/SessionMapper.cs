@@ -19,7 +19,7 @@ namespace ChustaSoft.Tools.Authorization.Helpers
         public Session MapFromSource(User user)
             => new Session
                 {
-                    Culture = user.DefaultCulture,
+                    Culture = user.Culture,
                     UserId = user.Id,
                     Username = user.UserName
                 };
@@ -27,7 +27,7 @@ namespace ChustaSoft.Tools.Authorization.Helpers
         public User MapToSource(Session session)
             => new User
                 {
-                    DefaultCulture = session.Culture,
+                    Culture = session.Culture,
                     Id = session.UserId,
                     UserName = session.Username
                 };

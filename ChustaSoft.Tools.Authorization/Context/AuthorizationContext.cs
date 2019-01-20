@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +6,7 @@ using System;
 
 namespace ChustaSoft.Tools.Authorization.Context
 {
-    public class AuthorizationContext : IdentityDbContext<User, Role, Guid>
+    public class AuthorizationContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         
         #region Constants
@@ -30,12 +29,6 @@ namespace ChustaSoft.Tools.Authorization.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<IdentityRoleClaim<Guid>>();
-            modelBuilder.Ignore<IdentityUserClaim<Guid>>();
-            modelBuilder.Ignore<IdentityUserLogin<Guid>>();
-            modelBuilder.Ignore<IdentityUserRole<Guid>>();
-            modelBuilder.Ignore<IdentityUserToken<Guid>>();
-
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
@@ -46,7 +39,7 @@ namespace ChustaSoft.Tools.Authorization.Context
                 entity.HasIndex(e => e.Name).IsUnique();
                 entity.HasIndex(e => e.NormalizedName).IsUnique().HasName("RoleNameIndex");
 
-                entity.ToTable(nameof(Role), SCHEMA_NAME);
+                entity.ToTable($"{nameof(Role)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<RoleClaim>(entity =>
@@ -58,7 +51,7 @@ namespace ChustaSoft.Tools.Authorization.Context
 
                 entity.HasOne<Role>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable(nameof(RoleClaim), SCHEMA_NAME);
+                entity.ToTable($"{nameof(RoleClaim)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -74,7 +67,7 @@ namespace ChustaSoft.Tools.Authorization.Context
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasName("UserNameIndex");
 
-                entity.ToTable(nameof(User), SCHEMA_NAME);
+                entity.ToTable($"{nameof(User)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserClaim>(entity =>
@@ -86,7 +79,7 @@ namespace ChustaSoft.Tools.Authorization.Context
 
                 entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable(nameof(UserClaim), SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserClaim)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserLogin>(entity =>
@@ -99,7 +92,7 @@ namespace ChustaSoft.Tools.Authorization.Context
 
                 entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable(nameof(UserLogin), SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserLogin)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserRole>(entity =>
@@ -110,7 +103,7 @@ namespace ChustaSoft.Tools.Authorization.Context
                 entity.HasOne<Role>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable(nameof(UserRole), SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserRole)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserToken>(entity =>
@@ -121,7 +114,7 @@ namespace ChustaSoft.Tools.Authorization.Context
 
                 entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable(nameof(UserToken), SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserToken)}s", SCHEMA_NAME);
             });
 
         }

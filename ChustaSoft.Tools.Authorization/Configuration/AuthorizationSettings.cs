@@ -9,6 +9,8 @@
 
         public bool StrongSecurityPassword { get; set; }
 
+        public string DefaultCulture { get; set; }
+
 
         public static AuthorizationSettings GetDefault()
             => new AuthorizationSettings

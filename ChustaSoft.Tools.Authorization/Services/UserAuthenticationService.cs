@@ -1,4 +1,5 @@
-﻿using ChustaSoft.Tools.Authorization.Enums;
+﻿using ChustaSoft.Common.Helpers;
+using ChustaSoft.Tools.Authorization.Enums;
 using ChustaSoft.Tools.Authorization.Helpers;
 using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Identity;
@@ -19,15 +20,16 @@ namespace ChustaSoft.Tools.Authorization.Services
         private readonly ICredentialsService _credentialsBusiness;
         private readonly ITokenService _tokenService;
 
-        private readonly CredentialsMapper _userMapper;
-        private readonly SessionMapper _sessionMapper;
+        private readonly IMapper<User, Credentials> _userMapper;
+        private readonly IMapper<User, string, Session> _sessionMapper;
 
         #endregion
 
 
         #region Constructor
 
-        public UserAuthenticationService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsService credentialsBusiness, ITokenService tokenService)
+        public UserAuthenticationService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsService credentialsBusiness, ITokenService tokenService, 
+            IMapper<User, Credentials> userMapper, IMapper<User, string, Session> sessionMapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,8 +37,8 @@ namespace ChustaSoft.Tools.Authorization.Services
             _credentialsBusiness = credentialsBusiness;
             _tokenService = tokenService;
 
-            _userMapper = new CredentialsMapper();
-            _sessionMapper = new SessionMapper();
+            _userMapper = userMapper;
+            _sessionMapper = sessionMapper;
         }
 
         #endregion
@@ -79,7 +81,7 @@ namespace ChustaSoft.Tools.Authorization.Services
         {
             switch (loginType)
             {
-                case LoginType.CODE:
+                case LoginType.USER:
                     return await LoginByUsername(credentials);
 
                 case LoginType.MAIL:

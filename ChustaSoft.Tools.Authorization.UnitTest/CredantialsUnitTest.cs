@@ -4,10 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security.Authentication;
 
 
-namespace ChustaSoft.Profiler.Test.UnitTest.TestServices
+namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
 {
     [TestClass]
-    public class UserDomainTestService
+    public class CredantialsUnitTest
     {
 
         #region Test Fields
@@ -47,7 +47,7 @@ namespace ChustaSoft.Profiler.Test.UnitTest.TestServices
 
             var typeRetrived = ServiceUnderTest.ValidateCredentials(credentials);
 
-            Assert.AreEqual(typeRetrived, Tools.Authorization.Enums.LoginType.CODE);
+            Assert.AreEqual(typeRetrived, Tools.Authorization.Enums.LoginType.USER);
         }
 
         [TestMethod]

@@ -2,7 +2,8 @@
 {
     public enum LoginType
     {
-        CODE,
-        MAIL
+        USER,
+        MAIL,
+        PHONE
     }
 }

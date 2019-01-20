@@ -1,4 +1,6 @@
-﻿using ChustaSoft.Tools.Authorization.Context;
+﻿using ChustaSoft.Common.Helpers;
+using ChustaSoft.Tools.Authorization.Context;
+using ChustaSoft.Tools.Authorization.Helpers;
 using ChustaSoft.Tools.Authorization.Models;
 using ChustaSoft.Tools.Authorization.Services;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.SqlClient;
 using System.Reflection;
+
 
 namespace ChustaSoft.Tools.Authorization.Configuration
 {
@@ -40,6 +43,9 @@ namespace ChustaSoft.Tools.Authorization.Configuration
             services.AddTransient<ICredentialsService, CredentialsBusiness>();
             services.AddTransient<IUserAuthenticationService, UserAuthenticationService>();
             services.AddTransient<ITokenService, TokenService>();
+
+            services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
+            services.AddTransient<IMapper<User, string, Session>, SessionMapper>();
         }
 
         public static void ConfigureAuthorization(this IApplicationBuilder app, IHostingEnvironment env, AuthorizationContext authContext)

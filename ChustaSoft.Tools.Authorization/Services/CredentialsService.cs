@@ -15,7 +15,7 @@ namespace ChustaSoft.Tools.Authorization.Services
             if (PerformLoginByMail(credentials))
                 return LoginType.MAIL;
             else if (PerformLoginByCode(credentials))
-                return LoginType.CODE;
+                return LoginType.USER;
             else
                 throw new AuthenticationException("User must inform Username or Email and password for login");
         }
