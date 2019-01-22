@@ -5,6 +5,14 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.StaticData</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
+    <Version>1.0.0.1-beta</Version>
+    <Description>ChustaSoft.Tools.Authorization.WebAPI</Description>
+    <Copyright>ChustaSoft</Copyright>
+    <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ChustaSoft/Authorization</PackageProjectUrl>
+    <RepositoryType>GIT</RepositoryType>
+    <RepositoryUrl>https://github.com/ChustaSoft/Authorization.git</RepositoryUrl>
+    <PackageTags>Authorization;DotNetCore;DotNet;ASPNET;ASPMVC;JWT;Security</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
