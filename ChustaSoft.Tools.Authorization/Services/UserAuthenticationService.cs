@@ -21,7 +21,7 @@ namespace ChustaSoft.Tools.Authorization.Services
         private readonly ITokenService _tokenService;
 
         private readonly IMapper<User, Credentials> _userMapper;
-        private readonly IMapper<User, string, Session> _sessionMapper;
+        private readonly IMapper<User, TokenInfo, Session> _sessionMapper;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace ChustaSoft.Tools.Authorization.Services
         #region Constructor
 
         public UserAuthenticationService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsService credentialsBusiness, ITokenService tokenService, 
-            IMapper<User, Credentials> userMapper, IMapper<User, string, Session> sessionMapper)
+            IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -50,8 +50,8 @@ namespace ChustaSoft.Tools.Authorization.Services
         {
             var loginType = _credentialsBusiness.ValidateCredentials(credentials);
             var user = await TryLoginUser(credentials, loginType);
-            var token = _tokenService.Generate(user);
-            var session = _sessionMapper.MapFromSource(user, token);
+            var tokenInfo = _tokenService.Generate(user);
+            var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
             return session;
         }
@@ -63,8 +63,8 @@ namespace ChustaSoft.Tools.Authorization.Services
 
             if (result.Succeeded)
             {
-                var token = _tokenService.Generate(user);
-                var session = _sessionMapper.MapFromSource(user, token);
+                var tokenInfo = _tokenService.Generate(user);
+                var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
                 return session;
             }

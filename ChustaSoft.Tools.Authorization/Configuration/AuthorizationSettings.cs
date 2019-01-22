@@ -3,6 +3,8 @@
     public class AuthorizationSettings
     {
 
+        public string SiteName { get; set; }
+
         public int MinutesToExpire { get; set; }
 
         public int MinPasswordLength { get; set; }

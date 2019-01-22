@@ -5,7 +5,7 @@ namespace ChustaSoft.Tools.Authorization.Services
     public interface ITokenService
     {
 
-        string Generate(User user);
+        TokenInfo Generate(User user);
 
     }
 }

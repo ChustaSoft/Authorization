@@ -4,14 +4,15 @@ using ChustaSoft.Tools.Authorization.Models;
 
 namespace ChustaSoft.Tools.Authorization.Helpers
 {
-    public class SessionMapper : IMapper<User, string, Session>
+    public class SessionMapper : IMapper<User, TokenInfo, Session>
     {
 
-        public Session MapFromSource(User user, string userToken)
+        public Session MapFromSource(User user, TokenInfo tokenInfo)
         {
             var session = MapFromSource(user);
 
-            session.Token = userToken;
+            session.Token = tokenInfo.Token;
+            session.ExpirationDate = tokenInfo.ExpirationDate;
 
             return session;
         }

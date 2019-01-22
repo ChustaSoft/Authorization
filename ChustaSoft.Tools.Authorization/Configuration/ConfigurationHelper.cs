@@ -1,14 +1,17 @@
 ﻿using ChustaSoft.Common.Helpers;
+using ChustaSoft.Tools.Authorization.Constants;
 using ChustaSoft.Tools.Authorization.Context;
 using ChustaSoft.Tools.Authorization.Helpers;
 using ChustaSoft.Tools.Authorization.Models;
 using ChustaSoft.Tools.Authorization.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System.Data.SqlClient;
 using System.Reflection;
 
@@ -35,7 +38,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
             RegisterDatabase(services, configuration, connectionName);
             RegisterServices(services);
-            RegisterIdentityConfigurations(services, authSettings);
+            RegisterIdentityConfigurations(services, configuration, authSettings);
         }
 
         private static void RegisterServices(IServiceCollection services)
@@ -45,7 +48,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
             services.AddTransient<ITokenService, TokenService>();
 
             services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
-            services.AddTransient<IMapper<User, string, Session>, SessionMapper>();
+            services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
         }
 
         public static void ConfigureAuthorization(this IApplicationBuilder app, IHostingEnvironment env, AuthorizationContext authContext)
@@ -74,7 +77,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         #region Private methods
 
-        private static void RegisterIdentityConfigurations(IServiceCollection services, AuthorizationSettings authSettings)
+        private static void RegisterIdentityConfigurations(IServiceCollection services, IConfiguration configuration, AuthorizationSettings authSettings)
         {
             services.AddIdentity<User, Role>(opt =>
                 {
@@ -88,6 +91,24 @@ namespace ChustaSoft.Tools.Authorization.Configuration
                 })
                 .AddEntityFrameworkStores<AuthorizationContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication(opt => {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(opt => {
+                    opt.SaveToken = true;
+                    opt.RequireHttpsMetadata = true;
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = authSettings.SiteName,
+                        ValidIssuer = authSettings.SiteName,
+                        IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(configuration)
+                    };
+                });
         }
 
         private static AuthorizationSettings GetAuthorizationSettings(IServiceCollection services, IConfiguration configuration)
