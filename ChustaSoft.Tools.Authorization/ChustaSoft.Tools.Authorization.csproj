@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <PackageId>ChustaSoft.StaticData</PackageId>
+    <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
     <Version>1.0.0.1-beta</Version>
     <Description>ChustaSoft.Tools.Authorization.WebAPI</Description>
