@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <PackageId>ChustaSoft.Tools.Authorization</PackageId>
+    <PackageId>ChustaSoft.Tools.Authorization.AspNet</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
     <Version>1.0.0.2-beta</Version>
-    <Description>ChustaSoft.Tools.Authorization</Description>
+    <Description>ChustaSoft.Tools.Authorization.AspNet</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ChustaSoft/Authorization</PackageProjectUrl>
@@ -21,21 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System">
-      <HintPath>System</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Services\CredentialsService.cs">
-      <DependentUpon>ICredentialsService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Services\UserAuthenticationService.cs">
-      <DependentUpon>IUserAuthenticationService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Services\TokenService.cs">
-      <DependentUpon>ITokenService.cs</DependentUpon>
-    </Compile>
+    <ProjectReference Include="..\ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj" />
   </ItemGroup>
 
 </Project>

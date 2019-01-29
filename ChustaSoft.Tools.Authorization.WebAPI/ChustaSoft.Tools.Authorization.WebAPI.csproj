@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj" />
+    <ProjectReference Include="..\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj" />
   </ItemGroup>
 
 </Project>

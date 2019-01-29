@@ -25,7 +25,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         private const string SECRET_DATABASE_PASSWORD = "DbUserPassword";
         private const string AUTH_SETINGS_SECTION = "AuthorizationSettings";
-        private const string ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization";
+        private const string ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization.AspNet";
 
         #endregion
 
