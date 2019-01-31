@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>1.0.0.2-beta</Version>
+    <Version>1.0.0.3-beta</Version>
     <Description>ChustaSoft.Tools.Authorization</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
@@ -30,11 +30,14 @@
     <Compile Update="Services\CredentialsService.cs">
       <DependentUpon>ICredentialsService.cs</DependentUpon>
     </Compile>
-    <Compile Update="Services\UserAuthenticationService.cs">
-      <DependentUpon>IUserAuthenticationService.cs</DependentUpon>
+    <Compile Update="Services\SessionService.cs">
+      <DependentUpon>ISessionService.cs</DependentUpon>
     </Compile>
     <Compile Update="Services\TokenService.cs">
       <DependentUpon>ITokenService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Services\UserService.cs">
+      <DependentUpon>IUserService.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

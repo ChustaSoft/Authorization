@@ -1,6 +1,5 @@
 ﻿using ChustaSoft.Common.Helpers;
 using ChustaSoft.Tools.Authorization.Enums;
-using ChustaSoft.Tools.Authorization.Helpers;
 using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Authentication;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization.Services
 {
-    public class UserAuthenticationService : IUserAuthenticationService
+    public class SessionService : ISessionService
     {
 
         #region Fields
@@ -28,7 +27,7 @@ namespace ChustaSoft.Tools.Authorization.Services
 
         #region Constructor
 
-        public UserAuthenticationService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsService credentialsBusiness, ITokenService tokenService, 
+        public SessionService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsService credentialsBusiness, ITokenService tokenService, 
             IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
         {
             _userManager = userManager;

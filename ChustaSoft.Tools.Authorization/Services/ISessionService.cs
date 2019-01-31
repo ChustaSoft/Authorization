@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization.Services
 {
-    public interface IUserAuthenticationService
+    public interface ISessionService
     {
 
         Task<Session> AuthenticateAsync(Credentials credentials);

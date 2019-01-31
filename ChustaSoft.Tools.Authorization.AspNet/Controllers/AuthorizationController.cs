@@ -16,16 +16,16 @@ namespace ChustaSoft.Tools.Authorization.Controllers
 
         #region Fields
 
-        private readonly IUserAuthenticationService _userAuthenticationService;
+        private readonly ISessionService _sessionService;
 
         #endregion
 
 
         #region Constructor
 
-        public AuthorizationController(IUserAuthenticationService userAuthenticationService)
+        public AuthorizationController(ISessionService sessionService)
         {
-            _userAuthenticationService = userAuthenticationService;
+            _sessionService = sessionService;
         }
 
         #endregion
@@ -39,7 +39,7 @@ namespace ChustaSoft.Tools.Authorization.Controllers
         {
             try
             {
-                var session = _userAuthenticationService.AuthenticateAsync(credentials).Result;
+                var session = _sessionService.AuthenticateAsync(credentials).Result;
 
                 return Ok(session);
             }
@@ -57,7 +57,7 @@ namespace ChustaSoft.Tools.Authorization.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var session = await _userAuthenticationService.RegisterAsync(credentials);
+                    var session = await _sessionService.RegisterAsync(credentials);
 
                     return Ok(session);
                 }

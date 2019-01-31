@@ -44,8 +44,9 @@ namespace ChustaSoft.Tools.Authorization.Configuration
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddTransient<ICredentialsService, CredentialsBusiness>();
-            services.AddTransient<IUserAuthenticationService, UserAuthenticationService>();
+            services.AddTransient<ISessionService, SessionService>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
             services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();

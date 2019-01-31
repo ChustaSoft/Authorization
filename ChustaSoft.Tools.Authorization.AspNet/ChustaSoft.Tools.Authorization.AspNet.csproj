@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.AspNet</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>1.0.0.2-beta</Version>
+    <Version>1.0.0.3-beta</Version>
     <Description>ChustaSoft.Tools.Authorization.AspNet</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
