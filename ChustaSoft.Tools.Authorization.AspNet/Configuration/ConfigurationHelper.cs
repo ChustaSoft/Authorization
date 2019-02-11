@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Common.Helpers;
-using ChustaSoft.Tools.Authorization.Constants;
 using ChustaSoft.Tools.Authorization.Context;
 using ChustaSoft.Tools.Authorization.Helpers;
 using ChustaSoft.Tools.Authorization.Models;
@@ -39,17 +38,6 @@ namespace ChustaSoft.Tools.Authorization.Configuration
             RegisterDatabase(services, configuration, connectionName);
             RegisterServices(services);
             RegisterIdentityConfigurations(services, configuration, authSettings);
-        }
-
-        private static void RegisterServices(IServiceCollection services)
-        {
-            services.AddTransient<ICredentialsService, CredentialsBusiness>();
-            services.AddTransient<ISessionService, SessionService>();
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IUserService, UserService>();
-
-            services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
-            services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
         }
 
         public static void ConfigureAuthorization(this IApplicationBuilder app, IHostingEnvironment env, AuthorizationContext authContext)
@@ -110,6 +98,17 @@ namespace ChustaSoft.Tools.Authorization.Configuration
                         IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(configuration)
                     };
                 });
+        }
+
+        private static void RegisterServices(IServiceCollection services)
+        {
+            services.AddTransient<ICredentialsService, CredentialsBusiness>();
+            services.AddTransient<ISessionService, SessionService>();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
+            services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
         }
 
         private static AuthorizationSettings GetAuthorizationSettings(IServiceCollection services, IConfiguration configuration)
