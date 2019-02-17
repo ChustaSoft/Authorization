@@ -1,4 +1,5 @@
-﻿using ChustaSoft.Tools.Authorization.Models;
+﻿using ChustaSoft.Common.Helpers;
+using ChustaSoft.Tools.Authorization.Models;
 using ChustaSoft.Tools.Authorization.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,29 +38,15 @@ namespace ChustaSoft.Tools.Authorization.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] Credentials credentials)
         {
-            try
-            {
-                var session = _sessionService.AuthenticateAsync(credentials).Result;
-
-                return Ok(session);
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Credentials credentials)
-        {
+            var actionResponseBuilder = new ActionResponseBuilder<Session>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var session = await _sessionService.RegisterAsync(credentials);
+                    var session = _sessionService.AuthenticateAsync(credentials).Result;
+                    actionResponseBuilder.SetData(session);
 
-                    return Ok(session);
+                    return Ok(actionResponseBuilder.Build());
                 }
                 else
                 {
@@ -68,7 +55,34 @@ namespace ChustaSoft.Tools.Authorization.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                actionResponseBuilder.AddError(new Common.Utilities.ErrorMessage(Common.Enums.ErrorType.Invalid, ex.Message));
+                return Unauthorized(actionResponseBuilder.Build());
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] Credentials credentials)
+        {
+            var actionResponseBuilder = new ActionResponseBuilder<Session>();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var session = await _sessionService.RegisterAsync(credentials);
+                    actionResponseBuilder.SetData(session);
+
+                    return Ok(actionResponseBuilder.Build());
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (Exception ex)
+            {
+                actionResponseBuilder.AddError(new Common.Utilities.ErrorMessage(Common.Enums.ErrorType.Invalid, ex.Message));
+                return BadRequest(actionResponseBuilder.Build());
             }
         }
 
