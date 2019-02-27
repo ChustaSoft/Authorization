@@ -24,7 +24,8 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         private const string SECRET_DATABASE_PASSWORD = "DbUserPassword";
         private const string AUTH_SETINGS_SECTION = "AuthorizationSettings";
-        private const string ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization.AspNet";
+        private const string CORE_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization";
+        private const string ASP_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization.AspNet";
 
         #endregion
 
@@ -54,7 +55,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         public static IMvcBuilder IntegrateChustaSoftAuthorization(this IMvcBuilder mvcBuilder)
         {
-            var assembly = Assembly.Load(ASSEMBLY_NAME);
+            var assembly = Assembly.Load(ASP_ASSEMBLY_NAME);
 
             mvcBuilder.AddApplicationPart(assembly).AddControllersAsServices();
 
@@ -134,7 +135,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
         {
             var connectionString = BuildConnectionString(configuration, connectionName);
 
-            services.AddDbContext<AuthorizationContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(ASSEMBLY_NAME)));
+            services.AddDbContext<AuthorizationContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(CORE_ASSEMBLY_NAME)));
         }
 
         private static string BuildConnectionString(IConfiguration configuration, string connectionName)
