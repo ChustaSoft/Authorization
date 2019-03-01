@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data.SqlClient;
 
 
 namespace ChustaSoft.Tools.Authorization
@@ -12,7 +13,17 @@ namespace ChustaSoft.Tools.Authorization
     public class Startup
     {
 
+        #region Constants
+
+        private const string CONNECTIONSTRING_NAME = "AuthorizationConnection";
+        private const string DATABASE_SERVER = "DbServer";
+        private const string SECRET_DATABASE_PASSWORD = "DbUserPassword";
+
+        #endregion
+
+
         #region Fields
+
 
         private readonly IConfiguration _configuration;
 
@@ -33,7 +44,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAuthorization(_configuration, "AuthorizationConnection");
+            services.RegisterAuthorization(_configuration, BuildConnectionString());
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -56,6 +67,21 @@ namespace ChustaSoft.Tools.Authorization
             app.ConfigureAuthorization(env, authContext);
 
             app.UseMvc();
+        }
+
+        #endregion
+
+
+        #region Private methods
+
+        private string BuildConnectionString()
+        {
+            var builder = new SqlConnectionStringBuilder(_configuration.GetConnectionString(CONNECTIONSTRING_NAME));
+
+            builder.DataSource = _configuration[DATABASE_SERVER];
+            builder.Password = _configuration[SECRET_DATABASE_PASSWORD];
+
+            return builder.ConnectionString;
         }
 
         #endregion

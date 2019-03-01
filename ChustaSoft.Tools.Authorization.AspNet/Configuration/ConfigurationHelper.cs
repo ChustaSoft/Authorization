@@ -22,7 +22,6 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         #region Constants
 
-        private const string SECRET_DATABASE_PASSWORD = "DbUserPassword";
         private const string AUTH_SETINGS_SECTION = "AuthorizationSettings";
         private const string CORE_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization";
         private const string ASP_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization.AspNet";
@@ -32,11 +31,11 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         #region Extension methods
 
-        public static void RegisterAuthorization(this IServiceCollection services, IConfiguration configuration, string connectionName)
+        public static void RegisterAuthorization(this IServiceCollection services, IConfiguration configuration, string connectionString)
         {
             var authSettings = GetAuthorizationSettings(services, configuration);
 
-            RegisterDatabase(services, configuration, connectionName);
+            RegisterDatabase(services, configuration, connectionString);
             RegisterServices(services);
             RegisterIdentityConfigurations(services, configuration, authSettings);
         }
@@ -131,20 +130,9 @@ namespace ChustaSoft.Tools.Authorization.Configuration
             return authSettings;
         }
 
-        private static void RegisterDatabase(IServiceCollection services, IConfiguration configuration, string connectionName)
+        private static void RegisterDatabase(IServiceCollection services, IConfiguration configuration, string connectionString)
         {
-            var connectionString = BuildConnectionString(configuration, connectionName);
-
             services.AddDbContext<AuthorizationContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(CORE_ASSEMBLY_NAME)));
-        }
-
-        private static string BuildConnectionString(IConfiguration configuration, string connectionName)
-        {
-            var builder = new SqlConnectionStringBuilder(configuration.GetConnectionString(connectionName));
-
-            builder.Password = configuration[SECRET_DATABASE_PASSWORD];
-
-            return builder.ConnectionString;
         }
 
         #endregion
