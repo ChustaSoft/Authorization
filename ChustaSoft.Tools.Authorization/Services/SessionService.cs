@@ -1,4 +1,4 @@
-﻿using ChustaSoft.Common.Helpers;
+﻿using ChustaSoft.Common.Contracts;
 using ChustaSoft.Tools.Authorization.Enums;
 using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Identity;

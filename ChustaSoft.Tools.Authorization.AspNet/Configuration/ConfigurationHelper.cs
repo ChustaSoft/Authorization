@@ -1,4 +1,4 @@
-﻿using ChustaSoft.Common.Helpers;
+﻿using ChustaSoft.Common.Contracts;
 using ChustaSoft.Tools.Authorization.Context;
 using ChustaSoft.Tools.Authorization.Helpers;
 using ChustaSoft.Tools.Authorization.Models;
@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Data.SqlClient;
 using System.Reflection;
 
 

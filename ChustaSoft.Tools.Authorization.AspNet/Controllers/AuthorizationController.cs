@@ -1,8 +1,9 @@
-﻿using ChustaSoft.Common.Helpers;
+﻿using ChustaSoft.Common.Base;
 using ChustaSoft.Tools.Authorization.Models;
 using ChustaSoft.Tools.Authorization.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace ChustaSoft.Tools.Authorization.Controllers
     [Authorize]
     [ApiController]
     [Route("api/auth")]
-    public class AuthorizationController : ControllerBase
+    public class AuthorizationController : ApiControllerBase<AuthorizationController>
     {
 
         #region Fields
@@ -24,7 +25,8 @@ namespace ChustaSoft.Tools.Authorization.Controllers
 
         #region Constructor
 
-        public AuthorizationController(ISessionService sessionService)
+        public AuthorizationController(ILogger<AuthorizationController> logger, ISessionService sessionService)
+            : base(logger)
         {
             _sessionService = sessionService;
         }
@@ -38,7 +40,7 @@ namespace ChustaSoft.Tools.Authorization.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] Credentials credentials)
         {
-            var actionResponseBuilder = new ActionResponseBuilder<Session>();
+            var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
             try
             {
                 if (ModelState.IsValid)
@@ -64,7 +66,7 @@ namespace ChustaSoft.Tools.Authorization.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] Credentials credentials)
         {
-            var actionResponseBuilder = new ActionResponseBuilder<Session>();
+            var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
             try
             {
                 if (ModelState.IsValid)
