@@ -1,10 +1,9 @@
-﻿using ChustaSoft.Tools.Authorization.Constants;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 
-namespace ChustaSoft.Tools.Authorization.Helpers
+namespace ChustaSoft.Tools.Authorization
 {
     public static class SecurityKeyHelper
     {

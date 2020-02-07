@@ -1,5 +1,4 @@
-﻿using ChustaSoft.Tools.Authorization.Configuration;
-using ChustaSoft.Tools.Authorization.Context;
+﻿using ChustaSoft.Tools.Authorization.AspNet;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

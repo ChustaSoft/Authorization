@@ -1,6 +1,4 @@
-﻿using ChustaSoft.Tools.Authorization.Models;
-using ChustaSoft.Tools.Authorization.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security.Authentication;
 
 
@@ -12,7 +10,7 @@ namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
 
         #region Test Fields
 
-        private static ICredentialsService ServiceUnderTest;
+        private static ICredentialsBusiness ServiceUnderTest;
 
         #endregion
 
@@ -37,7 +35,7 @@ namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
 
             var typeRetrived = ServiceUnderTest.ValidateCredentials(credentials);
 
-            Assert.AreEqual(typeRetrived, Tools.Authorization.Enums.LoginType.MAIL);
+            Assert.AreEqual(typeRetrived, LoginType.MAIL);
         }
 
         [TestMethod]
@@ -47,7 +45,7 @@ namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
 
             var typeRetrived = ServiceUnderTest.ValidateCredentials(credentials);
 
-            Assert.AreEqual(typeRetrived, Tools.Authorization.Enums.LoginType.USER);
+            Assert.AreEqual(typeRetrived, LoginType.USER);
         }
 
         [TestMethod]

@@ -1,4 +1,4 @@
-﻿namespace ChustaSoft.Tools.Authorization.Enums
+﻿namespace ChustaSoft.Tools.Authorization
 {
     public enum LoginType
     {

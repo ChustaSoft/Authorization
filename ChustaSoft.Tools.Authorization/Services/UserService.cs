@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading.Tasks;
-using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Identity;
 
 
-namespace ChustaSoft.Tools.Authorization.Services
+namespace ChustaSoft.Tools.Authorization
 {
     public class UserService : IUserService
     {

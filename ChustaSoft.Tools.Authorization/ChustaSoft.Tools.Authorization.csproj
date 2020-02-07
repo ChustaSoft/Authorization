@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>1.0.0.6-beta</Version>
+    <Version>1.0.0.7-beta</Version>
     <Description>ChustaSoft.Tools.Authorization</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
@@ -13,12 +13,12 @@
     <RepositoryType>GIT</RepositoryType>
     <RepositoryUrl>https://github.com/ChustaSoft/Authorization.git</RepositoryUrl>
     <PackageTags>Authorization;DotNetCore;DotNet;ASPNET;ASPMVC;JWT;Security</PackageTags>
-    <AssemblyVersion>1.0.0.6</AssemblyVersion>
-    <FileVersion>1.0.0.6</FileVersion>
+    <AssemblyVersion>1.0.0.7</AssemblyVersion>
+    <FileVersion>1.0.0.7</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common" Version="1.1.0" />
+    <PackageReference Include="ChustaSoft.Common" Version="1.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Services\CredentialsService.cs">
-      <DependentUpon>ICredentialsService.cs</DependentUpon>
+    <Compile Update="Business\CredentialsBusiness.cs">
+      <DependentUpon>ICredentialsBusiness.cs</DependentUpon>
     </Compile>
     <Compile Update="Services\RoleService.cs">
       <DependentUpon>IRoleService.cs</DependentUpon>
@@ -38,8 +38,8 @@
     <Compile Update="Services\SessionService.cs">
       <DependentUpon>ISessionService.cs</DependentUpon>
     </Compile>
-    <Compile Update="Services\TokenService.cs">
-      <DependentUpon>ITokenService.cs</DependentUpon>
+    <Compile Update="Builders\TokenBuilder.cs">
+      <DependentUpon>ITokenBuilder.cs</DependentUpon>
     </Compile>
     <Compile Update="Services\UserService.cs">
       <DependentUpon>IUserService.cs</DependentUpon>

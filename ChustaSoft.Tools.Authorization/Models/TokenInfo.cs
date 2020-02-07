@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ChustaSoft.Tools.Authorization.Models
+namespace ChustaSoft.Tools.Authorization
 {
     public class TokenInfo
     {

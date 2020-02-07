@@ -1,18 +1,13 @@
-﻿using ChustaSoft.Tools.Authorization.Configuration;
-using ChustaSoft.Tools.Authorization.Constants;
-using ChustaSoft.Tools.Authorization.Helpers;
-using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 
-namespace ChustaSoft.Tools.Authorization.Services
+namespace ChustaSoft.Tools.Authorization
 {
-    public class TokenService : ITokenService
+    public class TokenService : ITokenBuilder
     {
 
         #region Fields
