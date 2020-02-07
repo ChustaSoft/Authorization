@@ -1,10 +1,9 @@
-﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 
-namespace ChustaSoft.Tools.Authorization.Context
+namespace ChustaSoft.Tools.Authorization
 {
     public class AuthorizationContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {

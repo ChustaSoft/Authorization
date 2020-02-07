@@ -1,11 +1,9 @@
-﻿using ChustaSoft.Tools.Authorization.Enums;
-using ChustaSoft.Tools.Authorization.Models;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 
 
-namespace ChustaSoft.Tools.Authorization.Services
+namespace ChustaSoft.Tools.Authorization
 {
-    public class CredentialsBusiness : ICredentialsService
+    public class CredentialsBusiness : ICredentialsBusiness
     {
 
         #region Public methods

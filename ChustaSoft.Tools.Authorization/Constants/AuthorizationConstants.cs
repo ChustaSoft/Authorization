@@ -1,4 +1,4 @@
-﻿namespace ChustaSoft.Tools.Authorization.Constants
+﻿namespace ChustaSoft.Tools.Authorization
 {
     internal struct AuthorizationConstants
     {

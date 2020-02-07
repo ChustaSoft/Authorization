@@ -1,6 +1,4 @@
 ﻿using ChustaSoft.Common.Base;
-using ChustaSoft.Tools.Authorization.Models;
-using ChustaSoft.Tools.Authorization.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,7 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 
-namespace ChustaSoft.Tools.Authorization.Controllers
+namespace ChustaSoft.Tools.Authorization.AspNet
 {
     [Authorize]
     [ApiController]
@@ -38,14 +36,14 @@ namespace ChustaSoft.Tools.Authorization.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login([FromBody] Credentials credentials)
+        public async Task<IActionResult> Login([FromBody] Credentials credentials)
         {
             var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var session = _sessionService.AuthenticateAsync(credentials).Result;
+                    var session = await _sessionService.AuthenticateAsync(credentials);
                     actionResponseBuilder.SetData(session);
 
                     return Ok(actionResponseBuilder.Build());

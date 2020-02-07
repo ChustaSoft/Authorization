@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common" Version="1.1.0" />
+    <PackageReference Include="ChustaSoft.Common" Version="1.1.5" />
     <PackageReference Include="ChustaSoft.Common.AspNet" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>

@@ -1,12 +1,10 @@
 ﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Tools.Authorization.Enums;
-using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
 
-namespace ChustaSoft.Tools.Authorization.Services
+namespace ChustaSoft.Tools.Authorization
 {
     public class SessionService : ISessionService
     {
@@ -16,8 +14,8 @@ namespace ChustaSoft.Tools.Authorization.Services
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-        private readonly ICredentialsService _credentialsBusiness;
-        private readonly ITokenService _tokenService;
+        private readonly ICredentialsBusiness _credentialsBusiness;
+        private readonly ITokenBuilder _tokenBuilder;
 
         private readonly IMapper<User, Credentials> _userMapper;
         private readonly IMapper<User, TokenInfo, Session> _sessionMapper;
@@ -27,14 +25,14 @@ namespace ChustaSoft.Tools.Authorization.Services
 
         #region Constructor
 
-        public SessionService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsService credentialsBusiness, ITokenService tokenService, 
+        public SessionService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsBusiness credentialsBusiness, ITokenBuilder tokenService, 
             IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
 
             _credentialsBusiness = credentialsBusiness;
-            _tokenService = tokenService;
+            _tokenBuilder = tokenService;
 
             _userMapper = userMapper;
             _sessionMapper = sessionMapper;
@@ -49,7 +47,7 @@ namespace ChustaSoft.Tools.Authorization.Services
         {
             var loginType = _credentialsBusiness.ValidateCredentials(credentials);
             var user = await TryLoginUser(credentials, loginType);
-            var tokenInfo = _tokenService.Generate(user);
+            var tokenInfo = _tokenBuilder.Generate(user);
             var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
             return session;
@@ -62,7 +60,7 @@ namespace ChustaSoft.Tools.Authorization.Services
 
             if (result.Succeeded)
             {
-                var tokenInfo = _tokenService.Generate(user);
+                var tokenInfo = _tokenBuilder.Generate(user);
                 var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
                 return session;

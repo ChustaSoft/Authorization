@@ -1,8 +1,4 @@
 ﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Tools.Authorization.Context;
-using ChustaSoft.Tools.Authorization.Helpers;
-using ChustaSoft.Tools.Authorization.Models;
-using ChustaSoft.Tools.Authorization.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 
 
-namespace ChustaSoft.Tools.Authorization.Configuration
+namespace ChustaSoft.Tools.Authorization.AspNet
 {
     public static class ConfigurationHelper
     {
@@ -101,9 +97,9 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddTransient<ICredentialsService, CredentialsBusiness>();
+            services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
             services.AddTransient<ISessionService, SessionService>();
-            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ITokenBuilder, TokenService>();
             services.AddTransient<IUserService, UserService>();
 
             services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();

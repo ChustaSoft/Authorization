@@ -1,8 +1,7 @@
 ﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Tools.Authorization.Models;
 
 
-namespace ChustaSoft.Tools.Authorization.Helpers
+namespace ChustaSoft.Tools.Authorization
 {
     public class SessionMapper : IMapper<User, TokenInfo, Session>
     {
