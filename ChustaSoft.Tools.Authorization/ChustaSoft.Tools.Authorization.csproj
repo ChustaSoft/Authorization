@@ -38,8 +38,8 @@
     <Compile Update="Services\SessionService.cs">
       <DependentUpon>ISessionService.cs</DependentUpon>
     </Compile>
-    <Compile Update="Builders\TokenBuilder.cs">
-      <DependentUpon>ITokenBuilder.cs</DependentUpon>
+    <Compile Update="Helpers\TokenHelper.cs">
+      <DependentUpon>ITokenHelper.cs</DependentUpon>
     </Compile>
     <Compile Update="Services\UserService.cs">
       <DependentUpon>IUserService.cs</DependentUpon>

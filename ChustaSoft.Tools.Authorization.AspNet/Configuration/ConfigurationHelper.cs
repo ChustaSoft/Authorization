@@ -28,11 +28,9 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         public static void RegisterAuthorization(this IServiceCollection services, IConfiguration configuration, string connectionString)
         {
-            var authSettings = GetAuthorizationSettings(services, configuration);
-
-            RegisterDatabase(services, configuration, connectionString);
+            RegisterDatabase(services, connectionString);
             RegisterServices(services);
-            RegisterIdentityConfigurations(services, configuration, authSettings);
+            RegisterIdentityConfigurations(services, configuration);
         }
 
         public static void ConfigureAuthorization(this IApplicationBuilder app, IHostingEnvironment env, AuthorizationContext authContext)
@@ -61,8 +59,12 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         #region Private methods
 
-        private static void RegisterIdentityConfigurations(IServiceCollection services, IConfiguration configuration, AuthorizationSettings authSettings)
+        private static void RegisterIdentityConfigurations(IServiceCollection services, IConfiguration configuration)
         {
+            var authSettings = GetFromSettingsOrDefault(configuration);
+
+            services.AddSingleton(authSettings);
+
             services.AddIdentity<User, Role>(opt =>
                 {
                     opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
@@ -98,21 +100,14 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
+
             services.AddTransient<ISessionService, SessionService>();
-            services.AddTransient<ITokenBuilder, TokenService>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<ITokenHelper, TokenHelper>();
 
             services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
             services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
-        }
-
-        private static AuthorizationSettings GetAuthorizationSettings(IServiceCollection services, IConfiguration configuration)
-        {
-            var authSettings = GetFromSettingsOrDefault(configuration);
-
-            services.AddSingleton(authSettings);
-
-            return authSettings;
         }
 
         private static AuthorizationSettings GetFromSettingsOrDefault(IConfiguration configuration)
@@ -125,7 +120,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             return authSettings;
         }
 
-        private static void RegisterDatabase(IServiceCollection services, IConfiguration configuration, string connectionString)
+        private static void RegisterDatabase(IServiceCollection services, string connectionString)
         {
             services.AddDbContext<AuthorizationContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(CORE_ASSEMBLY_NAME)));
         }

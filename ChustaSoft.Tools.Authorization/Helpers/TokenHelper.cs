@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class TokenService : ITokenBuilder
+    public class TokenHelper : ITokenHelper
     {
 
         #region Fields
@@ -21,7 +21,7 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constructor
 
-        public TokenService(IConfiguration configuration, AuthorizationSettings authorizationSettings)
+        public TokenHelper(IConfiguration configuration, AuthorizationSettings authorizationSettings)
         {
             _configuration = configuration;
 
