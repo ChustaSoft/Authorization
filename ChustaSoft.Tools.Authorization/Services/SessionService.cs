@@ -15,7 +15,8 @@ namespace ChustaSoft.Tools.Authorization
         private readonly SignInManager<User> _signInManager;
 
         private readonly ICredentialsBusiness _credentialsBusiness;
-        private readonly ITokenBuilder _tokenBuilder;
+
+        private readonly ITokenHelper _tokenHelper;
 
         private readonly IMapper<User, Credentials> _userMapper;
         private readonly IMapper<User, TokenInfo, Session> _sessionMapper;
@@ -25,14 +26,18 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constructor
 
-        public SessionService(UserManager<User> userManager, SignInManager<User> signInManager, ICredentialsBusiness credentialsBusiness, ITokenBuilder tokenService, 
+        public SessionService(
+            UserManager<User> userManager, SignInManager<User> signInManager, 
+            ICredentialsBusiness credentialsBusiness, 
+            ITokenHelper tokenService, 
             IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
 
             _credentialsBusiness = credentialsBusiness;
-            _tokenBuilder = tokenService;
+
+            _tokenHelper = tokenService;
 
             _userMapper = userMapper;
             _sessionMapper = sessionMapper;
@@ -47,7 +52,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var loginType = _credentialsBusiness.ValidateCredentials(credentials);
             var user = await TryLoginUser(credentials, loginType);
-            var tokenInfo = _tokenBuilder.Generate(user);
+            var tokenInfo = _tokenHelper.Generate(user);
             var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
             return session;
@@ -60,7 +65,7 @@ namespace ChustaSoft.Tools.Authorization
 
             if (result.Succeeded)
             {
-                var tokenInfo = _tokenBuilder.Generate(user);
+                var tokenInfo = _tokenHelper.Generate(user);
                 var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
                 return session;
@@ -96,7 +101,7 @@ namespace ChustaSoft.Tools.Authorization
             if (userSignIn.Succeeded)
                 return await _userManager.FindByNameAsync(credentials.Username);
             else
-                throw new AuthenticationException();
+                throw new AuthenticationException("User not allowed to login in the system");
         }
 
         private async Task<User> LoginByEmail(Credentials credentials)

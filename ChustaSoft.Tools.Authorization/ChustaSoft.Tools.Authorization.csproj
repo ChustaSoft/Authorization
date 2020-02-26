@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>1.0.0.7-beta</Version>
+    <Version>1.0.1</Version>
     <Description>ChustaSoft.Tools.Authorization</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
@@ -13,19 +13,21 @@
     <RepositoryType>GIT</RepositoryType>
     <RepositoryUrl>https://github.com/ChustaSoft/Authorization.git</RepositoryUrl>
     <PackageTags>Authorization;DotNetCore;DotNet;ASPNET;ASPMVC;JWT;Security</PackageTags>
-    <AssemblyVersion>1.0.0.7</AssemblyVersion>
-    <FileVersion>1.0.0.7</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common" Version="1.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System">
-      <HintPath>System</HintPath>
-    </Reference>
+    
+    <PackageReference Include="ChustaSoft.Common" Version="1.2.0" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,8 +40,8 @@
     <Compile Update="Services\SessionService.cs">
       <DependentUpon>ISessionService.cs</DependentUpon>
     </Compile>
-    <Compile Update="Builders\TokenBuilder.cs">
-      <DependentUpon>ITokenBuilder.cs</DependentUpon>
+    <Compile Update="Helpers\TokenHelper.cs">
+      <DependentUpon>ITokenHelper.cs</DependentUpon>
     </Compile>
     <Compile Update="Services\UserService.cs">
       <DependentUpon>IUserService.cs</DependentUpon>

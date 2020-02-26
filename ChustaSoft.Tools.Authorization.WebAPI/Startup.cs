@@ -46,26 +46,23 @@ namespace ChustaSoft.Tools.Authorization
             services.RegisterAuthorization(_configuration, BuildConnectionString());
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .IntegrateChustaSoftAuthorization();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, AuthorizationContext authContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
+            if (env.EnvironmentName.Equals("dev"))
             {
                 app.UseDeveloperExceptionPage();
                 builder.AddUserSecrets<Startup>();
             }
 
             app.ConfigureAuthorization(env, authContext);
-
-            app.UseMvc();
         }
 
         #endregion
