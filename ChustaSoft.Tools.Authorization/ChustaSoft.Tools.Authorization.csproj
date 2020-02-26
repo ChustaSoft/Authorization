@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>1.0.0.7-beta</Version>
+    <Version>1.0.1</Version>
     <Description>ChustaSoft.Tools.Authorization</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
@@ -13,8 +13,8 @@
     <RepositoryType>GIT</RepositoryType>
     <RepositoryUrl>https://github.com/ChustaSoft/Authorization.git</RepositoryUrl>
     <PackageTags>Authorization;DotNetCore;DotNet;ASPNET;ASPMVC;JWT;Security</PackageTags>
-    <AssemblyVersion>1.0.0.7</AssemblyVersion>
-    <FileVersion>1.0.0.7</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
