@@ -33,9 +33,9 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             RegisterIdentityConfigurations(services, configuration);
         }
 
-        public static void ConfigureAuthorization(this IApplicationBuilder app, IHostingEnvironment env, AuthorizationContext authContext)
+        public static void ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
         {
-            if (!env.IsDevelopment())
+            if (!env.EnvironmentName.Equals("dev"))
                 app.UseHsts();
 
             app.UseHttpsRedirection();

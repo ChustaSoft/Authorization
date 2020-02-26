@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.AspNet</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
@@ -18,9 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common" Version="1.1.5" />
-    <PackageReference Include="ChustaSoft.Common.AspNet" Version="1.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="ChustaSoft.Common.AspNet" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>
