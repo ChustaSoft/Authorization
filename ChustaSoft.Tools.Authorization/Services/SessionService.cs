@@ -101,7 +101,7 @@ namespace ChustaSoft.Tools.Authorization
             if (userSignIn.Succeeded)
                 return await _userManager.FindByNameAsync(credentials.Username);
             else
-                throw new AuthenticationException();
+                throw new AuthenticationException("User not allowed to login in the system");
         }
 
         private async Task<User> LoginByEmail(Credentials credentials)
