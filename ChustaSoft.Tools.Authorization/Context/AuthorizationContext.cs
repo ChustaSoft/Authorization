@@ -34,7 +34,7 @@ namespace ChustaSoft.Tools.Authorization
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Role>(entity =>
+            modelBuilder.Entity<TRole>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.ConcurrencyStamp).IsConcurrencyToken();
@@ -44,7 +44,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasIndex(e => e.Name).IsUnique();
                 entity.HasIndex(e => e.NormalizedName).IsUnique().HasName("RoleNameIndex");
 
-                entity.ToTable($"{typeof(TRole).Name}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(Role)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<RoleClaim>(entity =>
@@ -59,7 +59,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.ToTable($"{nameof(RoleClaim)}s", SCHEMA_NAME);
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<TUser>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.ConcurrencyStamp).IsConcurrencyToken();
@@ -72,7 +72,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasName("UserNameIndex");
 
-                entity.ToTable($"{typeof(TUser).Name}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(User)}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserClaim>(entity =>

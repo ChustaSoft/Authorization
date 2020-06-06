@@ -1,7 +1,7 @@
 ﻿using ChustaSoft.Tools.Authorization.AspNet;
+using ChustaSoft.Tools.Authorization.TestCustom.WebAPI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.SqlClient;
@@ -15,8 +15,6 @@ namespace ChustaSoft.Tools.Authorization
         #region Constants
 
         private const string CONNECTIONSTRING_NAME = "AuthorizationConnection";
-        private const string DATABASE_SERVER = "DbServer";
-        private const string SECRET_DATABASE_PASSWORD = "DbUserPassword";
 
         #endregion
 
@@ -43,13 +41,13 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAuthorization(_configuration, BuildConnectionString());
+            services.RegisterAuthorization<AuthCustomContext, CustomUser, CustomRole>(_configuration, BuildConnectionString());
 
             services.AddMvc()
                 .IntegrateChustaSoftAuthorization();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthCustomContext authContext)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -62,7 +60,7 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization(env, authContext);
+            app.ConfigureAuthorization<AuthCustomContext, CustomUser, CustomRole>(env, authContext);
         }
 
         #endregion
@@ -73,9 +71,6 @@ namespace ChustaSoft.Tools.Authorization
         private string BuildConnectionString()
         {
             var builder = new SqlConnectionStringBuilder(_configuration.GetConnectionString(CONNECTIONSTRING_NAME));
-
-            builder.DataSource = _configuration[DATABASE_SERVER];
-            builder.Password = _configuration[SECRET_DATABASE_PASSWORD];
 
             return builder.ConnectionString;
         }
