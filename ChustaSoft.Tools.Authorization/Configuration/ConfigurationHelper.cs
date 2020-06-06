@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -14,18 +15,20 @@ namespace ChustaSoft.Tools.Authorization
         #region Constants
 
         private const string AUTH_SETINGS_SECTION = "AuthorizationSettings";
-        private const string CORE_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization";
 
         #endregion
 
 
         #region Extension methods
 
-        public static void RegisterAuthorizationCore(this IServiceCollection services, IConfiguration configuration, string connectionString)
+        public static void RegisterAuthorizationCore<TAuthContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string connectionString)
+            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+            where TUser : User
+            where TRole : Role
         {
-            RegisterDatabase(services, connectionString);
+            RegisterDatabase<TAuthContext, TUser, TRole>(services, connectionString);
             RegisterServices(services);
-            RegisterIdentityConfigurations(services, configuration);
+            RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(services, configuration);
         }
 
         #endregion
@@ -33,12 +36,20 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private static void RegisterDatabase(IServiceCollection services, string connectionString)
+        private static void RegisterDatabase<TAuthContext, TUser, TRole>(IServiceCollection services, string connectionString)
+            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+            where TUser : User
+            where TRole : Role
         {
-            services.AddDbContext<AuthorizationContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(CORE_ASSEMBLY_NAME)));
+            var assemblyName = Assembly.GetAssembly(typeof(TAuthContext)).FullName;
+
+            services.AddDbContext<TAuthContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(assemblyName)));
         }
 
-        private static void RegisterIdentityConfigurations(IServiceCollection services, IConfiguration configuration)
+        private static void RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(IServiceCollection services, IConfiguration configuration)
+            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+            where TUser : User
+            where TRole : Role
         {
             var authSettings = GetFromSettingsOrDefault(configuration);
 
@@ -54,7 +65,7 @@ namespace ChustaSoft.Tools.Authorization
 
                 opt.User.RequireUniqueEmail = true;
             })
-                .AddEntityFrameworkStores<AuthorizationContext>()
+                .AddEntityFrameworkStores<TAuthContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(opt =>

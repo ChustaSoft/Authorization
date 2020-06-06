@@ -5,7 +5,10 @@ using System;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class AuthorizationContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    public abstract class AuthorizationContextBase<TUser, TRole> 
+            : IdentityDbContext<TUser, TRole, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+        where TUser : User
+        where TRole : Role
     {
         
         #region Constants
@@ -19,7 +22,10 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constructor
 
-        public AuthorizationContext(DbContextOptions<AuthorizationContext> options) : base(options) { }
+        public AuthorizationContextBase(DbContextOptions options) 
+            : base(options) 
+        { }
+
 
         #endregion
 
@@ -38,7 +44,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasIndex(e => e.Name).IsUnique();
                 entity.HasIndex(e => e.NormalizedName).IsUnique().HasName("RoleNameIndex");
 
-                entity.ToTable($"{nameof(Role)}s", SCHEMA_NAME);
+                entity.ToTable($"{typeof(TRole).Name}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<RoleClaim>(entity =>
@@ -66,7 +72,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasName("UserNameIndex");
 
-                entity.ToTable($"{nameof(User)}s", SCHEMA_NAME);
+                entity.ToTable($"{typeof(TUser).Name}s", SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserClaim>(entity =>
@@ -115,10 +121,20 @@ namespace ChustaSoft.Tools.Authorization
 
                 entity.ToTable($"{nameof(UserToken)}s", SCHEMA_NAME);
             });
-
         }
-        
+
         #endregion
+
+    }
+
+
+
+    public class AuthorizationContext : AuthorizationContextBase<User, Role>
+    {
+
+        public AuthorizationContext(DbContextOptions<AuthorizationContext> options)
+           : base(options)
+        { }
 
     }
 }
