@@ -27,7 +27,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         public static void RegisterAuthorization<TAuthContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string connectionString)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User
+            where TUser : User, new()
             where TRole : Role
         {
             services.RegisterAuthorizationCore<TAuthContext, TUser, TRole>(configuration, connectionString);
@@ -40,7 +40,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         public static void ConfigureAuthorization<TAuthContext, TUser, TRole>(this IApplicationBuilder app, IWebHostEnvironment env, TAuthContext authContext)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User
+            where TUser : User, new()
             where TRole : Role
         {
             PerformConfiguration<TAuthContext, TUser, TRole>(app, env, authContext);
@@ -62,7 +62,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         private static void PerformConfiguration<TAuthContext, TUser, TRole>(IApplicationBuilder app, IWebHostEnvironment env, TAuthContext authContext)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User
+            where TUser : User, new()
             where TRole : Role
         {
             if (!env.EnvironmentName.Equals("dev"))

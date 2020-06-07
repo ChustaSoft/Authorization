@@ -23,11 +23,11 @@ namespace ChustaSoft.Tools.Authorization
 
         public static void RegisterAuthorizationCore<TAuthContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string connectionString)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User
+            where TUser : User, new()
             where TRole : Role
         {
             RegisterDatabase<TAuthContext, TUser, TRole>(services, connectionString);
-            RegisterServices(services);
+            RegisterServices<TUser, TRole>(services);
             RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(services, configuration);
         }
 
@@ -38,7 +38,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void RegisterDatabase<TAuthContext, TUser, TRole>(IServiceCollection services, string connectionString)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User
+            where TUser : User, new()
             where TRole : Role
         {
             var assemblyName = Assembly.GetAssembly(typeof(TAuthContext)).FullName;
@@ -48,14 +48,14 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(IServiceCollection services, IConfiguration configuration)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User
+            where TUser : User, new()
             where TRole : Role
         {
             var authSettings = GetFromSettingsOrDefault(configuration);
 
             services.AddSingleton(authSettings);
 
-            services.AddIdentity<User, Role>(opt =>
+            services.AddIdentity<TUser, TRole>(opt =>
             {
                 opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
                 opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
@@ -99,17 +99,53 @@ namespace ChustaSoft.Tools.Authorization
             return authSettings;
         }
 
-        private static void RegisterServices(IServiceCollection services)
+        private static void RegisterServices<TUser, TRole>(IServiceCollection services)
+            where TUser : User, new()
+            where TRole : Role
         {
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
 
-            services.AddTransient<ISessionService, SessionService>();
-            services.AddTransient<IUserService, UserService>();
+            SetupUserTypedServices<TUser>(services);
+            SetupRoleTypedServices<TRole>(services);
+        }
 
-            services.AddTransient<ITokenHelper, TokenHelper>();
+        private static void SetupUserTypedServices<TUser>(IServiceCollection services) 
+            where TUser : User, new()
+        {
+            if (typeof(TUser) == typeof(User))
+            {
+                services.AddTransient<IUserService, UserService>();
+                services.AddTransient<ISessionService, SessionService>();
 
-            services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
-            services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
+                services.AddTransient<ITokenHelper, TokenHelper>();
+
+                services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
+                services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
+            }
+            else
+            {
+                services.AddTransient<IUserService<TUser>, UserService<TUser>>();
+                services.AddTransient<ISessionService, SessionService<TUser>>();
+
+                services.AddTransient<ITokenHelper<TUser>, TokenHelper<TUser>>();
+
+                services.AddTransient<IMapper<TUser, Credentials>, CredentialsMapper<TUser>>();
+                services.AddTransient<IMapper<TUser, TokenInfo, Session>, SessionMapper<TUser>>();
+            }
+        }
+
+        private static void SetupRoleTypedServices<TRole>(IServiceCollection services)            
+            where TRole : Role
+        {
+            if (typeof(TRole) == typeof(Role))
+            {
+                services.AddTransient<IRoleService, RoleService>();
+            }
+            else
+            {
+                services.AddTransient<IRoleService<TRole>, RoleService<TRole>>();
+            }
+            
         }
 
         #endregion

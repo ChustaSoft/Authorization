@@ -5,19 +5,20 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class UserService : IUserService
+    public class UserService<TUser> : IUserService<TUser>
+         where TUser : User, new()
     {
 
         #region Fields
 
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<TUser> _userManager;
 
         #endregion
 
 
         #region Constructor
 
-        public UserService(UserManager<User> userManager)
+        public UserService(UserManager<TUser> userManager)
         {
             _userManager = userManager;
         }
@@ -27,12 +28,19 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Public methods
 
-        public async Task<User> GetAsync(Guid userId)
+        public async Task<TUser> GetAsync(Guid userId)
         {
             return await _userManager.FindByIdAsync(userId.ToString());
         }
 
         #endregion
 
+    }
+
+    public class UserService : UserService<User>, IUserService
+    {
+        public UserService(UserManager<User> userManager)
+            : base(userManager)
+        { }
     }
 }

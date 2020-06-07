@@ -3,10 +3,11 @@
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class SessionMapper : IMapper<User, TokenInfo, Session>
+    public class SessionMapper<TUser> : IMapper<TUser, TokenInfo, Session>
+         where TUser : User, new()
     {
 
-        public Session MapFromSource(User user, TokenInfo tokenInfo)
+        public Session MapFromSource(TUser user, TokenInfo tokenInfo)
         {
             var session = MapFromSource(user);
 
@@ -16,7 +17,7 @@ namespace ChustaSoft.Tools.Authorization
             return session;
         }
 
-        public Session MapFromSource(User user)
+        public Session MapFromSource(TUser user)
             => new Session
                 {
                     Culture = user.Culture,
@@ -24,13 +25,18 @@ namespace ChustaSoft.Tools.Authorization
                     Username = user.UserName
                 };
 
-        public User MapToSource(Session session)
-            => new User
-                {
+        public TUser MapToSource(Session session)
+            => new TUser
+            {
                     Culture = session.Culture,
                     Id = session.UserId,
                     UserName = session.Username
                 };
 
     }
+
+
+
+    public class SessionMapper : SessionMapper<User> , IMapper<User, TokenInfo, Session> { }
+
 }

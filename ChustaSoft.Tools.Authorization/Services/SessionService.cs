@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class SessionService : ISessionService
+    public class SessionService<TUser> : ISessionService
+         where TUser : User, new()
     {
 
         #region Fields
 
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<TUser> _userManager;
+        private readonly SignInManager<TUser> _signInManager;
 
         private readonly ICredentialsBusiness _credentialsBusiness;
 
-        private readonly ITokenHelper _tokenHelper;
+        private readonly ITokenHelper<TUser> _tokenHelper;
 
-        private readonly IMapper<User, Credentials> _userMapper;
-        private readonly IMapper<User, TokenInfo, Session> _sessionMapper;
+        private readonly IMapper<TUser, Credentials> _userMapper;
+        private readonly IMapper<TUser, TokenInfo, Session> _sessionMapper;
 
         #endregion
 
@@ -27,10 +28,10 @@ namespace ChustaSoft.Tools.Authorization
         #region Constructor
 
         public SessionService(
-            UserManager<User> userManager, SignInManager<User> signInManager, 
+            UserManager<TUser> userManager, SignInManager<TUser> signInManager, 
             ICredentialsBusiness credentialsBusiness, 
-            ITokenHelper tokenService, 
-            IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
+            ITokenHelper<TUser> tokenService, 
+            IMapper<TUser, Credentials> userMapper, IMapper<TUser, TokenInfo, Session> sessionMapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -79,7 +80,7 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private async Task<User> TryLoginUser(Credentials credentials, LoginType loginType)
+        private async Task<TUser> TryLoginUser(Credentials credentials, LoginType loginType)
         {
             switch (loginType)
             {
@@ -94,7 +95,7 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        private async Task<User> LoginByUsername(Credentials credentials)
+        private async Task<TUser> LoginByUsername(Credentials credentials)
         {
             var userSignIn = await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password, isPersistent: false, lockoutOnFailure: false);
 
@@ -104,7 +105,7 @@ namespace ChustaSoft.Tools.Authorization
                 throw new AuthenticationException("User not allowed to login in the system");
         }
 
-        private async Task<User> LoginByEmail(Credentials credentials)
+        private async Task<TUser> LoginByEmail(Credentials credentials)
         {
             var user = await _userManager.FindByEmailAsync(credentials.Email);
 
@@ -122,4 +123,17 @@ namespace ChustaSoft.Tools.Authorization
         #endregion
 
     }
+
+
+    public class SessionService : SessionService<User> 
+    {
+        public SessionService(
+               UserManager<User> userManager, SignInManager<User> signInManager,
+               ICredentialsBusiness credentialsBusiness,
+               ITokenHelper tokenService,
+               IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
+            : base(userManager, signInManager, credentialsBusiness, tokenService, userMapper, sessionMapper)
+        { }
+    }
+
 }

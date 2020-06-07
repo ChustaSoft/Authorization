@@ -1,9 +1,15 @@
 ﻿namespace ChustaSoft.Tools.Authorization
 {
-    public interface ITokenHelper
+    public interface ITokenHelper<TUser>
+        where TUser : User, new()
     {
 
-        TokenInfo Generate(User user);
+        TokenInfo Generate(TUser user);
 
     }
+
+
+
+    public interface ITokenHelper : ITokenHelper<User> { }
+
 }

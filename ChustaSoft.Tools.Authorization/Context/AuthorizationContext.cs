@@ -7,7 +7,7 @@ namespace ChustaSoft.Tools.Authorization
 {
     public abstract class AuthorizationContextBase<TUser, TRole> 
             : IdentityDbContext<TUser, TRole, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
-        where TUser : User
+        where TUser : User, new()
         where TRole : Role
     {
         
@@ -54,7 +54,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.RoleId);
 
-                entity.HasOne<Role>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<TRole>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
 
                 entity.ToTable($"{nameof(RoleClaim)}s", SCHEMA_NAME);
             });
@@ -82,7 +82,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.UserId);
 
-                entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
                 entity.ToTable($"{nameof(UserClaim)}s", SCHEMA_NAME);
             });
@@ -95,7 +95,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
                 entity.HasIndex(e => e.UserId);
 
-                entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
                 entity.ToTable($"{nameof(UserLogin)}s", SCHEMA_NAME);
             });
@@ -105,8 +105,8 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasKey(e => new { e.UserId, e.RoleId });
                 entity.HasIndex(e => e.RoleId);
 
-                entity.HasOne<Role>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<TRole>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
                 entity.ToTable($"{nameof(UserRole)}s", SCHEMA_NAME);
             });
@@ -117,7 +117,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.Name).HasMaxLength(MAX_HALF_VARCHAR_LENGTH);
                 entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
 
-                entity.HasOne<User>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
                 entity.ToTable($"{nameof(UserToken)}s", SCHEMA_NAME);
             });
