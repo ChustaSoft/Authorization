@@ -36,6 +36,7 @@ namespace ChustaSoft.Tools.Authorization
     }
 
 
+
     public class CredentialsMapper : CredentialsMapper<User> 
     {
 

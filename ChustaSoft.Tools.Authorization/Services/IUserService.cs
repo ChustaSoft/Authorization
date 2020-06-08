@@ -11,6 +11,8 @@ namespace ChustaSoft.Tools.Authorization
 
     }
 
+
+
     public interface IUserService : IUserService<User> { }
 
 }

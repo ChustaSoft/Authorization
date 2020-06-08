@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-
 namespace ChustaSoft.Tools.Authorization.AspNet
 {
     [Authorize]

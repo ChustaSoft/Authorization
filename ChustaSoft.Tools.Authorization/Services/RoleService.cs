@@ -40,11 +40,17 @@ namespace ChustaSoft.Tools.Authorization
     }
 
 
+
+    #region Default Implementation
+
     public class RoleService : RoleService<Role>, IRoleService
     {
         public RoleService(RoleManager<Role> roleManager)
-            :base(roleManager)
+            : base(roleManager)
         { }
 
     }
+
+    #endregion
+
 }

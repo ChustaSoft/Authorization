@@ -125,7 +125,10 @@ namespace ChustaSoft.Tools.Authorization
     }
 
 
-    public class SessionService : SessionService<User> 
+
+    #region Default Implementation
+
+    public class SessionService : SessionService<User>
     {
         public SessionService(
                UserManager<User> userManager, SignInManager<User> signInManager,
@@ -135,5 +138,7 @@ namespace ChustaSoft.Tools.Authorization
             : base(userManager, signInManager, credentialsBusiness, tokenService, userMapper, sessionMapper)
         { }
     }
+
+    #endregion
 
 }

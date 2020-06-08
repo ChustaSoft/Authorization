@@ -37,10 +37,17 @@ namespace ChustaSoft.Tools.Authorization
 
     }
 
+
+
+    #region Default Implementation
+
     public class UserService : UserService<User>, IUserService
     {
         public UserService(UserManager<User> userManager)
             : base(userManager)
         { }
     }
+
+    #endregion
+
 }

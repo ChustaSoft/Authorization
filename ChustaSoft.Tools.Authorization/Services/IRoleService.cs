@@ -12,6 +12,8 @@ namespace ChustaSoft.Tools.Authorization
 
     }
 
+
+
     public interface IRoleService : IRoleService<Role> { }
 
 }
