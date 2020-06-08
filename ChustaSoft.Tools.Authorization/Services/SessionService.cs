@@ -57,7 +57,7 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<Session> RegisterAsync(Credentials credentials)
         {
             var user = _userMapper.MapToSource(credentials);
-            var resultFlag = await _userService.RegisterAsync(user, credentials.Password);
+            var resultFlag = await _userService.CreateAsync(user, credentials.Password);
 
             if (resultFlag)
             {

@@ -11,7 +11,7 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TUser> LoginAsync(Credentials credentials, LoginType loginType);
 
-        Task<bool> RegisterAsync(TUser user, string password);
+        Task<bool> CreateAsync(TUser user, string password);
 
     }
 

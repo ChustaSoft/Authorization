@@ -3,7 +3,6 @@ using System;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
-
 namespace ChustaSoft.Tools.Authorization
 {
     public class UserService<TUser> : IUserService<TUser>
@@ -51,7 +50,7 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        public async Task<bool> RegisterAsync(TUser user, string password)
+        public async Task<bool> CreateAsync(TUser user, string password)
         {
             var result = await _userManager.CreateAsync(user, password);
 
