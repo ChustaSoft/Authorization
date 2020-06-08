@@ -19,26 +19,6 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ChustaSoft.Tools.Authorization.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role");
-                });
-
             modelBuilder.Entity("ChustaSoft.Tools.Authorization.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -153,7 +133,9 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset>("RegistrationDate")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("sysdatetimeoffset()");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -177,65 +159,6 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("Users","Auth");
-                });
-
-            modelBuilder.Entity("ChustaSoft.Tools.Authorization.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Culture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset>("RegistrationDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("ChustaSoft.Tools.Authorization.UserClaim", b =>
@@ -322,7 +245,7 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
 
             modelBuilder.Entity("ChustaSoft.Tools.Authorization.RoleClaim", b =>
                 {
-                    b.HasOne("ChustaSoft.Tools.Authorization.Role", null)
+                    b.HasOne("ChustaSoft.Tools.Authorization.TestCustom.WebAPI.CustomRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -331,7 +254,7 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
 
             modelBuilder.Entity("ChustaSoft.Tools.Authorization.UserClaim", b =>
                 {
-                    b.HasOne("ChustaSoft.Tools.Authorization.User", null)
+                    b.HasOne("ChustaSoft.Tools.Authorization.TestCustom.WebAPI.CustomUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -340,7 +263,7 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
 
             modelBuilder.Entity("ChustaSoft.Tools.Authorization.UserLogin", b =>
                 {
-                    b.HasOne("ChustaSoft.Tools.Authorization.User", null)
+                    b.HasOne("ChustaSoft.Tools.Authorization.TestCustom.WebAPI.CustomUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,13 +272,13 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
 
             modelBuilder.Entity("ChustaSoft.Tools.Authorization.UserRole", b =>
                 {
-                    b.HasOne("ChustaSoft.Tools.Authorization.Role", null)
+                    b.HasOne("ChustaSoft.Tools.Authorization.TestCustom.WebAPI.CustomRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ChustaSoft.Tools.Authorization.User", null)
+                    b.HasOne("ChustaSoft.Tools.Authorization.TestCustom.WebAPI.CustomUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -364,7 +287,7 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
 
             modelBuilder.Entity("ChustaSoft.Tools.Authorization.UserToken", b =>
                 {
-                    b.HasOne("ChustaSoft.Tools.Authorization.User", null)
+                    b.HasOne("ChustaSoft.Tools.Authorization.TestCustom.WebAPI.CustomUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

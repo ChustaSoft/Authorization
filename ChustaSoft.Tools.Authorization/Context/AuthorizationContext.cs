@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-
 namespace ChustaSoft.Tools.Authorization
 {
     public abstract class AuthorizationContextBase<TUser, TRole> 
@@ -68,6 +67,9 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.EmailConfirmed);
                 entity.Property(e => e.NormalizedEmail).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
+
+                entity.Property(e => e.RegistrationDate).HasDefaultValueSql("sysdatetimeoffset()");
+
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasName("UserNameIndex");
@@ -137,4 +139,5 @@ namespace ChustaSoft.Tools.Authorization
         { }
 
     }
+
 }

@@ -74,9 +74,10 @@ namespace ChustaSoft.Tools.Authorization
         {
             var builder = new SqlConnectionStringBuilder(_configuration.GetConnectionString(CONNECTIONSTRING_NAME));
 
-            builder.UserID = _configuration[DATABASE_USER];
-            builder.DataSource = _configuration[DATABASE_SERVER];
-            builder.Password = _configuration[SECRET_DATABASE_PASSWORD];
+            //Just in case of having credentials on environment variables
+            //builder.UserID = _configuration[DATABASE_USER];
+            //builder.DataSource = _configuration[DATABASE_SERVER];
+            //builder.Password = _configuration[SECRET_DATABASE_PASSWORD];
 
             return builder.ConnectionString;
         }

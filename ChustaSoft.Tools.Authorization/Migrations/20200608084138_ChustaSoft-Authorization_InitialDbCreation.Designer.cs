@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChustaSoft.Tools.Authorization.Migrations
 {
     [DbContext(typeof(AuthorizationContext))]
-    [Migration("20200605194727_ChustaSoft-Authorization_InitialDbCreation")]
+    [Migration("20200608084138_ChustaSoft-Authorization_InitialDbCreation")]
     partial class ChustaSoftAuthorization_InitialDbCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,7 +126,9 @@ namespace ChustaSoft.Tools.Authorization.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset>("RegistrationDate")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("sysdatetimeoffset()");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

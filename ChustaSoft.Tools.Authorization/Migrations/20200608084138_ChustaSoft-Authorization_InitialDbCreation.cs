@@ -46,7 +46,7 @@ namespace ChustaSoft.Tools.Authorization.Migrations
                     Email = table.Column<string>(maxLength: 256, nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Culture = table.Column<string>(nullable: true),
-                    RegistrationDate = table.Column<DateTimeOffset>(nullable: false)
+                    RegistrationDate = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "sysdatetimeoffset()")
                 },
                 constraints: table =>
                 {

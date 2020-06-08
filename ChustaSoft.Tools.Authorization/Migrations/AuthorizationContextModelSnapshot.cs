@@ -124,7 +124,9 @@ namespace ChustaSoft.Tools.Authorization.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset>("RegistrationDate")
-                        .HasColumnType("datetimeoffset");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("sysdatetimeoffset()");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

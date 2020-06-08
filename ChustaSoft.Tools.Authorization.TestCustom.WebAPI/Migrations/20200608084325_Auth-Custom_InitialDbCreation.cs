@@ -3,53 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
 {
-    public partial class AppInitialCustomContext : Migration
+    public partial class AuthCustom_InitialDbCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "Auth");
-
-            migrationBuilder.CreateTable(
-                name: "Role",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    NormalizedName = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Role", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    NormalizedUserName = table.Column<string>(nullable: true),
-                    NormalizedEmail = table.Column<string>(nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    UserName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    Culture = table.Column<string>(nullable: true),
-                    RegistrationDate = table.Column<DateTimeOffset>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "Roles",
@@ -88,7 +47,7 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                     Email = table.Column<string>(maxLength: 256, nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
                     Culture = table.Column<string>(nullable: true),
-                    RegistrationDate = table.Column<DateTimeOffset>(nullable: false),
+                    RegistrationDate = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "sysdatetimeoffset()"),
                     CustomStringProperty = table.Column<string>(nullable: true),
                     CustomIntProperty = table.Column<int>(nullable: false)
                 },
@@ -112,9 +71,10 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 {
                     table.PrimaryKey("PK_RoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoleClaims_Role_RoleId",
+                        name: "FK_RoleClaims_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Role",
+                        principalSchema: "Auth",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -134,9 +94,10 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 {
                     table.PrimaryKey("PK_UserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserClaims_User_UserId",
+                        name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalSchema: "Auth",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -155,9 +116,10 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 {
                     table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_UserLogins_User_UserId",
+                        name: "FK_UserLogins_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalSchema: "Auth",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -174,15 +136,17 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 {
                     table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_UserRoles_Role_RoleId",
+                        name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Role",
+                        principalSchema: "Auth",
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRoles_User_UserId",
+                        name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalSchema: "Auth",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -201,9 +165,10 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 {
                     table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_UserTokens_User_UserId",
+                        name: "FK_UserTokens_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalSchema: "Auth",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,10 +233,6 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 schema: "Auth");
 
             migrationBuilder.DropTable(
-                name: "Roles",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
                 name: "UserClaims",
                 schema: "Auth");
 
@@ -284,18 +245,16 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
                 schema: "Auth");
 
             migrationBuilder.DropTable(
-                name: "Users",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
                 name: "UserTokens",
                 schema: "Auth");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Roles",
+                schema: "Auth");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users",
+                schema: "Auth");
         }
     }
 }
