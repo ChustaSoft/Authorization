@@ -9,6 +9,10 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TUser> GetAsync(Guid userId);
 
+        Task<TUser> LoginAsync(Credentials credentials, LoginType loginType);
+
+        Task<bool> RegisterAsync(TUser user, string password);
+
     }
 
 
