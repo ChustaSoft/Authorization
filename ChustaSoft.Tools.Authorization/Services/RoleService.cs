@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace ChustaSoft.Tools.Authorization
 {
     public class RoleService<TRole> : IRoleService<TRole>
-         where TRole : Role
+         where TRole : Role, new()
     {
 
         #region Fields
@@ -32,6 +32,13 @@ namespace ChustaSoft.Tools.Authorization
             var role = _roleManager.FindByIdAsync(roleId.ToString());
 
             return role;
+        }
+
+        public async Task<bool> CreateAsync(string roleName)
+        {
+            var creationResult = await _roleManager.CreateAsync(new TRole { Name = roleName });
+
+            return creationResult.Succeeded;
         }
 
         #endregion

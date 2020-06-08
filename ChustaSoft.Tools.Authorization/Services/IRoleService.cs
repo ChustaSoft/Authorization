@@ -10,6 +10,8 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TRole> Get(Guid roleId);
 
+        Task<bool> CreateAsync(string roleName);
+
     }
 
 

@@ -24,7 +24,7 @@ namespace ChustaSoft.Tools.Authorization
         public static void RegisterAuthorizationCore<TAuthContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string connectionString)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
             where TUser : User, new()
-            where TRole : Role
+            where TRole : Role, new()
         {
             RegisterDatabase<TAuthContext, TUser, TRole>(services, connectionString);
             RegisterServices<TUser, TRole>(services);
@@ -39,7 +39,7 @@ namespace ChustaSoft.Tools.Authorization
         private static void RegisterDatabase<TAuthContext, TUser, TRole>(IServiceCollection services, string connectionString)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
             where TUser : User, new()
-            where TRole : Role
+            where TRole : Role, new()
         {
             var assemblyName = Assembly.GetAssembly(typeof(TAuthContext)).FullName;
 
@@ -49,7 +49,7 @@ namespace ChustaSoft.Tools.Authorization
         private static void RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(IServiceCollection services, IConfiguration configuration)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
             where TUser : User, new()
-            where TRole : Role
+            where TRole : Role, new()
         {
             var authSettings = GetFromSettingsOrDefault(configuration);
 
@@ -101,7 +101,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void RegisterServices<TUser, TRole>(IServiceCollection services)
             where TUser : User, new()
-            where TRole : Role
+            where TRole : Role, new()
         {
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
 
@@ -135,7 +135,7 @@ namespace ChustaSoft.Tools.Authorization
         }
 
         private static void SetupRoleTypedServices<TRole>(IServiceCollection services)            
-            where TRole : Role
+            where TRole : Role, new()
         {
             if (typeof(TRole) == typeof(Role))
             {
