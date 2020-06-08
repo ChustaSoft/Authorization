@@ -35,19 +35,29 @@ namespace ChustaSoft.Tools.Authorization
             return await _userManager.FindByIdAsync(userId.ToString());
         }
 
-        public async Task<TUser> LoginAsync(Credentials credentials, LoginType loginType) 
+        public async Task<TUser> GetByUsername(string username, string password)
         {
-            switch (loginType)
+            var userSignIn = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
+
+            if (userSignIn.Succeeded)
+                return await _userManager.FindByNameAsync(username);
+            else
+                throw new AuthenticationException("User not allowed to login in the system");
+        }
+
+        public async Task<TUser> GetByEmail(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
             {
-                case LoginType.USER:
-                    return await LoginByUsername(credentials);
+                var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: false);
 
-                case LoginType.MAIL:
-                    return await LoginByEmail(credentials);
-
-                default:
-                    throw new AuthenticationException("User could not by logged in into the system");
+                if (userSignIn.Succeeded)
+                    return user;
             }
+
+            throw new AuthenticationException("User not allowed to login in the system");
         }
 
         public async Task<bool> CreateAsync(TUser user, string password)
@@ -55,36 +65,6 @@ namespace ChustaSoft.Tools.Authorization
             var result = await _userManager.CreateAsync(user, password);
 
             return result.Succeeded;
-        }
-
-        #endregion
-
-
-        #region Private methods
-
-        private async Task<TUser> LoginByUsername(Credentials credentials)
-        {
-            var userSignIn = await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password, isPersistent: false, lockoutOnFailure: false);
-
-            if (userSignIn.Succeeded)
-                return await _userManager.FindByNameAsync(credentials.Username);
-            else
-                throw new AuthenticationException("User not allowed to login in the system");
-        }
-
-        private async Task<TUser> LoginByEmail(Credentials credentials)
-        {
-            var user = await _userManager.FindByEmailAsync(credentials.Email);
-
-            if (user != null)
-            {
-                var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, credentials.Password, isPersistent: false, lockoutOnFailure: false);
-
-                if (userSignIn.Succeeded)
-                    return user;
-            }
-
-            throw new AuthenticationException();
         }
 
         #endregion

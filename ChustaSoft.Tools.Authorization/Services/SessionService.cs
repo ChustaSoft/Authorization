@@ -46,8 +46,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<Session> AuthenticateAsync(Credentials credentials)
         {
-            var loginType = _credentialsBusiness.ValidateCredentials(credentials);
-            var user = await _userService.LoginAsync(credentials, loginType);
+            var user = await LoginAsync(credentials);
             var tokenInfo = _tokenHelper.Generate(user);
             var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
@@ -68,6 +67,28 @@ namespace ChustaSoft.Tools.Authorization
             }
             else
                 throw new AuthenticationException($"User {user.UserName} could not be created");
+        }
+
+        #endregion
+
+
+        #region Private methods
+
+        private async Task<TUser> LoginAsync(Credentials credentials)
+        {
+            var loginType = _credentialsBusiness.ValidateCredentials(credentials);
+
+            switch (loginType)
+            {
+                case LoginType.USER:
+                    return await _userService.GetByUsername(credentials.Username, credentials.Password);
+
+                case LoginType.MAIL:
+                    return await _userService.GetByEmail(credentials.Email, credentials.Password);
+
+                default:
+                    throw new AuthenticationException("User could not by logged in into the system");
+            }
         }
 
         #endregion
