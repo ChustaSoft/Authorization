@@ -1,8 +1,8 @@
 # Authorization
 
   - [![Build Status](https://dev.azure.com/chustasoft/BaseProfiler/_apis/build/status/Release/RELEASE%20-%20NuGet%20-%20ChustaSoft%20Authorization%20AspNet?branchName=master)](https://dev.azure.com/chustasoft/BaseProfiler/_build/latest?definitionId=7&branchName=master)
-  - Main package: [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.Authorization)](https://www.nuget.org/packages/ChustaSoft.Tools.Authorization)
-  - AspNet package: [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.Authorization.AspNet)](https://www.nuget.org/packages/ChustaSoft.Tools.Authorization.AspNet)
+  - [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.Authorization)](https://www.nuget.org/packages/ChustaSoft.Tools.Authorization) - _(Main package)_
+  - [![NuGet](https://img.shields.io/nuget/v/ChustaSoft.Tools.Authorization.AspNet)](https://www.nuget.org/packages/ChustaSoft.Tools.Authorization.AspNet) - _(AspNet package)_
 
 Description
 ---
