@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -14,18 +15,20 @@ namespace ChustaSoft.Tools.Authorization
         #region Constants
 
         private const string AUTH_SETINGS_SECTION = "AuthorizationSettings";
-        private const string CORE_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization";
 
         #endregion
 
 
         #region Extension methods
 
-        public static void RegisterAuthorizationCore(this IServiceCollection services, IConfiguration configuration, string connectionString)
+        public static void RegisterAuthorizationCore<TAuthContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string connectionString)
+            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+            where TUser : User, new()
+            where TRole : Role, new()
         {
-            RegisterDatabase(services, connectionString);
-            RegisterServices(services);
-            RegisterIdentityConfigurations(services, configuration);
+            RegisterDatabase<TAuthContext, TUser, TRole>(services, connectionString);
+            RegisterServices<TUser, TRole>(services);
+            RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(services, configuration);
         }
 
         #endregion
@@ -33,18 +36,26 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private static void RegisterDatabase(IServiceCollection services, string connectionString)
+        private static void RegisterDatabase<TAuthContext, TUser, TRole>(IServiceCollection services, string connectionString)
+            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+            where TUser : User, new()
+            where TRole : Role, new()
         {
-            services.AddDbContext<AuthorizationContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(CORE_ASSEMBLY_NAME)));
+            var assemblyName = Assembly.GetAssembly(typeof(TAuthContext)).FullName;
+
+            services.AddDbContext<TAuthContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(assemblyName)));
         }
 
-        private static void RegisterIdentityConfigurations(IServiceCollection services, IConfiguration configuration)
+        private static void RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(IServiceCollection services, IConfiguration configuration)
+            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+            where TUser : User, new()
+            where TRole : Role, new()
         {
             var authSettings = GetFromSettingsOrDefault(configuration);
 
             services.AddSingleton(authSettings);
 
-            services.AddIdentity<User, Role>(opt =>
+            services.AddIdentity<TUser, TRole>(opt =>
             {
                 opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
                 opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
@@ -54,7 +65,7 @@ namespace ChustaSoft.Tools.Authorization
 
                 opt.User.RequireUniqueEmail = true;
             })
-                .AddEntityFrameworkStores<AuthorizationContext>()
+                .AddEntityFrameworkStores<TAuthContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(opt =>
@@ -88,17 +99,53 @@ namespace ChustaSoft.Tools.Authorization
             return authSettings;
         }
 
-        private static void RegisterServices(IServiceCollection services)
+        private static void RegisterServices<TUser, TRole>(IServiceCollection services)
+            where TUser : User, new()
+            where TRole : Role, new()
         {
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
 
-            services.AddTransient<ISessionService, SessionService>();
-            services.AddTransient<IUserService, UserService>();
+            SetupUserTypedServices<TUser>(services);
+            SetupRoleTypedServices<TRole>(services);
+        }
 
-            services.AddTransient<ITokenHelper, TokenHelper>();
+        private static void SetupUserTypedServices<TUser>(IServiceCollection services) 
+            where TUser : User, new()
+        {
+            if (typeof(TUser) == typeof(User))
+            {
+                services.AddTransient<IUserService, UserService>();
+                services.AddTransient<ISessionService, SessionService>();
 
-            services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
-            services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
+                services.AddTransient<ITokenHelper, TokenHelper>();
+
+                services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
+                services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
+            }
+            else
+            {
+                services.AddTransient<IUserService<TUser>, UserService<TUser>>();
+                services.AddTransient<ISessionService, SessionService<TUser>>();
+
+                services.AddTransient<ITokenHelper<TUser>, TokenHelper<TUser>>();
+
+                services.AddTransient<IMapper<TUser, Credentials>, CredentialsMapper<TUser>>();
+                services.AddTransient<IMapper<TUser, TokenInfo, Session>, SessionMapper<TUser>>();
+            }
+        }
+
+        private static void SetupRoleTypedServices<TRole>(IServiceCollection services)            
+            where TRole : Role, new()
+        {
+            if (typeof(TRole) == typeof(Role))
+            {
+                services.AddTransient<IRoleService, RoleService>();
+            }
+            else
+            {
+                services.AddTransient<IRoleService<TRole>, RoleService<TRole>>();
+            }
+            
         }
 
         #endregion

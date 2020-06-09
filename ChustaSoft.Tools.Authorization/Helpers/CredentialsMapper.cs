@@ -3,7 +3,8 @@
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class CredentialsMapper : IMapper<User, Credentials>
+    public class CredentialsMapper<TUser> : IMapper<TUser, Credentials>
+        where TUser : User, new()
     {
 
         private AuthorizationSettings _authorizationSettings;
@@ -15,7 +16,7 @@ namespace ChustaSoft.Tools.Authorization
         }
 
 
-        public Credentials MapFromSource(User user)
+        public Credentials MapFromSource(TUser user)
             => new Credentials
                 {
                     Username = user.UserName,
@@ -23,9 +24,9 @@ namespace ChustaSoft.Tools.Authorization
                     Culture = user.Culture
                 };
 
-        public User MapToSource(Credentials credentials)
-            => new User
-                {
+        public TUser MapToSource(Credentials credentials)
+            => new TUser
+            {
                     UserName = credentials.Username,
                     Email = credentials.Email,
                     PasswordHash = credentials.Password,
@@ -33,4 +34,16 @@ namespace ChustaSoft.Tools.Authorization
             };
 
     }
+
+
+
+    public class CredentialsMapper : CredentialsMapper<User> 
+    {
+
+        public CredentialsMapper(AuthorizationSettings authorizationSettings)
+            : base(authorizationSettings)
+        { }
+
+    }
+
 }

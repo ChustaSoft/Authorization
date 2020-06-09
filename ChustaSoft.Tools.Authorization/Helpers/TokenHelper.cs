@@ -7,7 +7,8 @@ using System.Security.Claims;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class TokenHelper : ITokenHelper
+    public class TokenHelper<TUser> : ITokenHelper<TUser>
+        where TUser : User, new()
     {
 
         #region Fields
@@ -33,7 +34,7 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Public methods
 
-        public TokenInfo Generate(User user)
+        public TokenInfo Generate(TUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = GenerateTokenDescriptor(user);
@@ -67,4 +68,16 @@ namespace ChustaSoft.Tools.Authorization
         #endregion
 
     }
+
+
+
+    public class TokenHelper : TokenHelper<User>, ITokenHelper 
+    {
+
+        public TokenHelper(IConfiguration configuration, AuthorizationSettings authorizationSettings)
+            : base(configuration, authorizationSettings)
+        { }
+
+    }
+
 }

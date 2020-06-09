@@ -3,10 +3,22 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public interface IUserService
+    public interface IUserService<TUser>
+         where TUser : User, new()
     {
 
-        Task<User> GetAsync(Guid userId);
+        Task<TUser> GetAsync(Guid userId);
+
+        Task<TUser> GetByUsername(string username, string password);
+
+        Task<TUser> GetByEmail(string email, string password);
+
+        Task<bool> CreateAsync(TUser user, string password);
 
     }
+
+
+
+    public interface IUserService : IUserService<User> { }
+
 }
