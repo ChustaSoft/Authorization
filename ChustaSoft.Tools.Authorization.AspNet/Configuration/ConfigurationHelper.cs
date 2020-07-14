@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ChustaSoft.Tools.Authorization.Configuration;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-
 
 namespace ChustaSoft.Tools.Authorization.AspNet
 {
@@ -18,52 +18,21 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         #endregion
 
 
-        #region Extension methods
+        #region Public Extension methods
 
-        public static void RegisterAuthorization(this IServiceCollection services, IConfiguration configuration, string connectionString)
+        public static IdentityBuilder RegisterAuthorizationAspNet(this IServiceCollection services, IConfiguration configuration) 
         {
-            services.RegisterAuthorizationCore<AuthorizationContext, User, Role>(configuration, connectionString);
+            return services.RegisterAuthorization<User, Role>(configuration);
         }
 
-        public static void RegisterAuthorization<TAuthContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string connectionString)
-            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+        public static IdentityBuilder RegisterAuthorizationAspNet<TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
             where TUser : User, new()
             where TRole : Role, new()
         {
-            services.RegisterAuthorizationCore<TAuthContext, TUser, TRole>(configuration, connectionString);
+            return services.RegisterAuthorization<TUser, TRole>(configuration);
         }
 
-        public static void ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
-        {
-            PerformConfiguration<AuthorizationContext, User, Role>(app, env, authContext);
-        }
-
-        public static void ConfigureAuthorization<TAuthContext, TUser, TRole>(this IApplicationBuilder app, IWebHostEnvironment env, TAuthContext authContext)
-            where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User, new()
-            where TRole : Role, new()
-        {
-            PerformConfiguration<TAuthContext, TUser, TRole>(app, env, authContext);
-        }
-
-        public static IMvcBuilder IntegrateChustaSoftAuthorization(this IMvcBuilder mvcBuilder)
-        {
-            var assembly = Assembly.Load(ASP_ASSEMBLY_NAME);
-
-            mvcBuilder.AddApplicationPart(assembly).AddControllersAsServices();
-
-            return mvcBuilder;
-        }
-
-        #endregion
-
-
-        #region Private methods
-
-        private static void PerformConfiguration<TAuthContext, TUser, TRole>(IApplicationBuilder app, IWebHostEnvironment env, TAuthContext authContext)
-            where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User, new()
-            where TRole : Role, new()
+        public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (!env.EnvironmentName.Equals("dev"))
             {
@@ -82,7 +51,16 @@ namespace ChustaSoft.Tools.Authorization.AspNet
                 endpoints.MapControllers();
             });
 
-            authContext.Database.Migrate();
+            return new AuthorizationBuilder(env.EnvironmentName);
+        }
+
+        public static IMvcBuilder AddAuthorizationControllers(this IMvcBuilder mvcBuilder)
+        {
+            var assembly = Assembly.Load(ASP_ASSEMBLY_NAME);
+
+            mvcBuilder.AddApplicationPart(assembly).AddControllersAsServices();
+
+            return mvcBuilder;
         }
 
         #endregion

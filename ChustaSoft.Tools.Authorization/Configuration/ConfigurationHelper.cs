@@ -1,11 +1,9 @@
 ﻿using ChustaSoft.Common.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System.Reflection;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -19,16 +17,24 @@ namespace ChustaSoft.Tools.Authorization
         #endregion
 
 
-        #region Extension methods
+        #region Public Extension methods
 
-        public static void RegisterAuthorizationCore<TAuthContext, TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string connectionString)
-            where TAuthContext : AuthorizationContextBase<TUser, TRole>
+        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
             where TUser : User, new()
             where TRole : Role, new()
         {
-            RegisterDatabase<TAuthContext, TUser, TRole>(services, connectionString);
-            RegisterServices<TUser, TRole>(services);
-            RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(services, configuration);
+            var authSettings = GetFromSettingsOrDefault(configuration);
+
+            services.AddSingleton(authSettings);
+            services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
+
+            SetupJwtAuthentication(services, configuration, authSettings);
+            SetupUserTypedServices<TUser>(services);
+            SetupRoleTypedServices<TRole>(services);
+
+            var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
+
+            return identityBuilder;
         }
 
         #endregion
@@ -36,44 +42,24 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private static void RegisterDatabase<TAuthContext, TUser, TRole>(IServiceCollection services, string connectionString)
-            where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User, new()
-            where TRole : Role, new()
+        private static AuthorizationSettings GetFromSettingsOrDefault(IConfiguration configuration)
         {
-            var assemblyName = Assembly.GetAssembly(typeof(TAuthContext)).FullName;
+            var authSettings = configuration.GetSection(AUTH_SETINGS_SECTION).Get<AuthorizationSettings>();
 
-            services.AddDbContext<TAuthContext>(opt => opt.UseSqlServer(connectionString, x => x.MigrationsAssembly(assemblyName)));
+            if (authSettings == null)
+                authSettings = AuthorizationSettings.GetDefault();
+
+            return authSettings;
         }
 
-        private static void RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(IServiceCollection services, IConfiguration configuration)
-            where TAuthContext : AuthorizationContextBase<TUser, TRole>
-            where TUser : User, new()
-            where TRole : Role, new()
+        private static void SetupJwtAuthentication(IServiceCollection services, IConfiguration configuration, AuthorizationSettings authSettings)
         {
-            var authSettings = GetFromSettingsOrDefault(configuration);
-
-            services.AddSingleton(authSettings);
-
-            services.AddIdentity<TUser, TRole>(opt =>
-            {
-                opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
-                opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
-                opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
-                opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
-                opt.Password.RequiredLength = authSettings.MinPasswordLength;
-
-                opt.User.RequireUniqueEmail = true;
-            })
-                .AddEntityFrameworkStores<TAuthContext>()
-                .AddDefaultTokenProviders();
-
             services.AddAuthentication(opt =>
-            {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(opt =>
                 {
                     opt.SaveToken = true;
@@ -89,27 +75,23 @@ namespace ChustaSoft.Tools.Authorization
                 });
         }
 
-        private static AuthorizationSettings GetFromSettingsOrDefault(IConfiguration configuration)
-        {
-            var authSettings = configuration.GetSection(AUTH_SETINGS_SECTION).Get<AuthorizationSettings>();
-
-            if (authSettings == null)
-                authSettings = AuthorizationSettings.GetDefault();
-
-            return authSettings;
-        }
-
-        private static void RegisterServices<TUser, TRole>(IServiceCollection services)
+        private static IdentityBuilder GetConfiguredIdentityBuilder<TUser, TRole>(IServiceCollection services, AuthorizationSettings authSettings)
             where TUser : User, new()
             where TRole : Role, new()
         {
-            services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
+            return services.AddIdentity<TUser, TRole>(opt =>
+            {
+                opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
+                opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
+                opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
+                opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
+                opt.Password.RequiredLength = authSettings.MinPasswordLength;
 
-            SetupUserTypedServices<TUser>(services);
-            SetupRoleTypedServices<TRole>(services);
+                opt.User.RequireUniqueEmail = true;
+            }).AddDefaultTokenProviders();
         }
 
-        private static void SetupUserTypedServices<TUser>(IServiceCollection services) 
+        private static void SetupUserTypedServices<TUser>(IServiceCollection services)
             where TUser : User, new()
         {
             if (typeof(TUser) == typeof(User))
@@ -134,7 +116,7 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        private static void SetupRoleTypedServices<TRole>(IServiceCollection services)            
+        private static void SetupRoleTypedServices<TRole>(IServiceCollection services)
             where TRole : Role, new()
         {
             if (typeof(TRole) == typeof(Role))
@@ -145,7 +127,7 @@ namespace ChustaSoft.Tools.Authorization
             {
                 services.AddTransient<IRoleService<TRole>, RoleService<TRole>>();
             }
-            
+
         }
 
         #endregion
