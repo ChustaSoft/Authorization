@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.SqlClient;
 
-
 namespace ChustaSoft.Tools.Authorization
 {
     public class Startup
@@ -43,10 +42,11 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAuthorization(_configuration, BuildConnectionString());
+            services.RegisterAuthorizationAspNet(_configuration)
+                .WithSqlServerProvider(BuildConnectionString());
 
             services.AddMvc()
-                .IntegrateChustaSoftAuthorization();
+                .AddAuthorizationControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
@@ -62,7 +62,8 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization(env, authContext);
+            app.ConfigureAuthorization(env)
+                .SetupDatabase(authContext);
         }
 
         #endregion
