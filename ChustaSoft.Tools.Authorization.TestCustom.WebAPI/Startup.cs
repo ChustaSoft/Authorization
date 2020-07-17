@@ -41,10 +41,11 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAuthorization<AuthCustomContext, CustomUser, CustomRole>(_configuration, BuildConnectionString());
+            services.RegisterAuthorizationAspNet<CustomUser, CustomRole>(_configuration)
+                .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());
 
             services.AddMvc()
-                .IntegrateChustaSoftAuthorization();
+                .AddAuthorizationControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthCustomContext authContext)
@@ -60,7 +61,8 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization<AuthCustomContext, CustomUser, CustomRole>(env, authContext);
+            app.ConfigureAuthorization(env)
+                .SetupDatabase<AuthCustomContext, CustomUser, CustomRole>(authContext);
         }
 
         #endregion
