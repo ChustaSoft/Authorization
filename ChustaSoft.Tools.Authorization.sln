@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Packages", "1. Packages"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestCustom.WebAPI", "ChustaSoft.Tools.Authorization.TestCustom.WebAPI\ChustaSoft.Tools.Authorization.TestCustom.WebAPI.csproj", "{FBC7599E-F21B-4267-B1E5-82615A672D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.SqlServer", "ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj", "{4F3DD532-03A7-4F43-850B-6B026A3AB33E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.SqlServer", "ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj", "{4F3DD532-03A7-4F43-850B-6B026A3AB33E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
