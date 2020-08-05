@@ -18,6 +18,8 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<bool> AssignRoleAsync(TUser user, IEnumerable<string> roleNames);
 
+        Task<bool> ExistAsync(string userEmail);
+
     }
 
 

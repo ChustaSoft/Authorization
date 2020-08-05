@@ -66,12 +66,15 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
             foreach (var credentialsTupple in _usersCredentials)
             {
-                var user = _credentialsMapper.MapToSource(credentialsTupple.Credentials);
-                var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password);
-
-                if (credentialsTupple.Roles.Any()) 
+                if (!await _userService.ExistAsync(credentialsTupple.Credentials.Email)) 
                 {
-                    var roleAssignationFlag = await _userService.AssignRoleAsync(user, credentialsTupple.Roles);
+                    var user = _credentialsMapper.MapToSource(credentialsTupple.Credentials);
+                    var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password);
+
+                    if (credentialsTupple.Roles.Any())
+                    {
+                        var roleAssignationFlag = await _userService.AssignRoleAsync(user, credentialsTupple.Roles);
+                    }
                 }
             }
 

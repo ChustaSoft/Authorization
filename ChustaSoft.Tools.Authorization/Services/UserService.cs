@@ -75,6 +75,13 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
+        public async Task<bool> ExistAsync(string userEmail)
+        {
+            var result = await _userManager.FindByEmailAsync(userEmail);
+
+            return result != null;
+        }
+
         #endregion
 
     }

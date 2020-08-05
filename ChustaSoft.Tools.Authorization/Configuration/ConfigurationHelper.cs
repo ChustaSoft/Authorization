@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -49,7 +50,7 @@ namespace ChustaSoft.Tools.Authorization
             var authSettings = configuration.GetSection(AUTH_SETINGS_SECTION).Get<AuthorizationSettings>();
 
             if (authSettings == null)
-                authSettings = AuthorizationSettings.GetDefault();
+                authSettings = new AuthorizationSettings();
 
             return authSettings;
         }
@@ -70,6 +71,8 @@ namespace ChustaSoft.Tools.Authorization
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
                         ValidAudience = authSettings.SiteName,
                         ValidIssuer = authSettings.SiteName,
                         IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(configuration)
@@ -88,6 +91,10 @@ namespace ChustaSoft.Tools.Authorization
                     opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
                     opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
                     opt.Password.RequiredLength = authSettings.MinPasswordLength;
+
+                    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(authSettings.MinutesToUnlock);
+                    opt.Lockout.MaxFailedAccessAttempts = authSettings.MaxAttemptsToLock;
+                    opt.Lockout.AllowedForNewUsers = true;
 
                     opt.User.RequireUniqueEmail = true;
                 })
