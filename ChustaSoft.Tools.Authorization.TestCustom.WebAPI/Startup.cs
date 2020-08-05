@@ -43,6 +43,7 @@ namespace ChustaSoft.Tools.Authorization
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterAuthorizationAspNet<CustomUser, CustomRole>(_configuration)
+                .WithCustomUserAction<CustomUserAction>()
                 .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());
 
             services.AddMvc()
@@ -64,12 +65,11 @@ namespace ChustaSoft.Tools.Authorization
 
             app.ConfigureAuthorization(env, serviceProvider)
                 .SetupDatabase<AuthCustomContext, CustomUser, CustomRole>()
-                .DefaultUsers(ub => 
-                    {
-                        ub.AddCredentials("SYSTEM", "Sys.1234");
-                        ub.AddCredentials("ADMIN", "Admn.1234").WithRole("Admin");
-                    });
-                ;
+                .DefaultUsers(ub =>
+                {
+                    ub.AddCredentials("SYSTEM", "Sys.1234");
+                    ub.AddCredentials("ADMIN", "Admn.1234").WithRole("Admin");
+                });
         }
 
         #endregion

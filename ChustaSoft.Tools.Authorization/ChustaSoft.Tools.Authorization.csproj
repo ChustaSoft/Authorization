@@ -26,6 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ChustaSoft.Tools.Authorization.Abstractions\ChustaSoft.Tools.Authorization.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Business\CredentialsBusiness.cs">
       <DependentUpon>ICredentialsBusiness.cs</DependentUpon>
     </Compile>

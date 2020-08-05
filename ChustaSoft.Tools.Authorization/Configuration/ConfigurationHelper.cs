@@ -1,9 +1,12 @@
 ﻿using ChustaSoft.Common.Contracts;
+using ChustaSoft.Tools.Authorization.Abstractions;
 using ChustaSoft.Tools.Authorization.Configuration;
+using ChustaSoft.Tools.Authorization.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
 
@@ -30,12 +33,24 @@ namespace ChustaSoft.Tools.Authorization
             services.AddSingleton(authSettings);
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
 
+            SetDefaultCustomActions(services);
+
             SetupJwtAuthentication(services, configuration, authSettings);
             SetupTypedServices<TUser, TRole>(services);
             SetupUserTypedServices<TUser>(services);
             SetupRoleTypedServices<TRole>(services);
 
             var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
+
+            return identityBuilder;
+        }
+
+        public static IdentityBuilder WithCustomUserAction<TCustomUserAction>(this IdentityBuilder identityBuilder)
+            where TCustomUserAction : ICustomUserCreationAction
+        {
+            var descriptor = new ServiceDescriptor(typeof(ICustomUserCreationAction), typeof(TCustomUserAction), ServiceLifetime.Transient);
+
+            identityBuilder.Services.Replace(descriptor);
 
             return identityBuilder;
         }
@@ -153,7 +168,11 @@ namespace ChustaSoft.Tools.Authorization
             {
                 services.AddTransient<IRoleService<TRole>, RoleService<TRole>>();
             }
+        }
 
+        private static void SetDefaultCustomActions(IServiceCollection services)
+        {
+            services.AddTransient<ICustomUserCreationAction, DefaultCustomUserActionsImplementation>();
         }
 
         #endregion
