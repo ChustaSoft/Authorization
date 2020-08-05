@@ -1,22 +1,67 @@
-﻿namespace ChustaSoft.Tools.Authorization.Configuration
+﻿using ChustaSoft.Tools.Authorization.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+
+namespace ChustaSoft.Tools.Authorization.Configuration
 {
-    public class AuthorizationBuilder : IAuthorizationBuilder
+
+    public class AuthorizationBuilder<TUser, TRole> : IAuthorizationBuilder
+        where TUser : User, new()
+        where TRole : Role
     {
 
-        public string EnvironmentName { get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
+
+        protected IUserBuilder _userBuilder;
 
 
-        public AuthorizationBuilder(string environmentName)
+        public AuthorizationBuilder(IServiceProvider serviceProvider)
         {
-            EnvironmentName = environmentName;
+            ServiceProvider = serviceProvider;
+
+            _userBuilder = serviceProvider.GetRequiredService<IUserBuilder>();
+        }
+
+
+        public IAuthorizationBuilder DefaultUsers(Action<IUserBuilder> userBuilderAction)
+        {
+            userBuilderAction.Invoke(_userBuilder);
+
+            var resultFalg = _userBuilder.PersistUsersAsync().Result;
+
+            if (resultFalg)
+                throw new AuthConfigurationException("Something went wrong loading default users to the system");
+
+            return this;
         }
 
     }
 
 
+
+    #region Default Implementation
+
+    public class AuthorizationBuilder : AuthorizationBuilder<User, Role>
+    {
+        public AuthorizationBuilder(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        { }
+    }
+
+
+    #endregion
+
+
+
+    #region Contract
+
     public interface IAuthorizationBuilder
     {
-        string EnvironmentName { get; set; }
+        IServiceProvider ServiceProvider { get; set; }
+
+        IAuthorizationBuilder DefaultUsers(Action<IUserBuilder> userBuilderAction);
     }
+
+    #endregion
 
 }

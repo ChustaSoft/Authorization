@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
+using ChustaSoft.Tools.Authorization.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ namespace ChustaSoft.Tools.Authorization
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
 
             SetupJwtAuthentication(services, configuration, authSettings);
+            SetupTypedServices<TUser, TRole>(services);
             SetupUserTypedServices<TUser>(services);
             SetupRoleTypedServices<TRole>(services);
 
@@ -80,15 +82,32 @@ namespace ChustaSoft.Tools.Authorization
             where TRole : Role, new()
         {
             return services.AddIdentity<TUser, TRole>(opt =>
-            {
-                opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
-                opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
-                opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
-                opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
-                opt.Password.RequiredLength = authSettings.MinPasswordLength;
+                {
+                    opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
+                    opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
+                    opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
+                    opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
+                    opt.Password.RequiredLength = authSettings.MinPasswordLength;
 
-                opt.User.RequireUniqueEmail = true;
-            }).AddDefaultTokenProviders();
+                    opt.User.RequireUniqueEmail = true;
+                })
+                .AddDefaultTokenProviders();
+        }
+
+        private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)
+           where TUser : User, new()
+           where TRole : Role, new()
+        {
+            if (typeof(TUser) == typeof(User) && typeof(TRole) == typeof(Role))
+            {
+                services.AddTransient<IAuthorizationBuilder, AuthorizationBuilder>();
+                services.AddTransient<IUserBuilder, UserBuilder>();
+            }
+            else
+            {
+                services.AddTransient<IAuthorizationBuilder, AuthorizationBuilder<TUser, TRole>>();
+                services.AddTransient<IUserBuilder, UserBuilder<TUser, TRole>>();
+            }
         }
 
         private static void SetupUserTypedServices<TUser>(IServiceCollection services)

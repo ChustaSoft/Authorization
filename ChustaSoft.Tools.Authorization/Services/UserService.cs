@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -63,6 +64,13 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<bool> CreateAsync(TUser user, string password)
         {
             var result = await _userManager.CreateAsync(user, password);
+
+            return result.Succeeded;
+        }
+
+        public async Task<bool> AssignRoleAsync(TUser user, IEnumerable<string> roleNames)
+        {
+            var result = await _userManager.AddToRolesAsync(user, roleNames);
 
             return result.Succeeded;
         }

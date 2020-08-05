@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Data.SqlClient;
 
 namespace ChustaSoft.Tools.Authorization
@@ -49,7 +50,7 @@ namespace ChustaSoft.Tools.Authorization
                 .AddAuthorizationControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -62,8 +63,14 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization(env)
-                .SetupDatabase(authContext);
+            app.ConfigureAuthorization(env, serviceProvider)
+                .SetupDatabase()
+                .DefaultUsers(ub => 
+                    {
+                        ub.AddCredentials("SYSTEM", "Sys.1234");
+                        ub.AddCredentials("ADMIN", "Admn.1234").WithRole("Admin");
+                    });
+                ;
         }
 
         #endregion

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Reflection;
 
 namespace ChustaSoft.Tools.Authorization.AspNet
@@ -32,7 +33,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             return services.RegisterAuthorization<TUser, TRole>(configuration);
         }
 
-        public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env)
+        public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (!env.EnvironmentName.Equals("dev"))
             {
@@ -51,7 +52,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
                 endpoints.MapControllers();
             });
 
-            return new AuthorizationBuilder(env.EnvironmentName);
+            return serviceProvider.GetRequiredService<IAuthorizationBuilder>();
         }
 
         public static IMvcBuilder AddAuthorizationControllers(this IMvcBuilder mvcBuilder)

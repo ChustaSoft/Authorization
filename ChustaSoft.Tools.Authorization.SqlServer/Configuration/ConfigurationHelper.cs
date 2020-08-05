@@ -24,17 +24,21 @@ namespace ChustaSoft.Tools.Authorization
             PerformSqlServerRegistration<TAuthContext, TUser, TRole>(identityBuilder, connectionString);
         }
 
-        public static void SetupDatabase(this IAuthorizationBuilder authorizationBuilder, AuthorizationContext authorizationContext)
+        public static IAuthorizationBuilder SetupDatabase(this IAuthorizationBuilder authorizationBuilder)
         {
-            authorizationContext.Database.Migrate();
+            return authorizationBuilder.SetupDatabase<AuthorizationContext, User, Role>();
         }
 
-        public static void SetupDatabase<TAuthContext, TUser, TRole>(this IAuthorizationBuilder authorizationBuilder, TAuthContext authorizationContext)
+        public static IAuthorizationBuilder SetupDatabase<TAuthContext, TUser, TRole>(this IAuthorizationBuilder authorizationBuilder)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
             where TUser : User, new()
             where TRole : Role, new()
         {
+            var authorizationContext = authorizationBuilder.ServiceProvider.GetRequiredService<TAuthContext>();
+
             authorizationContext.Database.Migrate();
+
+            return authorizationBuilder;
         }
 
         #endregion
@@ -43,7 +47,7 @@ namespace ChustaSoft.Tools.Authorization
         #region Private methods
 
         private static void PerformSqlServerRegistration<TAuthContext, TUser, TRole>(IdentityBuilder identityBuilder, string connectionString)
-                        where TAuthContext : AuthorizationContextBase<TUser, TRole>
+            where TAuthContext : AuthorizationContextBase<TUser, TRole>
             where TUser : User, new()
             where TRole : Role, new()
         {
