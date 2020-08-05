@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization.Helpers
 {
-    public class DefaultCustomUserActionsImplementation : ICustomUserCreationAction
+    public class DefaultCustomUserActionsImplementation : IAfterUserCreationAction
     {
         /// <summary>
         /// Do nothing behaviour (Null Object Pattern)
         /// </summary>
-        public Task AfterCreationAction(Guid userId, IDictionary<string, string> parameters)
+        public async Task<bool> DoAfter(Guid userId, IDictionary<string, string> parameters)
         {
-            return null;
+            return await Task.Factory.StartNew(() => { return true; });
         }
     }
 }

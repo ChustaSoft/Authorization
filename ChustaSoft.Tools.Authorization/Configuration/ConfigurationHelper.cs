@@ -46,9 +46,9 @@ namespace ChustaSoft.Tools.Authorization
         }
 
         public static IdentityBuilder WithCustomUserAction<TCustomUserAction>(this IdentityBuilder identityBuilder)
-            where TCustomUserAction : ICustomUserCreationAction
+            where TCustomUserAction : IAfterUserCreationAction
         {
-            var descriptor = new ServiceDescriptor(typeof(ICustomUserCreationAction), typeof(TCustomUserAction), ServiceLifetime.Transient);
+            var descriptor = new ServiceDescriptor(typeof(IAfterUserCreationAction), typeof(TCustomUserAction), ServiceLifetime.Transient);
 
             identityBuilder.Services.Replace(descriptor);
 
@@ -172,7 +172,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void SetDefaultCustomActions(IServiceCollection services)
         {
-            services.AddTransient<ICustomUserCreationAction, DefaultCustomUserActionsImplementation>();
+            services.AddTransient<IAfterUserCreationAction, DefaultCustomUserActionsImplementation>();
         }
 
         #endregion

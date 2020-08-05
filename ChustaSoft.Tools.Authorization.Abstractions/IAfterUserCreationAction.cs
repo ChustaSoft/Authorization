@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization.Abstractions
 {
-    public interface ICustomUserCreationAction
+    public interface IAfterUserCreationAction
     {
 
-        Task AfterCreationAction(Guid userId, IDictionary<string, string> parameters);
+        Task<bool> DoAfter(Guid userId, IDictionary<string, string> parameters);
 
     }
 }

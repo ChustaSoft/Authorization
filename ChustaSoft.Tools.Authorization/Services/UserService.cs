@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChustaSoft.Tools.Authorization.Abstractions;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
@@ -14,6 +15,8 @@ namespace ChustaSoft.Tools.Authorization
 
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserManager<TUser> _userManager;
+
+        private readonly IAfterUserCreationAction afterUserCreationAction;
 
         #endregion
 
@@ -64,8 +67,9 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<bool> CreateAsync(TUser user, string password)
         {
             var result = await _userManager.CreateAsync(user, password);
+            var customResult = await afterUserCreationAction.DoAfter(user.Id, new Dictionary<string, string>());
 
-            return result.Succeeded;
+            return result.Succeeded && customResult;
         }
 
         public async Task<bool> AssignRoleAsync(TUser user, IEnumerable<string> roleNames)
