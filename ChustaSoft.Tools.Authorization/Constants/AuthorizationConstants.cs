@@ -11,5 +11,7 @@
         internal const int DEFAULT_MINUTES_TO_UNLOCK = 15;
         internal const int DEFAULT_MAX_ATTEMPTS_TO_LOCK = 3;
 
+        internal const string CLAIM_PERMISSION_KEY = "PERMISSION";
+
     }
 }

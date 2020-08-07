@@ -134,6 +134,8 @@ namespace ChustaSoft.Tools.Authorization
         {
             if (typeof(TUser) == typeof(User))
             {
+                services.AddTransient<IUserClaimService, UserService>();
+                services.AddTransient<IUserRoleService, UserService>();
                 services.AddTransient<IUserService, UserService>();
                 services.AddTransient<ISessionService, SessionService>();
 
@@ -144,6 +146,8 @@ namespace ChustaSoft.Tools.Authorization
             }
             else
             {
+                services.AddTransient<IUserClaimService<TUser>, UserService<TUser>>();
+                services.AddTransient<IUserRoleService<TUser>, UserService<TUser>>();
                 services.AddTransient<IUserService<TUser>, UserService<TUser>>();
                 services.AddTransient<ISessionService, SessionService<TUser>>();
 

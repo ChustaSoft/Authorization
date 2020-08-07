@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
@@ -72,18 +74,40 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded && customResult;
         }
 
-        public async Task<bool> AssignRoleAsync(TUser user, IEnumerable<string> roleNames)
+        public async Task<bool> ExistAsync(string userEmail)
+        {
+            var result = await _userManager.FindByEmailAsync(userEmail);
+
+            return result != null;
+        }
+
+        public async Task<bool> AssignRoleAsync(TUser user, string roleName)
+        {
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+
+            return result.Succeeded;
+        }
+
+        public async Task<bool> AssignRolesAsync(TUser user, IEnumerable<string> roleNames)
         {
             var result = await _userManager.AddToRolesAsync(user, roleNames);
 
             return result.Succeeded;
         }
 
-        public async Task<bool> ExistAsync(string userEmail)
+        public async Task<bool> AssignClaimAsync(TUser user, string claimName)
         {
-            var result = await _userManager.FindByEmailAsync(userEmail);
+            var result = await _userManager.AddClaimAsync(user, new Claim(AuthorizationConstants.CLAIM_PERMISSION_KEY, claimName));
 
-            return result != null;
+            return result.Succeeded;
+        }
+
+        public async Task<bool> AssignClaimsAsync(TUser user, IEnumerable<string> claimNames)
+        {
+            var claims = claimNames.Select(x => new Claim(AuthorizationConstants.CLAIM_PERMISSION_KEY, x));
+            var result = await _userManager.AddClaimsAsync(user, claims);
+
+            return result.Succeeded;
         }
 
         #endregion
@@ -94,7 +118,7 @@ namespace ChustaSoft.Tools.Authorization
 
     #region Default Implementation
 
-    public class UserService : UserService<User>, IUserService
+    public class UserService : UserService<User>, IUserService, IUserRoleService, IUserClaimService
     {
         public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IAfterUserCreationAction afterUserCreationAction)
             : base(signInManager, userManager, afterUserCreationAction)

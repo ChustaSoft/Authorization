@@ -49,7 +49,7 @@ namespace ChustaSoft.Tools.Authorization
 
                     if (credentialsTupple.Roles.Any())
                     {
-                        var roleAssignationFlag = await _userService.AssignRoleAsync(user, credentialsTupple.Roles);
+                        var roleAssignationFlag = await _userService.AssignRolesAsync(user, credentialsTupple.Roles);
 
                         if (!roleAssignationFlag)
                             Errors.Add(new ErrorMessage(Common.Enums.ErrorType.Invalid, $"Roles could not be assigned to User: {user.UserName}"));
