@@ -1,7 +1,4 @@
 ﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Tools.Authorization.Abstractions;
-using ChustaSoft.Tools.Authorization.Configuration;
-using ChustaSoft.Tools.Authorization.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

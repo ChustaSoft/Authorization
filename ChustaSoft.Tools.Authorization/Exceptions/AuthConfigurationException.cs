@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ChustaSoft.Tools.Authorization.Exceptions
+namespace ChustaSoft.Tools.Authorization
 {
     public class AuthConfigurationException : Exception
     {

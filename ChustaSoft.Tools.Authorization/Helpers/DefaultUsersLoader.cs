@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChustaSoft.Tools.Authorization.Configuration
+namespace ChustaSoft.Tools.Authorization
 {
     public class DefaultUsersLoader<TUser, TRole> : IDefaultUsersLoader
         where TUser : User, new()

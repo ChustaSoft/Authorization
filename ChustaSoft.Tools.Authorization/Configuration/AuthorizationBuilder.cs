@@ -1,8 +1,7 @@
-﻿using ChustaSoft.Tools.Authorization.Exceptions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace ChustaSoft.Tools.Authorization.Configuration
+namespace ChustaSoft.Tools.Authorization
 {
 
     public class AuthorizationBuilder<TUser, TRole> : IAuthorizationBuilder

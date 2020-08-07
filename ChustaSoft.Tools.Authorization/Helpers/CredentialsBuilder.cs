@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ChustaSoft.Tools.Authorization.Configuration
+namespace ChustaSoft.Tools.Authorization
 {
     public class CredentialsBuilder : ICredentialsBuilder
     {

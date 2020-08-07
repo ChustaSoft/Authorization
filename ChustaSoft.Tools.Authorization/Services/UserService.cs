@@ -1,5 +1,4 @@
-﻿using ChustaSoft.Tools.Authorization.Abstractions;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Security.Authentication;
