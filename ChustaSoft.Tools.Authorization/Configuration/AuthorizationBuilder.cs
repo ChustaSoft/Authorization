@@ -12,25 +12,27 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         public IServiceProvider ServiceProvider { get; set; }
 
-        protected IUserBuilder _userBuilder;
+        protected IDefaultUsersLoader _defaultUsersLoader;
 
 
         public AuthorizationBuilder(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
 
-            _userBuilder = serviceProvider.GetRequiredService<IUserBuilder>();
+            _defaultUsersLoader = serviceProvider.GetRequiredService<IDefaultUsersLoader>();
         }
 
 
-        public IAuthorizationBuilder DefaultUsers(Action<IUserBuilder> userBuilderAction)
+        public IAuthorizationBuilder DefaultUsers(Action<ICredentialsBuilder> userBuilderAction)
         {
-            userBuilderAction.Invoke(_userBuilder);
+            var credentialsBuilder = new CredentialsBuilder();
 
-            var resultFalg = _userBuilder.PersistUsersAsync().Result;
+            userBuilderAction.Invoke(credentialsBuilder);
+
+            var resultFalg = _defaultUsersLoader.PersistAsync(credentialsBuilder).Result;
 
             if (!resultFalg)
-                throw new AuthConfigurationException("Something went wrong loading default users to the system", _userBuilder.Errors);
+                throw new AuthConfigurationException("Something went wrong loading default users to the system", _defaultUsersLoader.Errors);
 
             return this;
         }
@@ -59,7 +61,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
     {
         IServiceProvider ServiceProvider { get; set; }
 
-        IAuthorizationBuilder DefaultUsers(Action<IUserBuilder> userBuilderAction);
+        IAuthorizationBuilder DefaultUsers(Action<ICredentialsBuilder> userBuilderAction);
     }
 
     #endregion

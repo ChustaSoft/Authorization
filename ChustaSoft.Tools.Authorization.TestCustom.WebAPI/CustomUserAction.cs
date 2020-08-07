@@ -7,10 +7,14 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI
 {
     public class CustomUserAction : IAfterUserCreationAction
     {
-        public Task<bool> DoAfter(Guid userId, IDictionary<string, string> parameters)
+        public async Task<bool> DoAfter(Guid userId, IDictionary<string, string> parameters)
         {
+            return await Task.Factory.StartNew(() => 
+            {
+                Console.WriteLine("User custom action performed");
 
-            throw new NotImplementedException();
+                return true; 
+            });
         }
     }
 }

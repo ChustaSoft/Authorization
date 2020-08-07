@@ -123,12 +123,12 @@ namespace ChustaSoft.Tools.Authorization
             if (typeof(TUser) == typeof(User) && typeof(TRole) == typeof(Role))
             {
                 services.AddTransient<IAuthorizationBuilder, AuthorizationBuilder>();
-                services.AddTransient<IUserBuilder, UserBuilder>();
+                services.AddTransient<IDefaultUsersLoader, DefaultUsersLoader>();
             }
             else
             {
                 services.AddTransient<IAuthorizationBuilder, AuthorizationBuilder<TUser, TRole>>();
-                services.AddTransient<IUserBuilder, UserBuilder<TUser, TRole>>();
+                services.AddTransient<IDefaultUsersLoader, DefaultUsersLoader<TUser, TRole>>();
             }
         }
 

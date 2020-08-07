@@ -67,8 +67,8 @@ namespace ChustaSoft.Tools.Authorization
                 .SetupDatabase()
                 .DefaultUsers(ub => 
                     {
-                        ub.AddCredentials("SYSTEM", "Sys.1234");
-                        ub.AddCredentials("ADMIN", "Admn.1234").WithRole("Admin");
+                        ub.Add("SYSTEM", "Sys.1234");
+                        ub.Add("ADMIN", "Admn.1234").WithRole("Admin");
                     });
                 ;
         }
