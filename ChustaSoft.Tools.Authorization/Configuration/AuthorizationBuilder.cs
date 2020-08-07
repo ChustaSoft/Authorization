@@ -30,7 +30,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
             var resultFalg = _userBuilder.PersistUsersAsync().Result;
 
             if (!resultFalg)
-                throw new AuthConfigurationException("Something went wrong loading default users to the system");
+                throw new AuthConfigurationException("Something went wrong loading default users to the system", _userBuilder.Errors);
 
             return this;
         }

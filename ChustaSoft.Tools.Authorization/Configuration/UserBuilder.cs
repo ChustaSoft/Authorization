@@ -59,8 +59,6 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
         public async Task<bool> PersistUsersAsync()
         {
-            //TODO: Manage errors inside the collection (flag and roleAssignationFlag)
-
             CheckIfExistingCredentials();
             await CheckRolesAsync();
 
@@ -71,14 +69,21 @@ namespace ChustaSoft.Tools.Authorization.Configuration
                     var user = _credentialsMapper.MapToSource(credentialsTupple.Credentials);
                     var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password, credentialsTupple.Credentials.Parameters);
 
+                    if (!flag)
+                        Errors.Add(new ErrorMessage(Common.Enums.ErrorType.Unknown, $"User: {user.UserName} could not be created"));
+
+
                     if (credentialsTupple.Roles.Any())
                     {
                         var roleAssignationFlag = await _userService.AssignRoleAsync(user, credentialsTupple.Roles);
+
+                        if (!roleAssignationFlag)
+                            Errors.Add(new ErrorMessage(Common.Enums.ErrorType.Invalid, $"Roles could not be assigned to User: {user.UserName}"));
                     }
                 }
             }
 
-            return true;
+            return !Errors.Any();
         }
 
 
@@ -96,6 +101,9 @@ namespace ChustaSoft.Tools.Authorization.Configuration
                     if (!await _roleService.ExistAsync(role))
                         await _roleService.SaveAsync(role);
         }
+
+        public ICollection<(Credentials Credentials, IEnumerable<string> Roles)> Build()
+            => _usersCredentials;
 
     }
 
@@ -116,7 +124,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
 
     #region Contract
 
-    public interface IUserBuilder
+    public interface IUserBuilder : IBuilder<ICollection<(Credentials Credentials, IEnumerable<string> Roles)>>
     {
 
         IUserBuilder AddCredentials(string userName, string userPassword);
