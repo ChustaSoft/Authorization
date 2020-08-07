@@ -16,17 +16,18 @@ namespace ChustaSoft.Tools.Authorization
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserManager<TUser> _userManager;
 
-        private readonly IAfterUserCreationAction afterUserCreationAction;
+        private readonly IAfterUserCreationAction _afterUserCreationAction;
 
         #endregion
 
 
         #region Constructor
 
-        public UserService(SignInManager<TUser> signInManager, UserManager<TUser> userManager)
+        public UserService(SignInManager<TUser> signInManager, UserManager<TUser> userManager, IAfterUserCreationAction afterUserCreationAction)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _afterUserCreationAction = afterUserCreationAction;
         }
 
         #endregion
@@ -64,10 +65,10 @@ namespace ChustaSoft.Tools.Authorization
             throw new AuthenticationException("User not allowed to login in the system");
         }
 
-        public async Task<bool> CreateAsync(TUser user, string password)
+        public async Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters)
         {
             var result = await _userManager.CreateAsync(user, password);
-            var customResult = await afterUserCreationAction.DoAfter(user.Id, new Dictionary<string, string>());
+            var customResult = await _afterUserCreationAction.DoAfter(user.Id, parameters);
 
             return result.Succeeded && customResult;
         }
@@ -96,8 +97,8 @@ namespace ChustaSoft.Tools.Authorization
 
     public class UserService : UserService<User>, IUserService
     {
-        public UserService(SignInManager<User> signInManager, UserManager<User> userManager)
-            : base(signInManager, userManager)
+        public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IAfterUserCreationAction afterUserCreationAction)
+            : base(signInManager, userManager, afterUserCreationAction)
         { }
     }
 

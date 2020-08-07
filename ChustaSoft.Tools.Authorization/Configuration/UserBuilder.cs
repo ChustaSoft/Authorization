@@ -69,7 +69,7 @@ namespace ChustaSoft.Tools.Authorization.Configuration
                 if (!await _userService.ExistAsync(credentialsTupple.Credentials.Email)) 
                 {
                     var user = _credentialsMapper.MapToSource(credentialsTupple.Credentials);
-                    var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password);
+                    var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password, credentialsTupple.Credentials.Parameters);
 
                     if (credentialsTupple.Roles.Any())
                     {

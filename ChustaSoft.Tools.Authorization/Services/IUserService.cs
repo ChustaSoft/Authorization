@@ -14,7 +14,7 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TUser> GetByEmail(string email, string password);
 
-        Task<bool> CreateAsync(TUser user, string password);
+        Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters);
 
         Task<bool> AssignRoleAsync(TUser user, IEnumerable<string> roleNames);
 
