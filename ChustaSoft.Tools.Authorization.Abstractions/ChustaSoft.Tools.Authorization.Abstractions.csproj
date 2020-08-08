@@ -1,7 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <PackageId>ChustaSoft.Tools.Authorization.Abstractions</PackageId>
+    <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
+    <Version>3.0.0-alpha</Version>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
+    <Description>Abstractions package for ChustaSoft.Tools.Authorization project</Description>
+    <Copyright>ChustaSoft</Copyright>
+    <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ChustaSoft/Authorization</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/ChustaSoft/Authorization/wiki/Release-notes</PackageReleaseNotes>
+    <RepositoryType>GIT</RepositoryType>
+    <RepositoryUrl>https://github.com/ChustaSoft/Authorization.git</RepositoryUrl>
+    <PackageTags>Authorization;DotNetCore;DotNet;ASPNET;ASPMVC;JWT;Security</PackageTags>
   </PropertyGroup>
 
 </Project>
