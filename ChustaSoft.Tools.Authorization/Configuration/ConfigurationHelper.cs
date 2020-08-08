@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
+using ChustaSoft.Tools.Authorization.Configuration;
 using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -22,18 +23,20 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Public Extension methods
 
-        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
+        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string privateKey)
             where TUser : User, new()
             where TRole : Role, new()
         {
-            var authSettings = GetFromSettingsOrDefault(configuration);
+            var authSettings = GetFromAppSettingsOrDefault(configuration);
 
             services.AddSingleton(authSettings);
+            services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
+
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
 
             SetDefaultCustomActions(services);
 
-            SetupJwtAuthentication(services, configuration, authSettings);
+            SetupJwtAuthentication(services, authSettings, privateKey);
             SetupTypedServices<TUser, TRole>(services);
             SetupUserTypedServices<TUser>(services);
             SetupRoleTypedServices<TRole>(services);
@@ -58,7 +61,7 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private static AuthorizationSettings GetFromSettingsOrDefault(IConfiguration configuration)
+        private static AuthorizationSettings GetFromAppSettingsOrDefault(IConfiguration configuration)
         {
             var authSettings = configuration.GetSection(AUTH_SETINGS_SECTION).Get<AuthorizationSettings>();
 
@@ -68,7 +71,7 @@ namespace ChustaSoft.Tools.Authorization
             return authSettings;
         }
 
-        private static void SetupJwtAuthentication(IServiceCollection services, IConfiguration configuration, AuthorizationSettings authSettings)
+        private static void SetupJwtAuthentication(IServiceCollection services, AuthorizationSettings authSettings, string privateKey)
         {
             services.AddAuthentication(opt =>
                 {
@@ -88,7 +91,7 @@ namespace ChustaSoft.Tools.Authorization
                         ValidateIssuerSigningKey = true,
                         ValidAudience = authSettings.SiteName,
                         ValidIssuer = authSettings.SiteName,
-                        IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(configuration)
+                        IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(privateKey)
                     };
                 });
         }

@@ -43,7 +43,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAuthorizationAspNet(_configuration)
+            services.RegisterAuthorizationAspNet(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
                 .WithSqlServerProvider(BuildConnectionString());
 
             services.AddMvc()

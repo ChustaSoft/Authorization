@@ -21,16 +21,16 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         #region Public Extension methods
 
-        public static IdentityBuilder RegisterAuthorizationAspNet(this IServiceCollection services, IConfiguration configuration) 
+        public static IdentityBuilder RegisterAuthorizationAspNet(this IServiceCollection services, IConfiguration configuration, string privateKey) 
         {
-            return services.RegisterAuthorization<User, Role>(configuration);
+            return services.RegisterAuthorization<User, Role>(configuration, privateKey);
         }
 
-        public static IdentityBuilder RegisterAuthorizationAspNet<TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
+        public static IdentityBuilder RegisterAuthorizationAspNet<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string privateKey)
             where TUser : User, new()
             where TRole : Role, new()
         {
-            return services.RegisterAuthorization<TUser, TRole>(configuration);
+            return services.RegisterAuthorization<TUser, TRole>(configuration, privateKey);
         }
 
         public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

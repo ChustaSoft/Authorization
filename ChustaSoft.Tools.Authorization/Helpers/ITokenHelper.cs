@@ -6,7 +6,7 @@ namespace ChustaSoft.Tools.Authorization
         where TUser : User, new()
     {
 
-        TokenInfo Generate(TUser user);
+        TokenInfo Generate(TUser user, string privateKey);
 
     }
 
