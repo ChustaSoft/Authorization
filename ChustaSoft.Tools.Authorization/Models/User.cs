@@ -2,7 +2,7 @@
 using System;
 
 
-namespace ChustaSoft.Tools.Authorization
+namespace ChustaSoft.Tools.Authorization.Models
 {
     public class User : IdentityUser<Guid>
     {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using System.Collections.Generic;
 
 namespace ChustaSoft.Tools.Authorization
 {

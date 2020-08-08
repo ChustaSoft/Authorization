@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace ChustaSoft.Tools.Authorization

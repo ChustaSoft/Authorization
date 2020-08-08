@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ChustaSoft.Tools.Authorization
+namespace ChustaSoft.Tools.Authorization.Models
 {
     [Serializable]
     public class Credentials

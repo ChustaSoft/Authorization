@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
+using ChustaSoft.Tools.Authorization.Models;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 

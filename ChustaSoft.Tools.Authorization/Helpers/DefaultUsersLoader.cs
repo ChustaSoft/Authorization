@@ -1,5 +1,6 @@
 ﻿using ChustaSoft.Common.Contracts;
 using ChustaSoft.Common.Utilities;
+using ChustaSoft.Tools.Authorization.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -1,4 +1,5 @@
-﻿using System.Security.Authentication;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using System.Security.Authentication;
 
 
 namespace ChustaSoft.Tools.Authorization

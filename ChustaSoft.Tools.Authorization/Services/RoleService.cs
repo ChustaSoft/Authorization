@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 

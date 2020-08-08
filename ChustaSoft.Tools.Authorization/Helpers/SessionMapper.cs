@@ -1,5 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
-
+using ChustaSoft.Tools.Authorization.Models;
 
 namespace ChustaSoft.Tools.Authorization
 {

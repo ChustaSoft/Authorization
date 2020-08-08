@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Base;
+using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

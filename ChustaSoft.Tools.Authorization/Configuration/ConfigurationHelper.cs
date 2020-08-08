@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
+using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
