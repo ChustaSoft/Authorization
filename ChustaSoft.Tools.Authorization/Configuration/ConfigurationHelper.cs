@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Tools.Authorization.Configuration;
 using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -16,34 +15,43 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constants
 
-        private const string AUTH_SETINGS_SECTION = "AuthorizationSettings";
+        private const string AUTH_SETINGS_SECTION = "Authorization";
 
         #endregion
 
 
         #region Public Extension methods
 
-        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string privateKey)
+        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, IConfiguration configuration, string privateKey, string authSectionName = AUTH_SETINGS_SECTION)
+        {
+            var authSettings = GetSettingsFromConfiguration(configuration, authSectionName);
+
+            return services.RegisterAuthorization<User, Role>(privateKey, authSettings);
+        }
+
+        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string privateKey, string authSectionName = AUTH_SETINGS_SECTION)
             where TUser : User, new()
             where TRole : Role, new()
         {
-            var authSettings = GetFromAppSettingsOrDefault(configuration);
+            var authSettings = GetSettingsFromConfiguration(configuration, authSectionName);
 
-            services.AddSingleton(authSettings);
-            services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
+            return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
+        }
 
-            services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
+        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction) 
+        {
+            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
 
-            SetDefaultCustomActions(services);
+            return services.RegisterAuthorization<User, Role>(privateKey, authSettings);
+        }
 
-            SetupJwtAuthentication(services, authSettings, privateKey);
-            SetupTypedServices<TUser, TRole>(services);
-            SetupUserTypedServices<TUser>(services);
-            SetupRoleTypedServices<TRole>(services);
+        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
+            where TUser : User, new()
+            where TRole : Role, new()
+        {
+            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
 
-            var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
-
-            return identityBuilder;
+            return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
         }
 
         public static IdentityBuilder WithCustomUserAction<TCustomUserAction>(this IdentityBuilder identityBuilder)
@@ -60,16 +68,6 @@ namespace ChustaSoft.Tools.Authorization
 
 
         #region Private methods
-
-        private static AuthorizationSettings GetFromAppSettingsOrDefault(IConfiguration configuration)
-        {
-            var authSettings = configuration.GetSection(AUTH_SETINGS_SECTION).Get<AuthorizationSettings>();
-
-            if (authSettings == null)
-                authSettings = new AuthorizationSettings();
-
-            return authSettings;
-        }
 
         private static void SetupJwtAuthentication(IServiceCollection services, AuthorizationSettings authSettings, string privateKey)
         {
@@ -178,6 +176,52 @@ namespace ChustaSoft.Tools.Authorization
         private static void SetDefaultCustomActions(IServiceCollection services)
         {
             services.AddTransient<IAfterUserCreationAction, DefaultCustomUserActionsImplementation>();
+        }
+
+        #endregion
+
+
+        #region Private methods
+
+        private static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, AuthorizationSettings authSettings)
+            where TUser : User, new()
+            where TRole : Role, new()
+        {
+            services.AddSingleton(authSettings);
+            services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
+
+            services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
+
+            SetDefaultCustomActions(services);
+
+            SetupJwtAuthentication(services, authSettings, privateKey);
+            SetupTypedServices<TUser, TRole>(services);
+            SetupUserTypedServices<TUser>(services);
+            SetupRoleTypedServices<TRole>(services);
+
+            var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
+
+            return identityBuilder;
+        }
+
+        private static AuthorizationSettings GetSettingsFromBuilder(Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
+        {
+            var settingsBuilder = new AuthorizationSettingsBuilder();
+
+            settingsBuildingAction.Invoke(settingsBuilder);
+
+            var authSettings = settingsBuilder.Build();
+            return authSettings;
+        }
+
+        private static AuthorizationSettings GetSettingsFromConfiguration(IConfiguration configuration, string authSectionName)
+        {
+            var authSettings = configuration.GetSection(authSectionName).Get<AuthorizationSettings>();
+
+            if (authSettings == null)
+                authSettings = new AuthorizationSettings();
+
+            return authSettings;
         }
 
         #endregion

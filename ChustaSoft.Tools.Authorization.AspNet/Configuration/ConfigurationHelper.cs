@@ -1,8 +1,5 @@
-﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
@@ -15,23 +12,11 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         #region Constants
 
         private const string ASP_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization.AspNet";
-
+        
         #endregion
 
 
         #region Public Extension methods
-
-        public static IdentityBuilder RegisterAuthorizationAspNet(this IServiceCollection services, IConfiguration configuration, string privateKey) 
-        {
-            return services.RegisterAuthorization<User, Role>(configuration, privateKey);
-        }
-
-        public static IdentityBuilder RegisterAuthorizationAspNet<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string privateKey)
-            where TUser : User, new()
-            where TRole : Role, new()
-        {
-            return services.RegisterAuthorization<TUser, TRole>(configuration, privateKey);
-        }
 
         public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {

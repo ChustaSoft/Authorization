@@ -1,4 +1,4 @@
-﻿namespace ChustaSoft.Tools.Authorization.Configuration
+﻿namespace ChustaSoft.Tools.Authorization
 {
 
     public class SecuritySettings : ISecuritySettings
