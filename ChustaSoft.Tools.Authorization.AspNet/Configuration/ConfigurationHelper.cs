@@ -33,6 +33,19 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             services.RegisterAuthorizationCore<TAuthContext, TUser, TRole>(configuration, connectionString);
         }
 
+        public static void RegisterExternalAuthentication<TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
+            where TUser : User, new()
+            where TRole : Role, new()
+        {
+            services.AddAuthentication().AddGoogle(opt =>
+            {
+                IConfigurationSection googleAuthNSection = configuration.GetSection("ExternalAuthentication:Google");
+
+                opt.ClientId = googleAuthNSection["ClientId"];
+                opt.ClientSecret = googleAuthNSection["ClientSecret"];
+            });
+        }
+
         public static void ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
         {
             PerformConfiguration<AuthorizationContext, User, Role>(app, env, authContext);
@@ -82,7 +95,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
                 endpoints.MapControllers();
             });
 
-            authContext.Database.Migrate();
+            //authContext.Database.Migrate();
         }
 
         #endregion

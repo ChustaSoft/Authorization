@@ -45,6 +45,8 @@ namespace ChustaSoft.Tools.Authorization
         {
             services.RegisterAuthorization(_configuration, BuildConnectionString());
 
+            services.RegisterExternalAuthentication<User, Role>(_configuration);
+
             services.AddMvc()
                 .IntegrateChustaSoftAuthorization();
         }

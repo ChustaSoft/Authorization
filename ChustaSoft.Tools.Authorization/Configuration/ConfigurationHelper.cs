@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ namespace ChustaSoft.Tools.Authorization
         #region Constants
 
         private const string AUTH_SETINGS_SECTION = "AuthorizationSettings";
+        private const string CLIENT_ID_SETTINGS_ENTRY = "ClientId";
+        private const string CLIENT_SECRET_SETTINGS_ENTRY = "ClientSecret";
 
         #endregion
 
@@ -29,6 +32,22 @@ namespace ChustaSoft.Tools.Authorization
             RegisterDatabase<TAuthContext, TUser, TRole>(services, connectionString);
             RegisterServices<TUser, TRole>(services);
             RegisterIdentityConfigurations<TAuthContext, TUser, TRole>(services, configuration);
+        }
+
+        public static void RegisterExternalAuthentication<TUser, TRole>(this IServiceCollection services, IConfiguration configuration)
+        {
+            IConfigurationSection microsoftAuthSection = configuration.GetSection("ExternalAuthentication:Microsoft");
+            IConfigurationSection googleAuthSection = configuration.GetSection("ExternalAuthentication:Google");
+
+            services.AddAuthentication().AddGoogle(opt =>
+            {
+                opt.ClientId = googleAuthSection[CLIENT_ID_SETTINGS_ENTRY];
+                opt.ClientSecret = googleAuthSection[CLIENT_SECRET_SETTINGS_ENTRY];
+            }).AddMicrosoftAccount(opt =>
+            {
+                opt.ClientId = microsoftAuthSection[CLIENT_ID_SETTINGS_ENTRY];
+                opt.ClientSecret = microsoftAuthSection[CLIENT_SECRET_SETTINGS_ENTRY];
+            });
         }
 
         #endregion

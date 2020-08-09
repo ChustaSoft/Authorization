@@ -10,10 +10,15 @@ namespace ChustaSoft.Tools.Authorization
 
         public static SecurityKey GetSecurityKey(IConfiguration configuration)
         {
-            var secretKeyBytes = Encoding.UTF8.GetBytes(configuration[AuthorizationConstants.SECRET_KEY]);
-            var signingKey = new SymmetricSecurityKey(secretKeyBytes);
+            string secretKey = configuration[AuthorizationConstants.SECRET_KEY];
 
-            return signingKey;
+            if (!string.IsNullOrEmpty(secretKey)) 
+            { 
+                var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+                return new SymmetricSecurityKey(secretKeyBytes);
+            }
+
+            return null;
         }
 
     }
