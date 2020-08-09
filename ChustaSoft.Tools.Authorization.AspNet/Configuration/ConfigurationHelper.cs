@@ -25,17 +25,10 @@ namespace ChustaSoft.Tools.Authorization.AspNet
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
-
-            app.UseRouting();
+            
             app.UseCors();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
 
             return serviceProvider.GetRequiredService<IAuthorizationBuilder>();
         }
