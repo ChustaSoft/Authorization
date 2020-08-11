@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.SqlServer</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>3.0.0-alpha.1</Version>
+    <Version>3.0.0-alpha.2</Version>
     <AssemblyVersion>3.0.0</AssemblyVersion>
     <FileVersion>3.0.0</FileVersion>
     <Description>SqlServer implementation for ChustaSoft.Tools.Authorization project based on ASPNET Identity</Description>
