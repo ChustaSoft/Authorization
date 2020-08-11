@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChustaSoft.Tools.Authorization
+﻿namespace ChustaSoft.Tools.Authorization
 {
     public interface IUserCreated
     {
