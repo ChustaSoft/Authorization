@@ -46,10 +46,7 @@ namespace ChustaSoft.Tools.Authorization
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterAuthorization(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
-                .WithSqlServerProvider(BuildConnectionString());
-
-            //IConfigurationSection microsoftAuthSection = configuration.GetSection("ExternalAuthentication:Microsoft");
-            //IConfigurationSection googleAuthSection = configuration.GetSection("ExternalAuthentication:Google");
+                .WithSqlServerProvider(BuildConnectionString());            
 
             services.RegisterExternalAuthentication(_configuration, new ExternalAuthorizationOptions 
             {

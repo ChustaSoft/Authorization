@@ -29,10 +29,10 @@ namespace ChustaSoft.Tools.Authorization
 
             userBuilderAction.Invoke(credentialsBuilder);
 
-            //var resultFalg = _defaultUsersLoader.PersistAsync(credentialsBuilder).Result;
+            var resultFalg = _defaultUsersLoader.PersistAsync(credentialsBuilder).Result;
 
-            //if (!resultFalg)
-            //    throw new AuthConfigurationException("Something went wrong loading default users to the system", _defaultUsersLoader.Errors);
+            if (!resultFalg)
+                throw new AuthConfigurationException("Something went wrong loading default users to the system", _defaultUsersLoader.Errors);
 
             return this;
         }

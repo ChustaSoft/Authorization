@@ -43,19 +43,6 @@ namespace ChustaSoft.Tools.Authorization
 
         public static void RegisterExternalAuthentication(this IServiceCollection services, IConfiguration configuration, ExternalAuthorizationOptions options)
         {
-            IConfigurationSection microsoftAuthSection = configuration.GetSection("ExternalAuthentication:Microsoft");
-            IConfigurationSection googleAuthSection = configuration.GetSection("ExternalAuthentication:Google");
-
-            //services.AddAuthentication().AddGoogle(opt =>
-            //{
-            //    opt.ClientId = googleAuthSection[CLIENT_ID_SETTINGS_ENTRY];
-            //    opt.ClientSecret = googleAuthSection[CLIENT_SECRET_SETTINGS_ENTRY];
-            //}).AddMicrosoftAccount(opt =>
-            //{
-            //    opt.ClientId = microsoftAuthSection[CLIENT_ID_SETTINGS_ENTRY];
-            //    opt.ClientSecret = microsoftAuthSection[CLIENT_SECRET_SETTINGS_ENTRY];
-            //});
-
             services.AddAuthentication().AddGoogle(opt =>
             {
                 if (!string.IsNullOrEmpty(options.GoogleOptions.Item1)){

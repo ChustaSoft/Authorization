@@ -36,7 +36,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var authorizationContext = authorizationBuilder.ServiceProvider.GetRequiredService<TAuthContext>();
 
-            //authorizationContext.Database.Migrate();
+            authorizationContext.Database.Migrate();
 
             return authorizationBuilder;
         }
