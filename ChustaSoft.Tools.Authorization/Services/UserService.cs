@@ -90,6 +90,13 @@ namespace ChustaSoft.Tools.Authorization
             return result != null;
         }
 
+        public async Task<bool> AssignRoleAsync(Guid userId, string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            return await AssignRoleAsync(user, roleName);
+        }
+
         public async Task<bool> AssignRoleAsync(TUser user, string roleName)
         {
             var result = await _userManager.AddToRoleAsync(user, roleName);
@@ -102,6 +109,13 @@ namespace ChustaSoft.Tools.Authorization
             var result = await _userManager.AddToRolesAsync(user, roleNames);
 
             return result.Succeeded;
+        }
+
+        public async Task<bool> AssignClaimAsync(Guid userId, string claimName)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            return await AssignClaimAsync(user, claimName);
         }
 
         public async Task<bool> AssignClaimAsync(TUser user, string claimName)

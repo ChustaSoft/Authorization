@@ -25,6 +25,8 @@ namespace ChustaSoft.Tools.Authorization
     public interface IUserRoleService<TUser>
          where TUser : User, new()
     {
+        Task<bool> AssignRoleAsync(Guid userId, string roleName);
+
         Task<bool> AssignRoleAsync(TUser user, string roleName);
 
         Task<bool> AssignRolesAsync(TUser user, IEnumerable<string> roleNames);
@@ -34,6 +36,8 @@ namespace ChustaSoft.Tools.Authorization
     public interface IUserClaimService<TUser>
          where TUser : User, new()
     {
+        Task<bool> AssignClaimAsync(Guid userId, string claimName);
+
         Task<bool> AssignClaimAsync(TUser user, string claimName);
 
         Task<bool> AssignClaimsAsync(TUser user, IEnumerable<string> claimNames);

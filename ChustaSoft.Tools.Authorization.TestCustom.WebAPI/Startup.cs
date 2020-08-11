@@ -42,6 +42,19 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
+             * Example with Builder:
+             */
+            //services.RegisterAuthorization<CustomUser, CustomRole>("d5ab5e3f5799445fb9f68d1fcdda3b9f", x =>
+            //    {
+            //        x.SetSiteName("AuthorizationApi");
+            //    })
+            //    .WithUserCreatedAction<CustomUser, CustomUserAction>()
+            //    .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());
+
+            /*
+            * Example with appSettings:
+            */
             services.RegisterAuthorization<CustomUser, CustomRole>(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
                 .WithUserCreatedAction<CustomUser, CustomUserAction>()
                 .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());
