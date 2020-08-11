@@ -12,26 +12,33 @@ namespace ChustaSoft.Tools.Authorization
     public class UserService<TUser> : IUserService<TUser>
          where TUser : User, new()
     {
+        public event EventHandler<UserEventArgs> UserCreatedEventHandler;
+
 
         #region Fields
 
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserManager<TUser> _userManager;
 
-        private readonly IAfterUserCreationAction _afterUserCreationAction;
 
         #endregion
 
 
         #region Constructor
 
-        public UserService(SignInManager<TUser> signInManager, UserManager<TUser> userManager, IAfterUserCreationAction afterUserCreationAction)
+        public UserService(SignInManager<TUser> signInManager, UserManager<TUser> userManager)
+            : this(signInManager, userManager, null)
+        { }
+
+        public UserService(SignInManager<TUser> signInManager, UserManager<TUser> userManager, EventHandler<UserEventArgs> userCreatedEventHandler)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _afterUserCreationAction = afterUserCreationAction;
+            
+            if(userCreatedEventHandler != null)
+                UserCreatedEventHandler += userCreatedEventHandler;
         }
-
+        
         #endregion
 
 
@@ -70,9 +77,10 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters)
         {
             var result = await _userManager.CreateAsync(user, password);
-            var customResult = await _afterUserCreationAction.DoAfter(user.Id, parameters);
+            
+            UserCreatedEventHandler?.Invoke(this, new UserEventArgs(user.Id, parameters));
 
-            return result.Succeeded && customResult;
+            return result.Succeeded;
         }
 
         public async Task<bool> ExistAsync(string userEmail)
@@ -121,8 +129,12 @@ namespace ChustaSoft.Tools.Authorization
 
     public class UserService : UserService<User>, IUserService, IUserRoleService, IUserClaimService
     {
-        public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IAfterUserCreationAction afterUserCreationAction)
-            : base(signInManager, userManager, afterUserCreationAction)
+        public UserService(SignInManager<User> signInManager, UserManager<User> userManager)
+            : base(signInManager, userManager)
+        { }
+
+        public UserService(SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func)
+           : base(signInManager, userManager, func)
         { }
     }
 
