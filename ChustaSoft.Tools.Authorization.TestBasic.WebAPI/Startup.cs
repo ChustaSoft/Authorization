@@ -1,10 +1,12 @@
 ﻿using ChustaSoft.Tools.Authorization.AspNet;
+using ChustaSoft.Tools.Authorization.Configuration;
+using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Data.SqlClient;
-
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -43,15 +45,23 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAuthorization(_configuration, BuildConnectionString());
+            services.RegisterAuthorization(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
+                .WithSqlServerProvider(BuildConnectionString());
 
-            services.RegisterExternalAuthentication<User, Role>(_configuration);
+            //IConfigurationSection microsoftAuthSection = configuration.GetSection("ExternalAuthentication:Microsoft");
+            //IConfigurationSection googleAuthSection = configuration.GetSection("ExternalAuthentication:Google");
+
+            services.RegisterExternalAuthentication(_configuration, new ExternalAuthorizationOptions 
+            {
+                GoogleOptions = new Tuple<string, string>( _configuration["ExternalAuthentication:Google:ClientId"], _configuration["ExternalAuthentication:Google:ClientSecret"] ),
+                MicrosoftOptions = new Tuple<string, string>( _configuration["ExternalAuthentication:Microsoft:ClientId"], _configuration["ExternalAuthentication:Microsoft:ClientSecret"] )
+            });
 
             services.AddMvc()
-                .IntegrateChustaSoftAuthorization();
+                .AddAuthorizationControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthorizationContext authContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -64,7 +74,14 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization(env, authContext);
+            app.ConfigureAuthorization(env, serviceProvider)
+                .SetupDatabase()
+                .DefaultUsers(ub => 
+                    {
+                        ub.Add("SYSTEM", "Sys.1234");
+                        ub.Add("ADMIN", "Admn.1234").WithRole("Admin");
+                    });
+                ;
         }
 
         #endregion

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public interface IUserService<TUser>
+    public interface IUserService<TUser> : IUserRoleService<TUser>, IUserClaimService<TUser>
          where TUser : User, new()
     {
 
@@ -13,12 +15,41 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TUser> GetByEmail(string email, string password);
 
-        Task<bool> CreateAsync(TUser user, string password);
+        Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters);
+
+        Task<bool> ExistAsync(string userEmail);
 
     }
 
 
+    public interface IUserRoleService<TUser>
+         where TUser : User, new()
+    {
+        Task<bool> AssignRoleAsync(TUser user, string roleName);
+
+        Task<bool> AssignRolesAsync(TUser user, IEnumerable<string> roleNames);
+    }
+
+
+    public interface IUserClaimService<TUser>
+         where TUser : User, new()
+    {
+        Task<bool> AssignClaimAsync(TUser user, string claimName);
+
+        Task<bool> AssignClaimsAsync(TUser user, IEnumerable<string> claimNames);
+    }
+
+
+
+    #region Default Contracts
 
     public interface IUserService : IUserService<User> { }
+
+    public interface IUserRoleService : IUserRoleService<User> { }
+
+    public interface IUserClaimService : IUserClaimService<User> { }
+
+
+    #endregion
 
 }

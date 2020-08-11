@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,8 +14,6 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Fields
 
-        private readonly IConfiguration _configuration;
-
         private readonly AuthorizationSettings _authorizationSettings;
 
         #endregion
@@ -22,10 +21,8 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constructor
 
-        public TokenHelper(IConfiguration configuration, AuthorizationSettings authorizationSettings)
+        public TokenHelper(AuthorizationSettings authorizationSettings)
         {
-            _configuration = configuration;
-
             _authorizationSettings = authorizationSettings;
         }
 
@@ -34,10 +31,10 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Public methods
 
-        public TokenInfo Generate(TUser user)
+        public TokenInfo Generate(TUser user, string privateKey)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = GenerateTokenDescriptor(user);
+            var tokenDescriptor = GenerateTokenDescriptor(user, privateKey);
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return new TokenInfo(tokenHandler.WriteToken(token), token.ValidTo);
@@ -48,10 +45,10 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private SecurityTokenDescriptor GenerateTokenDescriptor(User user)
+        private SecurityTokenDescriptor GenerateTokenDescriptor(User user, string privateKey)
         {
             var claim = new[] { new Claim(JwtRegisteredClaimNames.Sub, user.UserName) };
-            var signingKey = SecurityKeyHelper.GetSecurityKey(_configuration);
+            var signingKey = SecurityKeyHelper.GetSecurityKey(privateKey);
             var expiringDate = DateTime.UtcNow.AddMinutes(_authorizationSettings.MinutesToExpire);
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
@@ -74,8 +71,8 @@ namespace ChustaSoft.Tools.Authorization
     public class TokenHelper : TokenHelper<User>, ITokenHelper 
     {
 
-        public TokenHelper(IConfiguration configuration, AuthorizationSettings authorizationSettings)
-            : base(configuration, authorizationSettings)
+        public TokenHelper(AuthorizationSettings authorizationSettings)
+            : base(authorizationSettings)
         { }
 
     }

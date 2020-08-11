@@ -1,20 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
 
 namespace ChustaSoft.Tools.Authorization
 {
     public static class SecurityKeyHelper
     {
 
-        public static SecurityKey GetSecurityKey(IConfiguration configuration)
+        public static SecurityKey GetSecurityKey(string privateKey)
         {
-            string secretKey = configuration[AuthorizationConstants.SECRET_KEY];
-
-            if (!string.IsNullOrEmpty(secretKey)) 
+            if (!string.IsNullOrEmpty(privateKey)) 
             { 
-                var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey);
+                var secretKeyBytes = Encoding.UTF8.GetBytes(privateKey);
                 return new SymmetricSecurityKey(secretKeyBytes);
             }
 

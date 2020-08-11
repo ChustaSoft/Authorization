@@ -1,4 +1,6 @@
-﻿namespace ChustaSoft.Tools.Authorization
+﻿using ChustaSoft.Tools.Authorization.Models;
+
+namespace ChustaSoft.Tools.Authorization
 {
     public interface ICredentialsBusiness
     {

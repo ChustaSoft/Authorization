@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
+using ChustaSoft.Tools.Authorization.Models;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace ChustaSoft.Tools.Authorization
     {
 
         #region Fields
+
+        private readonly ISecuritySettings _securitySettings;
 
         private readonly IUserService<TUser> _userService;
 
@@ -25,11 +28,14 @@ namespace ChustaSoft.Tools.Authorization
         #region Constructor
 
         public SessionService(
-            IUserService<TUser> userService,
-            ICredentialsBusiness credentialsBusiness, 
-            ITokenHelper<TUser> tokenService, 
-            IMapper<TUser, Credentials> userMapper, IMapper<TUser, TokenInfo, Session> sessionMapper)
+                ISecuritySettings securitySettings,
+                IUserService<TUser> userService,
+                ICredentialsBusiness credentialsBusiness, 
+                ITokenHelper<TUser> tokenService, 
+                IMapper<TUser, Credentials> userMapper, IMapper<TUser, TokenInfo, Session> sessionMapper)
         {
+            _securitySettings = securitySettings;
+
             _userService = userService;
             _credentialsBusiness = credentialsBusiness;
 
@@ -47,7 +53,7 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<Session> AuthenticateAsync(Credentials credentials)
         {
             var user = await LoginAsync(credentials);
-            var tokenInfo = _tokenHelper.Generate(user);
+            var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
             var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
             return session;
@@ -56,11 +62,11 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<Session> RegisterAsync(Credentials credentials)
         {
             var user = _userMapper.MapToSource(credentials);
-            var resultFlag = await _userService.CreateAsync(user, credentials.Password);
+            var resultFlag = await _userService.CreateAsync(user, credentials.Password, credentials.Parameters);
 
             if (resultFlag)
             {
-                var tokenInfo = _tokenHelper.Generate(user);
+                var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
                 var session = _sessionMapper.MapFromSource(user, tokenInfo);
 
                 return session;
@@ -102,11 +108,12 @@ namespace ChustaSoft.Tools.Authorization
     public class SessionService : SessionService<User>
     {
         public SessionService(
-               IUserService userService,
-               ICredentialsBusiness credentialsBusiness,
-               ITokenHelper tokenService,
-               IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
-            : base(userService, credentialsBusiness, tokenService, userMapper, sessionMapper)
+                ISecuritySettings securitySettings,
+                IUserService userService,
+                ICredentialsBusiness credentialsBusiness,
+                ITokenHelper tokenService,
+                IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
+            : base(securitySettings, userService, credentialsBusiness, tokenService, userMapper, sessionMapper)
         { }
     }
 

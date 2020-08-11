@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <PackageId>ChustaSoft.Tools.Authorization.AspNet</PackageId>
+    <PackageId>ChustaSoft.Tools.Authorization.SqlServer</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
     <Version>3.0.0-alpha.1</Version>
     <AssemblyVersion>3.0.0</AssemblyVersion>
     <FileVersion>3.0.0</FileVersion>
-    <Description>ASPNET layer for configuration and Embedded Controllers for ChustaSoft.Tools.Authorization project</Description>
+    <Description>SqlServer implementation for ChustaSoft.Tools.Authorization project based on ASPNET Identity</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ChustaSoft/Authorization</PackageProjectUrl>
@@ -19,8 +19,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common.AspNet" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
   </ItemGroup>
 
   <ItemGroup>

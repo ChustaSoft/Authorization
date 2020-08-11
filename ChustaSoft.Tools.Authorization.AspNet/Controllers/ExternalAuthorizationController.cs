@@ -14,11 +14,11 @@ namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI.Controllers
 {
     [Controller]
     [Route("web/[controller]")]
-    public class SessionController : Controller
+    public class ExternalAuthorizationController : Controller
     {
         private readonly SignInManager<User> signInManager;
 
-        public SessionController(SignInManager<User> signInManager, UserManager<User> userManager)
+        public ExternalAuthorizationController(SignInManager<User> signInManager, UserManager<User> userManager)
         {
             this.signInManager = signInManager;
         }
@@ -33,7 +33,7 @@ namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpGet("login/{provider}/{redirectUrl}", Name = "web-session-external-login")]
-        public async Task<ActionResult> ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
+        public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
         {
             string loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
             AuthenticationProperties properties = signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
@@ -42,7 +42,7 @@ namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI.Controllers
         }
 
         [HttpGet("login/{redirectUrl}/callback", Name = "web-session-external-login-callback")]
-        public async Task<ActionResult> ExternalLoginCallback([FromRoute]string redirectUrl)
+        public IActionResult ExternalLoginCallback([FromRoute]string redirectUrl)
         {
             //Example of how to retrieve login information:
             //

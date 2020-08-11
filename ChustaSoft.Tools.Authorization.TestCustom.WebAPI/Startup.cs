@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Data.SqlClient;
 
 
@@ -41,13 +42,15 @@ namespace ChustaSoft.Tools.Authorization
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterAuthorization<AuthCustomContext, CustomUser, CustomRole>(_configuration, BuildConnectionString());
+            services.RegisterAuthorization<CustomUser, CustomRole>(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
+                .WithCustomUserAction<CustomUserAction>()
+                .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());
 
             services.AddMvc()
-                .IntegrateChustaSoftAuthorization();
+                .AddAuthorizationControllers();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthCustomContext authContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -60,7 +63,13 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization<AuthCustomContext, CustomUser, CustomRole>(env, authContext);
+            app.ConfigureAuthorization(env, serviceProvider)
+                .SetupDatabase<AuthCustomContext, CustomUser, CustomRole>()
+                .DefaultUsers(ub =>
+                {
+                    ub.Add("SYSTEM", "Sys.1234");
+                    ub.Add("ADMIN", "Admn.1234").WithRole("Admin");
+                });
         }
 
         #endregion

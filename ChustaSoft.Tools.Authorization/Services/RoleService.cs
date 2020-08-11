@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 
@@ -34,7 +35,14 @@ namespace ChustaSoft.Tools.Authorization
             return role;
         }
 
-        public async Task<bool> CreateAsync(string roleName)
+        public async Task<bool> ExistAsync(string roleName) 
+        {
+            var existingRole = await _roleManager.FindByNameAsync(roleName);
+
+            return existingRole != null;
+        }
+
+        public async Task<bool> SaveAsync(string roleName)
         {
             var creationResult = await _roleManager.CreateAsync(new TRole { Name = roleName });
 

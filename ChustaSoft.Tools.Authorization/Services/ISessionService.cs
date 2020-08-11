@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using System.Threading.Tasks;
 
 
 namespace ChustaSoft.Tools.Authorization

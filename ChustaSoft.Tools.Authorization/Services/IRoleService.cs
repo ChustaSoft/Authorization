@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChustaSoft.Tools.Authorization.Models;
+using System;
 using System.Threading.Tasks;
 
 
@@ -10,7 +11,9 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TRole> Get(Guid roleId);
 
-        Task<bool> CreateAsync(string roleName);
+        Task<bool> ExistAsync(string roleName);
+
+        Task<bool> SaveAsync(string roleName);
 
     }
 
