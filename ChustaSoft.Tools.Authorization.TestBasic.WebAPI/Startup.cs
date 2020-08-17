@@ -48,11 +48,7 @@ namespace ChustaSoft.Tools.Authorization
             services.RegisterAuthorization(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
                 .WithSqlServerProvider(BuildConnectionString());            
 
-            services.RegisterExternalAuthentication(_configuration, new ExternalAuthorizationOptions 
-            {
-                GoogleOptions = new Tuple<string, string>( _configuration["ExternalAuthentication:Google:ClientId"], _configuration["ExternalAuthentication:Google:ClientSecret"] ),
-                MicrosoftOptions = new Tuple<string, string>( _configuration["ExternalAuthentication:Microsoft:ClientId"], _configuration["ExternalAuthentication:Microsoft:ClientSecret"] )
-            });
+            services.RegisterExternalAuthentication(opt => opt.SetExternalAuthorization(_configuration));
 
             services.AddMvc()
                 .AddAuthorizationControllers();
@@ -79,6 +75,16 @@ namespace ChustaSoft.Tools.Authorization
                         ub.Add("ADMIN", "Admn.1234").WithRole("Admin");
                     });
                 ;
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
+
         }
 
         #endregion

@@ -1,4 +1,6 @@
-﻿namespace ChustaSoft.Tools.Authorization
+﻿using System.Collections.Generic;
+
+namespace ChustaSoft.Tools.Authorization
 {
     public class AuthorizationSettings
     {
@@ -10,6 +12,8 @@
         public int MinPasswordLength { get; set; }
         public bool StrongSecurityPassword { get; set; }
         public string DefaultCulture { get; set; }
+
+        public List<(ExternalAuthenticationProviders Provider, (string ClientId, string ClientSecret))> ExternalSettings { get; set; }
 
 
         public AuthorizationSettings()

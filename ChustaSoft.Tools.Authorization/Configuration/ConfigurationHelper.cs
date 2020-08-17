@@ -41,25 +41,36 @@ namespace ChustaSoft.Tools.Authorization
             return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
         }
 
-        public static void RegisterExternalAuthentication(this IServiceCollection services, IConfiguration configuration, ExternalAuthorizationOptions options)
+        public static void RegisterExternalAuthentication(this IServiceCollection services, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
         {
-            services.AddAuthentication().AddGoogle(opt =>
-            {
-                if (!string.IsNullOrEmpty(options.GoogleOptions.Item1)){
-                    opt.ClientId = options.GoogleOptions.Item1;
-                    opt.ClientSecret = options.GoogleOptions.Item2;
-                }                
-            }).AddMicrosoftAccount(opt =>
-            {
-                if (!string.IsNullOrEmpty(options.MicrosoftOptions.Item1))
-                {
-                    opt.ClientId = options.MicrosoftOptions.Item1;
-                    opt.ClientSecret = options.MicrosoftOptions.Item2;
-                }
-            });
-        }
+            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
 
-        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction) 
+            foreach(var externalAuthenticationSetting in authSettings.ExternalSettings)
+            {
+                if (SettingsHaveValues(externalAuthenticationSetting))
+                {
+                    switch (externalAuthenticationSetting.Provider)
+                    {
+                        case ExternalAuthenticationProviders.Google:
+                            services.AddAuthentication().AddGoogle(opt =>
+                            {
+                                opt.ClientId = externalAuthenticationSetting.Item2.ClientId;
+                                opt.ClientSecret = externalAuthenticationSetting.Item2.ClientSecret;
+                            });
+                            break;
+                        case ExternalAuthenticationProviders.Microsoft:
+                            services.AddAuthentication().AddMicrosoftAccount(opt =>
+                            {
+                                opt.ClientId = externalAuthenticationSetting.Item2.ClientId;
+                                opt.ClientSecret = externalAuthenticationSetting.Item2.ClientSecret;
+                            });
+                            break;
+                    }
+                }
+            }
+        }        
+
+        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
         {
             var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
 
@@ -89,6 +100,11 @@ namespace ChustaSoft.Tools.Authorization
 
 
         #region Private methods
+        private static bool SettingsHaveValues((ExternalAuthenticationProviders Provider, (string ClientId, string ClientSecret)) externalAuthenticationSetting)
+        {
+            return !string.IsNullOrEmpty(externalAuthenticationSetting.Item2.ClientId)
+                                    && !string.IsNullOrEmpty(externalAuthenticationSetting.Item2.ClientSecret);
+        }
 
         private static void SetupJwtAuthentication(IServiceCollection services, AuthorizationSettings authSettings, string privateKey)
         {
