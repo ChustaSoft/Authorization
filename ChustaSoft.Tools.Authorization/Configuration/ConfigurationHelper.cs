@@ -83,12 +83,25 @@ namespace ChustaSoft.Tools.Authorization
             return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
         }
 
-        public static IdentityBuilder WithCustomUserAction<TCustomUserAction>(this IdentityBuilder identityBuilder)
-            where TCustomUserAction : IAfterUserCreationAction
+        public static IdentityBuilder WithUserCreatedAction<TUser, TUserCreatedImpl>(this IdentityBuilder identityBuilder)
+            where TUserCreatedImpl : class, IUserCreated
+            where TUser : User, new()
         {
-            var descriptor = new ServiceDescriptor(typeof(IAfterUserCreationAction), typeof(TCustomUserAction), ServiceLifetime.Transient);
+            identityBuilder.Services.AddTransient<IUserCreated, TUserCreatedImpl>();
 
-            identityBuilder.Services.Replace(descriptor);
+            ServiceDescriptor serviceDescriptor = null;
+            if (typeof(TUser) == typeof(User))
+                serviceDescriptor = new ServiceDescriptor(typeof(IUserService),
+                    x => new UserService(x.GetRequiredService<SignInManager<User>>(), x.GetRequiredService<UserManager<User>>(), x.GetRequiredService<IUserCreated>().DoAfter), 
+                    ServiceLifetime.Transient
+                );
+            else
+                serviceDescriptor = new ServiceDescriptor(typeof(IUserService<TUser>),
+                    x => new UserService<TUser>(x.GetRequiredService<SignInManager<TUser>>(), x.GetRequiredService<UserManager<TUser>>(), x.GetRequiredService<IUserCreated>().DoAfter),
+                    ServiceLifetime.Transient
+                );
+
+            identityBuilder.Services.Replace(serviceDescriptor);
 
             return identityBuilder;
         }
@@ -207,11 +220,6 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        private static void SetDefaultCustomActions(IServiceCollection services)
-        {
-            services.AddTransient<IAfterUserCreationAction, DefaultCustomUserActionsImplementation>();
-        }
-
         #endregion
 
 
@@ -225,8 +233,6 @@ namespace ChustaSoft.Tools.Authorization
             services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
 
             services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
-
-            SetDefaultCustomActions(services);
 
             SetupJwtAuthentication(services, authSettings, privateKey);
             SetupTypedServices<TUser, TRole>(services);
