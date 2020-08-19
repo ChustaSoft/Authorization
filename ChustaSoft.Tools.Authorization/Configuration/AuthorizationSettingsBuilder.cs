@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Common.Contracts;
+using ChustaSoft.Common.Helpers;
 using ChustaSoft.Common.Utilities;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,12 +8,6 @@ using System.Linq;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public enum ExternalAuthenticationProviders
-    {
-        Google,
-        Microsoft
-    }
-
     public class AuthorizationSettingsBuilder : IAuthorizationSettingsBuilder
     {
 
@@ -65,21 +60,9 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
-        public AuthorizationSettingsBuilder SetExternalAuthorization(IConfiguration configuration)
+        public AuthorizationSettingsBuilder AddExternalAuthorization(ExternalAuthenticationSettings[] externalAuthenticationSettings)
         {
-            var externalProviders = Enum.GetValues(typeof(ExternalAuthenticationProviders));
-            
-            _authorizationSettings.ExternalSettings = new List<(ExternalAuthenticationProviders Provider, (string ClientId, string ClientSecret))>();
-
-            foreach (ExternalAuthenticationProviders externalProvider in externalProviders)
-            {
-                string externalProviderName = Enum.GetName(typeof(ExternalAuthenticationProviders), externalProvider);
-
-                if (!string.IsNullOrEmpty(configuration[$"ExternalAuthentication:{externalProviderName}:ClientId"]))
-                {
-                    _authorizationSettings.ExternalSettings.Add((externalProvider, (configuration[$"ExternalAuthentication:{externalProviderName}:ClientId"], configuration[$"ExternalAuthentication:{externalProviderName}:ClientSecret"])));
-                }
-            }
+            _authorizationSettings.ExternalAuthentication = externalAuthenticationSettings;
 
             return this;
         }
@@ -95,8 +78,7 @@ namespace ChustaSoft.Tools.Authorization
         AuthorizationSettingsBuilder SetMinutesToExpire(int minutesToExpire);
         AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength);
         AuthorizationSettingsBuilder SetSiteName(string siteName);
-        AuthorizationSettingsBuilder SetExternalAuthorization(IConfiguration configuration);
-
+        AuthorizationSettingsBuilder AddExternalAuthorization(ExternalAuthenticationSettings[] externalAuthenticationSettings);
     }
 
 }

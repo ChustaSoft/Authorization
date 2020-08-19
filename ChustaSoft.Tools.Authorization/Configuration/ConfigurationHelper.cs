@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using ChustaSoft.Tools.Authorization.Configuration;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -18,8 +17,6 @@ namespace ChustaSoft.Tools.Authorization
         #region Constants
 
         private const string AUTH_SETINGS_SECTION = "Authorization";
-        private const string CLIENT_ID_SETTINGS_ENTRY = "ClientId";
-        private const string CLIENT_SECRET_SETTINGS_ENTRY = "ClientSecret";
 
         #endregion
 
@@ -41,34 +38,34 @@ namespace ChustaSoft.Tools.Authorization
             return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
         }
 
-        public static void RegisterExternalAuthentication(this IServiceCollection services, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
+        public static void RegisterExternalAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
+            var authSettings = GetSettingsFromConfiguration(configuration, AUTH_SETINGS_SECTION);
 
-            foreach(var externalAuthenticationSetting in authSettings.ExternalSettings)
+            foreach (var externalAuthenticationSetting in authSettings.ExternalAuthentication)
             {
-                if (SettingsHaveValues(externalAuthenticationSetting))
+                if (!string.IsNullOrEmpty(externalAuthenticationSetting.ClientId) && !string.IsNullOrEmpty(externalAuthenticationSetting.ClientSecret))
                 {
-                    switch (externalAuthenticationSetting.Provider)
+                    switch (externalAuthenticationSetting.ProviderName)
                     {
                         case ExternalAuthenticationProviders.Google:
                             services.AddAuthentication().AddGoogle(opt =>
                             {
-                                opt.ClientId = externalAuthenticationSetting.Item2.ClientId;
-                                opt.ClientSecret = externalAuthenticationSetting.Item2.ClientSecret;
+                                opt.ClientId = externalAuthenticationSetting.ClientId;
+                                opt.ClientSecret = externalAuthenticationSetting.ClientSecret;
                             });
                             break;
                         case ExternalAuthenticationProviders.Microsoft:
                             services.AddAuthentication().AddMicrosoftAccount(opt =>
                             {
-                                opt.ClientId = externalAuthenticationSetting.Item2.ClientId;
-                                opt.ClientSecret = externalAuthenticationSetting.Item2.ClientSecret;
+                                opt.ClientId = externalAuthenticationSetting.ClientId;
+                                opt.ClientSecret = externalAuthenticationSetting.ClientSecret;
                             });
                             break;
                     }
                 }
             }
-        }        
+        }
 
         public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
         {
@@ -252,7 +249,7 @@ namespace ChustaSoft.Tools.Authorization
         }
 
         private static AuthorizationSettings GetSettingsFromConfiguration(IConfiguration configuration, string authSectionName)
-        {
+        {            
             var authSettings = configuration.GetSection(authSectionName).Get<AuthorizationSettings>();
 
             if (authSettings == null)

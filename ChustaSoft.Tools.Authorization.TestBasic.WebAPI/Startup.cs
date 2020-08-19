@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.AspNet;
-using ChustaSoft.Tools.Authorization.Configuration;
 using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,7 +47,7 @@ namespace ChustaSoft.Tools.Authorization
             services.RegisterAuthorization(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
                 .WithSqlServerProvider(BuildConnectionString());            
 
-            services.RegisterExternalAuthentication(opt => opt.SetExternalAuthorization(_configuration));
+            services.RegisterExternalAuthentication(_configuration);
 
             services.AddMvc()
                 .AddAuthorizationControllers();

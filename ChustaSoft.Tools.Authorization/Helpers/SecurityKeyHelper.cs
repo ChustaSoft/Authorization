@@ -8,13 +8,10 @@ namespace ChustaSoft.Tools.Authorization
 
         public static SecurityKey GetSecurityKey(string privateKey)
         {
-            if (!string.IsNullOrEmpty(privateKey)) 
-            { 
-                var secretKeyBytes = Encoding.UTF8.GetBytes(privateKey);
-                return new SymmetricSecurityKey(secretKeyBytes);
-            }
+            var secretKeyBytes = Encoding.UTF8.GetBytes(privateKey);
+            var signingKey = new SymmetricSecurityKey(secretKeyBytes);
 
-            return null;
+            return signingKey;
         }
 
     }
