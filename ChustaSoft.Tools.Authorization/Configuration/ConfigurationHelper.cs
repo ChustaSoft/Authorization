@@ -42,24 +42,26 @@ namespace ChustaSoft.Tools.Authorization
         {
             var authSettings = GetSettingsFromConfiguration(configuration, AUTH_SETINGS_SECTION);
 
-            foreach (var externalAuthenticationSetting in authSettings.ExternalAuthentication)
+            foreach (var providerName in authSettings.ExternalAuthentication.Keys)
             {
-                if (!string.IsNullOrEmpty(externalAuthenticationSetting.ClientId) && !string.IsNullOrEmpty(externalAuthenticationSetting.ClientSecret))
+                var providerConfig = authSettings.ExternalAuthentication[providerName];
+
+                if (!string.IsNullOrEmpty(providerConfig.ClientId) && !string.IsNullOrEmpty(providerConfig.ClientSecret))
                 {
-                    switch (externalAuthenticationSetting.ProviderName)
+                    switch (providerName)
                     {
                         case ExternalAuthenticationProviders.Google:
                             services.AddAuthentication().AddGoogle(opt =>
                             {
-                                opt.ClientId = externalAuthenticationSetting.ClientId;
-                                opt.ClientSecret = externalAuthenticationSetting.ClientSecret;
+                                opt.ClientId = providerConfig.ClientId;
+                                opt.ClientSecret = providerConfig.ClientSecret;
                             });
                             break;
                         case ExternalAuthenticationProviders.Microsoft:
                             services.AddAuthentication().AddMicrosoftAccount(opt =>
                             {
-                                opt.ClientId = externalAuthenticationSetting.ClientId;
-                                opt.ClientSecret = externalAuthenticationSetting.ClientSecret;
+                                opt.ClientId = providerConfig.ClientId;
+                                opt.ClientSecret = providerConfig.ClientSecret;
                             });
                             break;
                     }
