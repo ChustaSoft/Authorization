@@ -42,32 +42,8 @@ namespace ChustaSoft.Tools.Authorization
         {
             var authSettings = GetSettingsFromConfiguration(configuration, AUTH_SETINGS_SECTION);
 
-            foreach (var providerName in authSettings.ExternalAuthentication.Keys)
-            {
-                var providerConfig = authSettings.ExternalAuthentication[providerName];
-
-                if (!string.IsNullOrEmpty(providerConfig.ClientId) && !string.IsNullOrEmpty(providerConfig.ClientSecret))
-                {
-                    switch (providerName)
-                    {
-                        case ExternalAuthenticationProviders.Google:
-                            services.AddAuthentication().AddGoogle(opt =>
-                            {
-                                opt.ClientId = providerConfig.ClientId;
-                                opt.ClientSecret = providerConfig.ClientSecret;
-                            });
-                            break;
-                        case ExternalAuthenticationProviders.Microsoft:
-                            services.AddAuthentication().AddMicrosoftAccount(opt =>
-                            {
-                                opt.ClientId = providerConfig.ClientId;
-                                opt.ClientSecret = providerConfig.ClientSecret;
-                            });
-                            break;
-                    }
-                }
-            }
-        }
+            services.RegisterExternalAuthentication(authSettings);
+        }        
 
         public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
         {
@@ -83,6 +59,13 @@ namespace ChustaSoft.Tools.Authorization
             var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
 
             return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
+        }
+
+        public static void RegisterExternalAuthentication(this IServiceCollection services, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
+        {
+            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
+
+            services.RegisterExternalAuthentication(authSettings);
         }
 
         public static IdentityBuilder WithUserCreatedAction<TUser, TUserCreatedImpl>(this IdentityBuilder identityBuilder)
@@ -244,6 +227,35 @@ namespace ChustaSoft.Tools.Authorization
             var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
 
             return identityBuilder;
+        }
+
+        private static void RegisterExternalAuthentication(this IServiceCollection services, AuthorizationSettings authSettings)
+        {
+            foreach (var providerName in authSettings.ExternalAuthentication.Keys)
+            {
+                var providerConfig = authSettings.ExternalAuthentication[providerName];
+
+                if (!string.IsNullOrEmpty(providerConfig.ClientId) && !string.IsNullOrEmpty(providerConfig.ClientSecret))
+                {
+                    switch (providerName)
+                    {
+                        case ExternalAuthenticationProviders.Google:
+                            services.AddAuthentication().AddGoogle(opt =>
+                            {
+                                opt.ClientId = providerConfig.ClientId;
+                                opt.ClientSecret = providerConfig.ClientSecret;
+                            });
+                            break;
+                        case ExternalAuthenticationProviders.Microsoft:
+                            services.AddAuthentication().AddMicrosoftAccount(opt =>
+                            {
+                                opt.ClientId = providerConfig.ClientId;
+                                opt.ClientSecret = providerConfig.ClientSecret;
+                            });
+                            break;
+                    }
+                }
+            }
         }
 
         private static AuthorizationSettings GetSettingsFromBuilder(Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
