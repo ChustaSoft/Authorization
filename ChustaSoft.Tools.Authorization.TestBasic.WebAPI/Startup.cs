@@ -75,15 +75,6 @@ namespace ChustaSoft.Tools.Authorization
                     });
                 ;
 
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
-            });
-
         }
 
         #endregion
