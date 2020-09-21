@@ -69,7 +69,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public AuthorizationSettingsBuilder AddExternalAuthorization(ExternalAuthenticationProviders providerName, string clientId, string clientSecret)
         {
-            _authorizationSettings.ExternalAuthentication.Add(providerName, new ExternalAuthenticationSettings { ClientId = clientId, ClientSecret = clientSecret });
+            AddExternalAuthorization(providerName, new ExternalAuthenticationSettings { ClientId = clientId, ClientSecret = clientSecret });
 
             return this;
         }
@@ -86,6 +86,7 @@ namespace ChustaSoft.Tools.Authorization
         AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength);
         AuthorizationSettingsBuilder SetSiteName(string siteName);
         AuthorizationSettingsBuilder AddExternalAuthorization(ExternalAuthenticationProviders providerName, ExternalAuthenticationSettings externalAuthenticationSettings);
+        AuthorizationSettingsBuilder AddExternalAuthorization(ExternalAuthenticationProviders providerName, string clientId, string clientSecret);
     }
 
 }
