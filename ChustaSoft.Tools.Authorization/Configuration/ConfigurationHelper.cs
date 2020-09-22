@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Common.Contracts;
-using Microsoft.AspNetCore.Authentication;
 using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -35,15 +34,9 @@ namespace ChustaSoft.Tools.Authorization
             where TRole : Role, new()
         {
             var authSettings = GetSettingsFromConfiguration(configuration, authSectionName);
+
             return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
         }
-
-        public static void RegisterExternalAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
-            var authSettings = GetSettingsFromConfiguration(configuration, AUTH_SETINGS_SECTION);
-
-            services.RegisterExternalAuthentication(authSettings);
-        }        
 
         public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
         {
@@ -59,13 +52,6 @@ namespace ChustaSoft.Tools.Authorization
             var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
 
             return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
-        }
-
-        public static void RegisterExternalAuthentication(this IServiceCollection services, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
-        {
-            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
-
-            services.RegisterExternalAuthentication(authSettings);
         }
 
         public static IdentityBuilder WithUserCreatedAction<TUser, TUserCreatedImpl>(this IdentityBuilder identityBuilder)
@@ -223,17 +209,18 @@ namespace ChustaSoft.Tools.Authorization
             SetupTypedServices<TUser, TRole>(services);
             SetupUserTypedServices<TUser>(services);
             SetupRoleTypedServices<TRole>(services);
+            SetupExternalProviders(services, authSettings);
 
             var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
 
             return identityBuilder;
         }
 
-        private static void RegisterExternalAuthentication(this IServiceCollection services, AuthorizationSettings authSettings)
+        private static void SetupExternalProviders(IServiceCollection services, AuthorizationSettings authSettings)
         {
-            foreach (var providerName in authSettings.ExternalAuthentication.Keys)
+            foreach (var providerName in authSettings.ExternalProviders.Keys)
             {
-                var providerConfig = authSettings.ExternalAuthentication[providerName];
+                var providerConfig = authSettings.ExternalProviders[providerName];
 
                 if (!string.IsNullOrEmpty(providerConfig.ClientId) && !string.IsNullOrEmpty(providerConfig.ClientSecret))
                 {

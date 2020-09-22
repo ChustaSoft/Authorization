@@ -95,7 +95,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
         {
             string loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
-            AuthenticationProperties properties = _sessionService.BuildAuthenticationProperties(provider, loginCallbackUrl);
+            AuthenticationProperties properties = _sessionService.GetExternalProperties(provider, loginCallbackUrl);
 
             return Challenge(properties, provider);
         }

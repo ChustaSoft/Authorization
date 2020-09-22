@@ -134,9 +134,10 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
-        public AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl)
+        public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
         {
-            AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
+
             return properties;
         }
 

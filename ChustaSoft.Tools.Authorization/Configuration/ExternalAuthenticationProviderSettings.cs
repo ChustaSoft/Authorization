@@ -1,6 +1,6 @@
 ﻿namespace ChustaSoft.Tools.Authorization
 {
-    public class ExternalAuthenticationSettings
+    public class ExternalAuthenticationProviderSettings
     {
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }

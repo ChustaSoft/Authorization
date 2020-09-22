@@ -76,9 +76,9 @@ namespace ChustaSoft.Tools.Authorization
                 throw new AuthenticationException($"User {user.UserName} could not be created");
         }
 
-        public AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl)
+        public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
         {
-            return _userService.BuildAuthenticationProperties(provider, loginCallbackUrl);
+            return _userService.GetExternalProperties(provider, loginCallbackUrl);
         }
 
         #endregion

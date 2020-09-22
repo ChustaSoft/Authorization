@@ -20,7 +20,7 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<bool> ExistAsync(string userEmail);
 
-        AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl);
+        AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl);
 
     }
 

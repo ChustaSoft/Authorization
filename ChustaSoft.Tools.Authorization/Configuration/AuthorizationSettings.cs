@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -13,7 +12,7 @@ namespace ChustaSoft.Tools.Authorization
         public int MinPasswordLength { get; set; }
         public bool StrongSecurityPassword { get; set; }
         public string DefaultCulture { get; set; }
-        public IDictionary<ExternalAuthenticationProviders, ExternalAuthenticationSettings> ExternalAuthentication { get; set; }
+        public IDictionary<ExternalAuthenticationProviders, ExternalAuthenticationProviderSettings> ExternalProviders { get; set; }
 
 
         public AuthorizationSettings()
@@ -23,7 +22,7 @@ namespace ChustaSoft.Tools.Authorization
             MinutesToExpire = AuthorizationConstants.DEFAULT_MINUTES_TO_EXPIRE;
             MaxAttemptsToLock = AuthorizationConstants.DEFAULT_MAX_ATTEMPTS_TO_LOCK;
             MinutesToUnlock = AuthorizationConstants.DEFAULT_MINUTES_TO_UNLOCK;
-            ExternalAuthentication = new Dictionary<ExternalAuthenticationProviders, ExternalAuthenticationSettings>();
+            ExternalProviders = new Dictionary<ExternalAuthenticationProviders, ExternalAuthenticationProviderSettings>();
         }
 
     }

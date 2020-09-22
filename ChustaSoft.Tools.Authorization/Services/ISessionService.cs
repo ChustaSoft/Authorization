@@ -12,8 +12,7 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<Session> RegisterAsync(Credentials credentials);
 
-        AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl);
-
+        AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl);
 
     }
 }
