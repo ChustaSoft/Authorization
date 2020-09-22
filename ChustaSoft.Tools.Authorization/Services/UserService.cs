@@ -77,7 +77,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<TUser> GetByPhone(string phone, string password)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone && x.PhoneNumberConfirmed);
+            var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone);
 
             if (user != null)
             {
