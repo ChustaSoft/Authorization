@@ -81,11 +81,6 @@ namespace ChustaSoft.Tools.Authorization
 
 
         #region Private methods
-        private static bool SettingsHaveValues((ExternalAuthenticationProviders Provider, (string ClientId, string ClientSecret)) externalAuthenticationSetting)
-        {
-            return !string.IsNullOrEmpty(externalAuthenticationSetting.Item2.ClientId)
-                                    && !string.IsNullOrEmpty(externalAuthenticationSetting.Item2.ClientSecret);
-        }
 
         private static void SetupJwtAuthentication(IServiceCollection services, AuthorizationSettings authSettings, string privateKey)
         {
