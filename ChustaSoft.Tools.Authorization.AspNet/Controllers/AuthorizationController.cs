@@ -86,6 +86,24 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("external-login/{provider}/{redirectUrl}", Name = "web-session-external-login")]
+        public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
+        {
+            var loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
+            var properties = _sessionService.GetExternalProperties(provider, loginCallbackUrl);
+
+            return Challenge(properties, provider);
+        }
+
+        [HttpGet("external-login/{redirectUrl}/callback", Name = "web-session-external-login-callback")]
+        public IActionResult ExternalLoginCallback([FromRoute]string redirectUrl)
+        {
+            var ub = new UriBuilder("https", redirectUrl);
+
+            return new RedirectResult(ub.ToString());
+        }
+
         #endregion
 
     }

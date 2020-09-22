@@ -56,11 +56,23 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
+        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings)
+        {
+            _authorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationSettings);
+
+            return this;
+        }
+
+        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret)
+        {
+            AddExternalProvider(providerName, new ExternalAuthenticationProviderSettings { ClientId = clientId, ClientSecret = clientSecret });
+
+            return this;
+        }
+
         public AuthorizationSettings Build() => _authorizationSettings;
 
     }
-
-
 
     public interface IAuthorizationSettingsBuilder : IBuilder<AuthorizationSettings>
     {
@@ -69,6 +81,8 @@ namespace ChustaSoft.Tools.Authorization
         AuthorizationSettingsBuilder SetMinutesToExpire(int minutesToExpire);
         AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength);
         AuthorizationSettingsBuilder SetSiteName(string siteName);
+        AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings);
+        AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret);
     }
 
 }

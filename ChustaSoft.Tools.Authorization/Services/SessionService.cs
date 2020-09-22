@@ -1,5 +1,6 @@
 ﻿using ChustaSoft.Common.Contracts;
 using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -73,6 +74,11 @@ namespace ChustaSoft.Tools.Authorization
             }
             else
                 throw new AuthenticationException($"User {user.UserName} could not be created");
+        }
+
+        public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
+        {
+            return _userService.GetExternalProperties(provider, loginCallbackUrl);
         }
 
         #endregion

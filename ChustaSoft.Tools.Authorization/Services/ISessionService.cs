@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 
 
@@ -10,6 +11,8 @@ namespace ChustaSoft.Tools.Authorization
         Task<Session> AuthenticateAsync(Credentials credentials);
 
         Task<Session> RegisterAsync(Credentials credentials);
+
+        AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl);
 
     }
 }

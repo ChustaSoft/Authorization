@@ -12,7 +12,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         #region Constants
 
         private const string ASP_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization.AspNet";
-        
+
         #endregion
 
 

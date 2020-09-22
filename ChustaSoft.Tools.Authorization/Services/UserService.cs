@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -131,6 +132,13 @@ namespace ChustaSoft.Tools.Authorization
             var result = await _userManager.AddClaimsAsync(user, claims);
 
             return result.Succeeded;
+        }
+
+        public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
+        {
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
+
+            return properties;
         }
 
         #endregion

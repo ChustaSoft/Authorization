@@ -48,13 +48,16 @@ namespace ChustaSoft.Tools.Authorization
             //services.RegisterAuthorization<CustomUser, CustomRole>("d5ab5e3f5799445fb9f68d1fcdda3b9f", x =>
             //    {
             //        x.SetSiteName("AuthorizationApi");
+            //        x.AddExternalProvider(ExternalAuthenticationProviders.Google, "[ClientIdParam]", "[ClientSecretParam]");
             //    })
             //    .WithUserCreatedAction<CustomUser, CustomUserAction>()
             //    .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());
 
+
             /*
             * Example with appSettings:
             */
+
             services.RegisterAuthorization<CustomUser, CustomRole>(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
                 .WithUserCreatedAction<CustomUser, CustomUserAction>()
                 .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());

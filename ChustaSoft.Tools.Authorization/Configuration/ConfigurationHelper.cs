@@ -38,7 +38,7 @@ namespace ChustaSoft.Tools.Authorization
             return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
         }
 
-        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction) 
+        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
         {
             var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
 
@@ -204,10 +204,40 @@ namespace ChustaSoft.Tools.Authorization
             SetupTypedServices<TUser, TRole>(services);
             SetupUserTypedServices<TUser>(services);
             SetupRoleTypedServices<TRole>(services);
+            SetupExternalProviders(services, authSettings);
 
             var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
 
             return identityBuilder;
+        }
+
+        private static void SetupExternalProviders(IServiceCollection services, AuthorizationSettings authSettings)
+        {
+            foreach (var providerName in authSettings.ExternalProviders.Keys)
+            {
+                var providerConfig = authSettings.ExternalProviders[providerName];
+
+                if (!string.IsNullOrEmpty(providerConfig.ClientId) && !string.IsNullOrEmpty(providerConfig.ClientSecret))
+                {
+                    switch (providerName)
+                    {
+                        case ExternalAuthenticationProviders.Google:
+                            services.AddAuthentication().AddGoogle(opt =>
+                            {
+                                opt.ClientId = providerConfig.ClientId;
+                                opt.ClientSecret = providerConfig.ClientSecret;
+                            });
+                            break;
+                        case ExternalAuthenticationProviders.Microsoft:
+                            services.AddAuthentication().AddMicrosoftAccount(opt =>
+                            {
+                                opt.ClientId = providerConfig.ClientId;
+                                opt.ClientSecret = providerConfig.ClientSecret;
+                            });
+                            break;
+                    }
+                }
+            }
         }
 
         private static AuthorizationSettings GetSettingsFromBuilder(Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
