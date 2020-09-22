@@ -21,6 +21,7 @@ namespace ChustaSoft.Tools.Authorization
                 {
                     Username = user.UserName,
                     Email = user.Email,
+                    Phone = user.PhoneNumber,
                     Culture = user.Culture
                 };
 
@@ -29,6 +30,7 @@ namespace ChustaSoft.Tools.Authorization
             {
                     UserName = credentials.Username,
                     Email = credentials.Email,
+                    PhoneNumber = credentials.Phone,
                     PasswordHash = credentials.Password,
                     Culture = string.IsNullOrEmpty(credentials.Culture) ? _authorizationSettings.DefaultCulture : credentials.Culture
             };

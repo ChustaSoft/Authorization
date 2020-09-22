@@ -75,6 +75,21 @@ namespace ChustaSoft.Tools.Authorization
             throw new AuthenticationException("User not allowed to login in the system");
         }
 
+        public async Task<TUser> GetByPhone(string phone, string password)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone && x.PhoneNumberConfirmed);
+
+            if (user != null)
+            {
+                var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: false);
+
+                if (userSignIn.Succeeded)
+                    return user;
+            }
+
+            throw new AuthenticationException("User not allowed to login in the system");
+        }
+
         public async Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters)
         {
             var result = await _userManager.CreateAsync(user, password);

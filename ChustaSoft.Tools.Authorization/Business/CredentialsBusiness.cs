@@ -15,6 +15,8 @@ namespace ChustaSoft.Tools.Authorization
                 return LoginType.MAIL;
             else if (PerformLoginByCode(credentials))
                 return LoginType.USER;
+            else if (PerformLoginByPhone(credentials))
+                return LoginType.PHONE;
             else
                 throw new AuthenticationException("User must inform Username or Email and password for login");
         }
@@ -24,9 +26,14 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private static bool PerformLoginByMail(Credentials credentials) => !string.IsNullOrEmpty(credentials.Email) && !string.IsNullOrEmpty(credentials.Password);
+        private static bool PerformLoginByMail(Credentials credentials) 
+            => !string.IsNullOrEmpty(credentials.Email) && !string.IsNullOrEmpty(credentials.Password);
 
-        private static bool PerformLoginByCode(Credentials credentials) => !string.IsNullOrEmpty(credentials.Username) && !string.IsNullOrEmpty(credentials.Password);
+        private static bool PerformLoginByCode(Credentials credentials) 
+            => !string.IsNullOrEmpty(credentials.Username) && !string.IsNullOrEmpty(credentials.Password);
+
+        private static bool PerformLoginByPhone(Credentials credentials) 
+            => !string.IsNullOrEmpty(credentials.Phone) && !string.IsNullOrEmpty(credentials.Password);
 
         #endregion
 

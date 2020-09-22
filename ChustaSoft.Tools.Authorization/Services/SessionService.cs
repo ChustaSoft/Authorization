@@ -98,6 +98,9 @@ namespace ChustaSoft.Tools.Authorization
                 case LoginType.MAIL:
                     return await _userService.GetByEmail(credentials.Email, credentials.Password);
 
+                case LoginType.PHONE:
+                    return await _userService.GetByPhone(credentials.Phone, credentials.Password);
+
                 default:
                     throw new AuthenticationException("User could not by logged in into the system");
             }

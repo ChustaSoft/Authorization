@@ -16,6 +16,8 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TUser> GetByEmail(string email, string password);
 
+        Task<TUser> GetByPhone(string phone, string password);
+
         Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters);
 
         Task<bool> ExistAsync(string userEmail);

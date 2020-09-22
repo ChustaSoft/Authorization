@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace ChustaSoft.Tools.Authorization.Models
@@ -11,6 +10,7 @@ namespace ChustaSoft.Tools.Authorization.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string Phone { get; set; }
         public string Culture { get; set; }
 
         public IDictionary<string, string> Parameters { get; set; }

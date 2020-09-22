@@ -30,6 +30,16 @@ namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
         #region Test Cases
 
         [TestMethod]
+        public void Given_UserWithPhone_When_ValidateCredentialsRequested_Then_LoginTypePhoneRetrived()
+        {
+            var credentials = new Credentials { Phone = "666999666", Password = "OK" };
+
+            var typeRetrived = ServiceUnderTest.ValidateCredentials(credentials);
+
+            Assert.AreEqual(typeRetrived, LoginType.PHONE);
+        }
+
+        [TestMethod]
         public void Given_UserWithMail_When_ValidateCredentialsRequested_Then_LoginTypeMailRetrived()
         {
             var credentials = new Credentials { Email = "test@mail.com", Password = "OK" };
