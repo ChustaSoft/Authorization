@@ -1,8 +1,6 @@
 ﻿using ChustaSoft.Common.Base;
 using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,9 +23,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         #region Constructor
 
-        public AuthorizationController(ILogger<AuthorizationController> logger, 
-                                    ISessionService sessionService
-            )
+        public AuthorizationController(ILogger<AuthorizationController> logger, ISessionService sessionService)
             : base(logger)
         {
             _sessionService = sessionService;
@@ -94,8 +90,8 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         [HttpGet("external-login/{provider}/{redirectUrl}", Name = "web-session-external-login")]
         public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
         {
-            string loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
-            AuthenticationProperties properties = _sessionService.GetExternalProperties(provider, loginCallbackUrl);
+            var loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
+            var properties = _sessionService.GetExternalProperties(provider, loginCallbackUrl);
 
             return Challenge(properties, provider);
         }
@@ -103,7 +99,8 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         [HttpGet("external-login/{redirectUrl}/callback", Name = "web-session-external-login-callback")]
         public IActionResult ExternalLoginCallback([FromRoute]string redirectUrl)
         {
-            UriBuilder ub = new UriBuilder("https", redirectUrl);
+            var ub = new UriBuilder("https", redirectUrl);
+
             return new RedirectResult(ub.ToString());
         }
 

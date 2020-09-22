@@ -45,7 +45,7 @@ namespace ChustaSoft.Tools.Authorization
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterAuthorization(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
-                .WithSqlServerProvider(BuildConnectionString());            
+                .WithSqlServerProvider(BuildConnectionString());
 
             services.AddMvc()
                 .AddAuthorizationControllers();
@@ -72,7 +72,6 @@ namespace ChustaSoft.Tools.Authorization
                         ub.Add("ADMIN", "Admn.1234").WithRole("Admin");
                     });
                 ;
-
         }
 
         #endregion

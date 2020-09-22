@@ -256,7 +256,7 @@ namespace ChustaSoft.Tools.Authorization
         }
 
         private static AuthorizationSettings GetSettingsFromConfiguration(IConfiguration configuration, string authSectionName)
-        {            
+        {
             var authSettings = configuration.GetSection(authSectionName).Get<AuthorizationSettings>();
 
             if (authSettings == null)
