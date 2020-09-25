@@ -65,9 +65,11 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.ConcurrencyStamp).IsConcurrencyToken();
                 entity.Property(e => e.UserName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
                 entity.Property(e => e.Email).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
-                entity.Property(e => e.EmailConfirmed);
                 entity.Property(e => e.NormalizedEmail).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
+
+                entity.Ignore(e => e.EmailConfirmed);
+                entity.Ignore(e => e.PhoneNumberConfirmed);
 
                 entity.Property(e => e.RegistrationDate).HasDefaultValueSql("sysdatetimeoffset()");
 

@@ -117,11 +117,13 @@ namespace ChustaSoft.Tools.Authorization
                     opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
                     opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
                     opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
+                    
+                    opt.SignIn.RequireConfirmedAccount = authSettings.ConfirmationRequired;
+                    
                     opt.Password.RequiredLength = authSettings.MinPasswordLength;
 
                     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(authSettings.MinutesToUnlock);
                     opt.Lockout.MaxFailedAccessAttempts = authSettings.MaxAttemptsToLock;
-                    opt.Lockout.AllowedForNewUsers = true;
 
                     opt.User.RequireUniqueEmail = true;
                 })

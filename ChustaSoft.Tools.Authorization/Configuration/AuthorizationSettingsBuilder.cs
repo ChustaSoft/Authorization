@@ -34,6 +34,13 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
+        public AuthorizationSettingsBuilder SetConfirmationRequired(bool flag)
+        {
+            _authorizationSettings.ConfirmationRequired = flag;
+            
+            return this;
+        }
+
         public AuthorizationSettingsBuilder SetAccountLock(int maxAttemps, int minutesToUnlock)
         {
             _authorizationSettings.MaxAttemptsToLock = maxAttemps;
@@ -80,6 +87,7 @@ namespace ChustaSoft.Tools.Authorization
         AuthorizationSettingsBuilder SetDefaultCulture(string defaultCulture);
         AuthorizationSettingsBuilder SetMinutesToExpire(int minutesToExpire);
         AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength);
+        AuthorizationSettingsBuilder SetConfirmationRequired(bool flag);
         AuthorizationSettingsBuilder SetSiteName(string siteName);
         AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings);
         AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret);
