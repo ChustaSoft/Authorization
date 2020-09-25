@@ -63,12 +63,12 @@ namespace ChustaSoft.Tools.Authorization
             ServiceDescriptor serviceDescriptor = null;
             if (typeof(TUser) == typeof(User))
                 serviceDescriptor = new ServiceDescriptor(typeof(IUserService),
-                    x => new UserService(x.GetRequiredService<SignInManager<User>>(), x.GetRequiredService<UserManager<User>>(), x.GetRequiredService<IUserCreated>().DoAfter), 
+                    x => new UserService(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<User>>(), x.GetRequiredService<UserManager<User>>(), x.GetRequiredService<IUserCreated>().DoAfter), 
                     ServiceLifetime.Transient
                 );
             else
                 serviceDescriptor = new ServiceDescriptor(typeof(IUserService<TUser>),
-                    x => new UserService<TUser>(x.GetRequiredService<SignInManager<TUser>>(), x.GetRequiredService<UserManager<TUser>>(), x.GetRequiredService<IUserCreated>().DoAfter),
+                    x => new UserService<TUser>(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<TUser>>(), x.GetRequiredService<UserManager<TUser>>(), x.GetRequiredService<IUserCreated>().DoAfter),
                     ServiceLifetime.Transient
                 );
 

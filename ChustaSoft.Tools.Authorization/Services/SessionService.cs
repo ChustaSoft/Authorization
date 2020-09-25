@@ -90,20 +90,14 @@ namespace ChustaSoft.Tools.Authorization
         {
             var loginType = _credentialsBusiness.ValidateCredentials(credentials);
 
-            switch (loginType)
+            return loginType switch
             {
-                case LoginType.USER:
-                    return await _userService.GetByUsername(credentials.Username, credentials.Password);
+                LoginType.USER => await _userService.GetByUsername(credentials.Username, credentials.Password),
+                LoginType.MAIL => await _userService.GetByEmail(credentials.Email, credentials.Password),
+                LoginType.PHONE => await _userService.GetByPhone(credentials.Phone, credentials.Password),
 
-                case LoginType.MAIL:
-                    return await _userService.GetByEmail(credentials.Email, credentials.Password);
-
-                case LoginType.PHONE:
-                    return await _userService.GetByPhone(credentials.Phone, credentials.Password);
-
-                default:
-                    throw new AuthenticationException("User could not by logged in into the system");
-            }
+                _ => throw new AuthenticationException("User could not by logged in into the system"),
+            };
         }
 
         #endregion

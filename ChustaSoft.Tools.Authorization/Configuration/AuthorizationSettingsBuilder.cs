@@ -7,7 +7,7 @@ namespace ChustaSoft.Tools.Authorization
     public class AuthorizationSettingsBuilder : IAuthorizationSettingsBuilder
     {
 
-        private AuthorizationSettings _authorizationSettings;
+        private AuthorizationSettings AuthorizationSettings { get; set; }
 
 
         public ICollection<ErrorMessage> Errors { get; set; }
@@ -15,57 +15,57 @@ namespace ChustaSoft.Tools.Authorization
 
         public AuthorizationSettingsBuilder()
         {
-            _authorizationSettings = new AuthorizationSettings();
+            AuthorizationSettings = new AuthorizationSettings();
         }
 
 
         public AuthorizationSettingsBuilder SetSiteName(string siteName)
         {
-            _authorizationSettings.SiteName = siteName;
+            AuthorizationSettings.SiteName = siteName;
 
             return this;
         }
 
         public AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength)
         {
-            _authorizationSettings.StrongSecurityPassword = flag;
-            _authorizationSettings.MinPasswordLength = minLength;
+            AuthorizationSettings.StrongSecurityPassword = flag;
+            AuthorizationSettings.MinPasswordLength = minLength;
 
             return this;
         }
 
         public AuthorizationSettingsBuilder SetConfirmationRequired(bool flag)
         {
-            _authorizationSettings.ConfirmationRequired = flag;
+            AuthorizationSettings.ConfirmationRequired = flag;
             
             return this;
         }
 
         public AuthorizationSettingsBuilder SetAccountLock(int maxAttemps, int minutesToUnlock)
         {
-            _authorizationSettings.MaxAttemptsToLock = maxAttemps;
-            _authorizationSettings.MinutesToUnlock = minutesToUnlock;
+            AuthorizationSettings.MaxAttemptsToLock = maxAttemps;
+            AuthorizationSettings.MinutesToUnlock = minutesToUnlock;
 
             return this;
         }
 
         public AuthorizationSettingsBuilder SetDefaultCulture(string defaultCulture)
         {
-            _authorizationSettings.DefaultCulture = defaultCulture;
+            AuthorizationSettings.DefaultCulture = defaultCulture;
 
             return this;
         }
 
         public AuthorizationSettingsBuilder SetMinutesToExpire(int minutesToExpire)
         {
-            _authorizationSettings.MinutesToExpire = minutesToExpire;
+            AuthorizationSettings.MinutesToExpire = minutesToExpire;
 
             return this;
         }
 
         public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings)
         {
-            _authorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationSettings);
+            AuthorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationSettings);
 
             return this;
         }
@@ -77,7 +77,7 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
-        public AuthorizationSettings Build() => _authorizationSettings;
+        public AuthorizationSettings Build() => AuthorizationSettings;
 
     }
 

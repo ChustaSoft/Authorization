@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class UserService<TUser> : IUserService<TUser>
+    public class UserService<TUser> : ServiceBase, IUserService<TUser>
          where TUser : User, new()
     {
         public event EventHandler<UserEventArgs> UserCreatedEventHandler;
@@ -27,11 +27,15 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constructor
 
-        public UserService(SignInManager<TUser> signInManager, UserManager<TUser> userManager)
-            : this(signInManager, userManager, null)
+        public UserService(AuthorizationSettings authorizationSettings, SignInManager<TUser> signInManager, UserManager<TUser> userManager)
+            : this(authorizationSettings, signInManager, userManager, null)
         { }
 
-        public UserService(SignInManager<TUser> signInManager, UserManager<TUser> userManager, EventHandler<UserEventArgs> userCreatedEventHandler)
+        public UserService(
+                AuthorizationSettings authorizationSettings, 
+                SignInManager<TUser> signInManager, UserManager<TUser> userManager, 
+                EventHandler<UserEventArgs> userCreatedEventHandler)
+            : base(authorizationSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -166,12 +170,12 @@ namespace ChustaSoft.Tools.Authorization
 
     public class UserService : UserService<User>, IUserService, IUserRoleService, IUserClaimService
     {
-        public UserService(SignInManager<User> signInManager, UserManager<User> userManager)
-            : base(signInManager, userManager)
+        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager)
+            : base(authorizationSettings, signInManager, userManager)
         { }
 
-        public UserService(SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func)
-           : base(signInManager, userManager, func)
+        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func)
+           : base(authorizationSettings, signInManager, userManager, func)
         { }
     }
 

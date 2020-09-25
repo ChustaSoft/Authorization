@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class RoleService<TRole> : IRoleService<TRole>
+    public class RoleService<TRole> : ServiceBase, IRoleService<TRole>
          where TRole : Role, new()
     {
 
@@ -18,7 +18,8 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constructor
 
-        public RoleService(RoleManager<TRole> roleManager)
+        public RoleService(AuthorizationSettings authorizationSettings, RoleManager<TRole> roleManager)
+            : base(authorizationSettings)
         {
             _roleManager = roleManager;
         }
@@ -59,8 +60,8 @@ namespace ChustaSoft.Tools.Authorization
 
     public class RoleService : RoleService<Role>, IRoleService
     {
-        public RoleService(RoleManager<Role> roleManager)
-            : base(roleManager)
+        public RoleService(AuthorizationSettings authorizationSettings, RoleManager<Role> roleManager)
+            : base(authorizationSettings, roleManager)
         { }
 
     }
