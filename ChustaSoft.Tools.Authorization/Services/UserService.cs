@@ -62,17 +62,22 @@ namespace ChustaSoft.Tools.Authorization
         {
             var userSignIn = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
 
-            if (userSignIn.Succeeded)
-                return await _userManager.FindByNameAsync(username);
-            else
-                throw new AuthenticationException("User not allowed to login in the system");
+            if (userSignIn.Succeeded) 
+            { 
+                var user = await _userManager.FindByNameAsync(username);
+
+                if (user.IsActive)
+                    return user;
+            }   
+            
+            throw new AuthenticationException("User not allowed to login in the system");
         }
 
         public async Task<TUser> GetByEmail(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null && user.HasValidEmail)
+            if (user != null && user.HasValidEmail && user.IsActive)
             {
                 var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: false);
 
@@ -87,7 +92,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone && (!_authorizationSettings.ConfirmationRequired || x.PhoneNumberConfirmed));
 
-            if (user != null)
+            if (user != null && user.IsActive)
             {
                 var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: false);
 

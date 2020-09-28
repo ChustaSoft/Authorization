@@ -11,6 +11,7 @@ namespace ChustaSoft.Tools.Authorization.Models
         public override string PhoneNumber { get; set; }
         public string Culture { get; set; }
         public DateTimeOffset RegistrationDate { get; set; }
+        public bool IsActive { get; set; }
 
 
         public bool HasValidEmail

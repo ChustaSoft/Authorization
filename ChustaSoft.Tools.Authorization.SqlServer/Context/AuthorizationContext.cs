@@ -68,6 +68,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.NormalizedEmail).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
 
+                entity.Property(e => e.IsActive).HasDefaultValue(true);
                 entity.Property(e => e.RegistrationDate).HasDefaultValueSql("sysdatetimeoffset()");
 
                 entity.Ignore(e => e.HasValidEmail);
@@ -76,6 +77,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasName("UserNameIndex");
+                entity.HasIndex(e => e.PhoneNumber).IsUnique().HasName("PhoneNumberIndex");
 
                 entity.ToTable($"{nameof(User)}s", SCHEMA_NAME);
             });
