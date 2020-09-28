@@ -9,9 +9,10 @@
         internal const bool DEFAULT_CONFIRMATION_REQUIRED = false;
         internal const int DEFAULT_MINUTES_TO_UNLOCK = 15;
         internal const int DEFAULT_MAX_ATTEMPTS_TO_LOCK = 3;
+        internal const string DEFAULT_CULTURE = "en-UK";
 
         internal const string CLAIM_PERMISSION_KEY = "PERMISSION";
-
+        
         internal const string NO_EMAIL_SUFFIX_FORMAT = ".noemail@no-reply.com";
 
     }

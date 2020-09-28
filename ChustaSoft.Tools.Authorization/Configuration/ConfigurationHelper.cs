@@ -1,5 +1,4 @@
-﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Tools.Authorization.Models;
+﻿using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -157,9 +156,6 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<ISessionService, SessionService>();
 
                 services.AddTransient<ITokenHelper, TokenHelper>();
-
-                services.AddTransient<IMapper<User, Credentials>, CredentialsMapper>();
-                services.AddTransient<IMapper<User, TokenInfo, Session>, SessionMapper>();
             }
             else
             {
@@ -169,9 +165,6 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<ISessionService, SessionService<TUser>>();
 
                 services.AddTransient<ITokenHelper<TUser>, TokenHelper<TUser>>();
-
-                services.AddTransient<IMapper<TUser, Credentials>, CredentialsMapper<TUser>>();
-                services.AddTransient<IMapper<TUser, TokenInfo, Session>, SessionMapper<TUser>>();
             }
         }
 

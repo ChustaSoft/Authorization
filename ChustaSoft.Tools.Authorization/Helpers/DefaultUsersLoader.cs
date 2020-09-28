@@ -1,5 +1,4 @@
-﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Common.Utilities;
+﻿using ChustaSoft.Common.Utilities;
 using ChustaSoft.Tools.Authorization.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +11,8 @@ namespace ChustaSoft.Tools.Authorization
         where TRole : Role
     {
 
-        private readonly IMapper<TUser, Credentials> _credentialsMapper;
+        private readonly AuthorizationSettings _authorizationSettings;
+
         private readonly IUserService<TUser> _userService;
         private readonly IRoleService<TRole> _roleService;
 
@@ -20,13 +20,14 @@ namespace ChustaSoft.Tools.Authorization
         public ICollection<ErrorMessage> Errors { get; private set; }
 
 
-        public DefaultUsersLoader(IUserService<TUser> userService, IRoleService<TRole> roleService, IMapper<TUser, Credentials> credentialsMapper)
+        public DefaultUsersLoader(AuthorizationSettings authorizationSettings, IUserService<TUser> userService, IRoleService<TRole> roleService)
         {
             Errors = new List<ErrorMessage>();
 
+            _authorizationSettings = authorizationSettings;
+
             _userService = userService;
             _roleService = roleService;
-            _credentialsMapper = credentialsMapper;
         }
 
 
@@ -41,7 +42,7 @@ namespace ChustaSoft.Tools.Authorization
             {
                 if (!await _userService.ExistAsync(credentialsTupple.Credentials.Email))
                 {
-                    var user = _credentialsMapper.MapToSource(credentialsTupple.Credentials);
+                    var user = credentialsTupple.Credentials.ToUser<TUser>(_authorizationSettings.DefaultCulture);
                     var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password, credentialsTupple.Credentials.Parameters);
 
                     if (!flag)
@@ -80,8 +81,8 @@ namespace ChustaSoft.Tools.Authorization
     public class DefaultUsersLoader : DefaultUsersLoader<User, Role>
     {
 
-        public DefaultUsersLoader(IUserService userService, IRoleService roleService, IMapper<User, Credentials> userMapper)
-            : base(userService, roleService, userMapper)
+        public DefaultUsersLoader(AuthorizationSettings authorizationSettings, IUserService userService, IRoleService roleService)
+            : base(authorizationSettings, userService, roleService)
         { }
 
     }

@@ -18,6 +18,20 @@ namespace ChustaSoft.Tools.Authorization
                 throw new AuthenticationException("User must inform Username or Email and password for login");
         }
 
+        public static TUser ToUser<TUser>(this Credentials credentials, string defaultCulture)
+            where TUser : User, new()
+        { 
+            return new TUser
+            {
+                UserName = credentials.Username,
+                Email = string.IsNullOrEmpty(credentials.Email) ? $"{credentials.Phone}{AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT}" : credentials.Email,
+                PhoneNumber = credentials.Phone,
+                PasswordHash = credentials.Password,
+                Culture = string.IsNullOrEmpty(credentials.Culture) ? defaultCulture : credentials.Culture,
+                IsActive = true
+            };
+        }
+
 
         private static bool IsUsernameLogin(Credentials credentials)
             => !string.IsNullOrEmpty(credentials.Username) && !string.IsNullOrEmpty(credentials.Password);
