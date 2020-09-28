@@ -57,7 +57,7 @@ namespace ChustaSoft.Tools.Authorization
             if (resultFlag)
             {
                 var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
-                var session = user.GetSession(tokenInfo);
+                var session = new Session(user, tokenInfo);
 
                 return session;
             }
@@ -112,7 +112,7 @@ namespace ChustaSoft.Tools.Authorization
         private Session GetUserSession(TUser user)
         {
             var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
-            var session = user.GetSession(tokenInfo);
+            var session = new Session(user, tokenInfo);
 
             return session;
         }

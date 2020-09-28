@@ -20,17 +20,5 @@ namespace ChustaSoft.Tools.Authorization.Models
         public bool HasValidPhone
             => !string.IsNullOrWhiteSpace(PhoneNumber);
 
-        public Session GetSession(TokenInfo tokenInfo) 
-        { 
-            return new Session
-            {
-                UserId = Id,
-                Username = UserName,
-                Culture = Culture,
-                Token = tokenInfo.Token,
-                ExpirationDate = tokenInfo.ExpirationDate
-            };
-        }
-
     }
 }
