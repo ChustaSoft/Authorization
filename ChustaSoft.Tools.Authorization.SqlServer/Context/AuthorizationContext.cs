@@ -68,10 +68,10 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.NormalizedEmail).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
 
-                entity.Ignore(e => e.EmailConfirmed);
-                entity.Ignore(e => e.PhoneNumberConfirmed);
-
                 entity.Property(e => e.RegistrationDate).HasDefaultValueSql("sysdatetimeoffset()");
+
+                entity.Ignore(e => e.HasValidEmail);
+                entity.Ignore(e => e.HasValidPhone);
 
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");

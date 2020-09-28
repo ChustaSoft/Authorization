@@ -87,6 +87,33 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         }
 
         [AllowAnonymous]
+        [HttpPost("confirm")]
+        public async Task<IActionResult> Confirm([FromBody] UserValidation userValidation) 
+        {
+            var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var session = await _sessionService.ValidateAsync(userValidation);
+                    actionResponseBuilder.SetData(session);
+
+                    return Ok(actionResponseBuilder.Build());
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (Exception ex)
+            {
+                actionResponseBuilder.AddError(new Common.Utilities.ErrorMessage(Common.Enums.ErrorType.Invalid, ex.Message));
+                return BadRequest(actionResponseBuilder.Build());
+            }
+        }
+
+
+        [AllowAnonymous]
         [HttpGet("external-login/{provider}/{redirectUrl}", Name = "web-session-external-login")]
         public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
         {

@@ -16,8 +16,6 @@ namespace ChustaSoft.Tools.Authorization
 
         private readonly IUserService<TUser> _userService;
 
-        private readonly ICredentialsBusiness _credentialsBusiness;
-
         private readonly ITokenHelper<TUser> _tokenHelper;
 
         private readonly IMapper<TUser, Credentials> _userMapper;
@@ -31,15 +29,13 @@ namespace ChustaSoft.Tools.Authorization
         public SessionService(
                 ISecuritySettings securitySettings,
                 IUserService<TUser> userService,
-                ICredentialsBusiness credentialsBusiness, 
                 ITokenHelper<TUser> tokenService, 
                 IMapper<TUser, Credentials> userMapper, IMapper<TUser, TokenInfo, Session> sessionMapper)
         {
             _securitySettings = securitySettings;
 
             _userService = userService;
-            _credentialsBusiness = credentialsBusiness;
-
+            
             _tokenHelper = tokenService;
 
             _userMapper = userMapper;
@@ -54,8 +50,7 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<Session> AuthenticateAsync(Credentials credentials)
         {
             var user = await LoginAsync(credentials);
-            var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
-            var session = _sessionMapper.MapFromSource(user, tokenInfo);
+            var session = GetUserSession(user);
 
             return session;
         }
@@ -76,6 +71,15 @@ namespace ChustaSoft.Tools.Authorization
                 throw new AuthenticationException($"User {user.UserName} could not be created");
         }
 
+        public async Task<Session> ValidateAsync(UserValidation userValidation)
+        {
+            var loginType = userValidation.GetLoginType();
+            var user = await PerformValidation(userValidation, loginType);
+            var session = GetUserSession(user);
+
+            return session;
+        }
+       
         public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
         {
             return _userService.GetExternalProperties(provider, loginCallbackUrl);
@@ -88,7 +92,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private async Task<TUser> LoginAsync(Credentials credentials)
         {
-            var loginType = _credentialsBusiness.ValidateCredentials(credentials);
+            var loginType = credentials.GetLoginType();
 
             return loginType switch
             {
@@ -98,6 +102,25 @@ namespace ChustaSoft.Tools.Authorization
 
                 _ => throw new AuthenticationException("User could not by logged in into the system"),
             };
+        }
+
+        private async Task<TUser> PerformValidation(UserValidation userValidation, LoginType loginType)
+        {
+            return loginType switch
+            {
+                LoginType.MAIL => await _userService.ConfirmEmail(userValidation.Email, userValidation.ConfirmationToken),
+                LoginType.PHONE => await _userService.ConfirmPhone(userValidation.Phone, userValidation.ConfirmationToken),
+
+                _ => throw new AuthenticationException("User could not by validated into the system"),
+            };
+        }
+
+        private Session GetUserSession(TUser user)
+        {
+            var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
+            var session = _sessionMapper.MapFromSource(user, tokenInfo);
+
+            return session;
         }
 
         #endregion
@@ -113,10 +136,9 @@ namespace ChustaSoft.Tools.Authorization
         public SessionService(
                 ISecuritySettings securitySettings,
                 IUserService userService,
-                ICredentialsBusiness credentialsBusiness,
                 ITokenHelper tokenService,
                 IMapper<User, Credentials> userMapper, IMapper<User, TokenInfo, Session> sessionMapper)
-            : base(securitySettings, userService, credentialsBusiness, tokenService, userMapper, sessionMapper)
+            : base(securitySettings, userService, tokenService, userMapper, sessionMapper)
         { }
     }
 

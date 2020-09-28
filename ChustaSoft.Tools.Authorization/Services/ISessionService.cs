@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 
-
 namespace ChustaSoft.Tools.Authorization
 {
     public interface ISessionService
@@ -11,6 +10,8 @@ namespace ChustaSoft.Tools.Authorization
         Task<Session> AuthenticateAsync(Credentials credentials);
 
         Task<Session> RegisterAsync(Credentials credentials);
+
+        Task<Session> ValidateAsync(UserValidation userValidation);
 
         AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl);
 

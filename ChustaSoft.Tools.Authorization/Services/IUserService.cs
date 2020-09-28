@@ -18,6 +18,10 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TUser> GetByPhone(string phone, string password);
 
+        Task<TUser> ConfirmEmail(string email, string token);
+
+        Task<TUser> ConfirmPhone(string phone, string token);
+
         Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters);
 
         Task<bool> ExistAsync(string userEmail);

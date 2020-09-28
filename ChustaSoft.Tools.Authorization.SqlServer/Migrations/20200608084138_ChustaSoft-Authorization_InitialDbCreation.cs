@@ -31,22 +31,22 @@ namespace ChustaSoft.Tools.Authorization.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: false),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: false),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: false),
-                    Email = table.Column<string>(maxLength: 256, nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
                     Culture = table.Column<string>(nullable: true),
-                    RegistrationDate = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "sysdatetimeoffset()")
+                    RegistrationDate = table.Column<DateTimeOffset>(nullable: false, defaultValueSql: "sysdatetimeoffset()"),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -104,10 +104,10 @@ namespace ChustaSoft.Tools.Authorization.Migrations
                 schema: "Auth",
                 columns: table => new
                 {
+                    UserId = table.Column<Guid>(nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false)
+                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false)
                 },
                 constraints: table =>
                 {

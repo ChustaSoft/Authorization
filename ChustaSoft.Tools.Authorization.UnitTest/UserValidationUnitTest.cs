@@ -5,23 +5,23 @@ using System.Security.Authentication;
 namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
 {
     [TestClass]
-    public class CredantialsUnitTest
+    public class UserValidationUnitTest
     {
 
         [TestMethod]
         public void Given_UserWithPhone_When_GetLoginType_Then_LoginTypePhoneRetrived()
         {
-            var credentials = new Credentials { Phone = "666999666", Password = "OK" };
+            var validation = new UserValidation { Phone = "666999666", ConfirmationToken = "XXXXXX" };
 
-            var typeRetrived = credentials.GetLoginType();
+            var typeRetrived = validation.GetLoginType();
 
             Assert.AreEqual(typeRetrived, LoginType.PHONE);
         }
 
         [TestMethod]
-        public void Given_UserWithMail_When_GetLoginType_Then_LoginTypeMailRetrived()
+        public void Given_EmailAndToken_When_GetLoginType_Then_LoginTypeMailRetrived()
         {
-            var credentials = new Credentials { Email = "test@mail.com", Password = "OK" };
+            var credentials = new UserValidation { Email = "test@email.com", ConfirmationToken = "XXXXXX" };
 
             var typeRetrived = credentials.GetLoginType();
 
@@ -29,20 +29,10 @@ namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
         }
 
         [TestMethod]
-        public void Given_UserWithCode_When_GetLoginType_Then_LoginTypeCodeRetrived()
-        {
-            var credentials = new Credentials { Username = "test", Password = "OK" };
-
-            var typeRetrived = credentials.GetLoginType();
-
-            Assert.AreEqual(typeRetrived, LoginType.USER);
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(AuthenticationException))]
-        public void Given_UserWithoutPassword_When_GetLoginType_Then_ExceptionThrown()
+        public void Given_ValidationWithoutToken_When_GetLoginType_Then_ExceptionThrown()
         {
-            var credentials = new Credentials { Username = "test", Email = "test@mail.com" };
+            var credentials = new UserValidation { Email = "test@mail.com" };
 
             credentials.GetLoginType();
         }
@@ -51,7 +41,7 @@ namespace ChustaSoft.Tools.Authorization.UnitTest.TestServices
         [ExpectedException(typeof(AuthenticationException))]
         public void Given_WrongUser_When_GetLoginType_Then_ExceptionThrown()
         {
-            var credentials = new Credentials();
+            var credentials = new UserValidation();
 
             credentials.GetLoginType();
         }

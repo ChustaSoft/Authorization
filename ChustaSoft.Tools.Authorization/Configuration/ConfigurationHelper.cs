@@ -200,8 +200,6 @@ namespace ChustaSoft.Tools.Authorization
             services.AddSingleton(authSettings);
             services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
 
-            services.AddTransient<ICredentialsBusiness, CredentialsBusiness>();
-
             SetupJwtAuthentication(services, authSettings, privateKey);
             SetupTypedServices<TUser, TRole>(services);
             SetupUserTypedServices<TUser>(services);

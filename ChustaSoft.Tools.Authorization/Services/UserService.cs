@@ -13,14 +13,18 @@ namespace ChustaSoft.Tools.Authorization
     public class UserService<TUser> : ServiceBase, IUserService<TUser>
          where TUser : User, new()
     {
-        public event EventHandler<UserEventArgs> UserCreatedEventHandler;
-
 
         #region Fields
 
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserManager<TUser> _userManager;
 
+        #endregion
+
+
+        #region Events
+
+        public event EventHandler<UserEventArgs> UserCreatedEventHandler;
 
         #endregion
 
@@ -68,7 +72,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null)
+            if (user != null && user.HasValidEmail)
             {
                 var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: false);
 
@@ -81,7 +85,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<TUser> GetByPhone(string phone, string password)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone);
+            var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone && (!_authorizationSettings.ConfirmationRequired || x.PhoneNumberConfirmed));
 
             if (user != null)
             {
@@ -94,11 +98,44 @@ namespace ChustaSoft.Tools.Authorization
             throw new AuthenticationException("User not allowed to login in the system");
         }
 
+        public async Task<TUser> ConfirmEmail(string email, string token)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                var confirmationResult = await _userManager.ConfirmEmailAsync(user, token);
+
+                if (confirmationResult.Succeeded)
+                    return user;
+            }
+
+            throw new AuthenticationException("Invalid email or token for confirmation");
+        }
+
+        public async Task<TUser> ConfirmPhone(string phone, string token)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone);
+
+            if (user != null)
+            {
+                var confirmationResult = await _userManager.ChangePhoneNumberAsync(user, user.PhoneNumber, token);
+                
+                await TryPerformFakeEmailActions(user);
+
+                if (confirmationResult.Succeeded)
+                    return user;
+            }
+
+            throw new AuthenticationException("Invalid phone or token for confirmation");
+        }
+
         public async Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters)
         {
             var result = await _userManager.CreateAsync(user, password);
-            
-            UserCreatedEventHandler?.Invoke(this, new UserEventArgs(user.Id, parameters));
+
+            await TryAddConfirmationTokens(user, parameters, result);
+            TryRaiseUserCreatedEvent(user, parameters, result);
 
             return result.Succeeded;
         }
@@ -158,6 +195,45 @@ namespace ChustaSoft.Tools.Authorization
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
 
             return properties;
+        }
+
+        #endregion
+
+
+        #region Private methods
+
+        private async Task TryAddConfirmationTokens(TUser user, IDictionary<string, string> parameters, IdentityResult result)
+        {
+            if (result.Succeeded && _authorizationSettings.ConfirmationRequired)
+            {
+                if (user.HasValidEmail)
+                {
+                    var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    parameters.Add("EmailConfirmationToken", confirmEmailToken);
+                }
+                if (user.HasValidPhone)
+                {
+                    var confirmPhoneToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, user.PhoneNumber);
+
+                    parameters.Add("PhoneConfirmationToken", confirmPhoneToken);
+                }
+            }
+        }
+
+        private void TryRaiseUserCreatedEvent(TUser user, IDictionary<string, string> parameters, IdentityResult result)
+        {
+            if (result.Succeeded)
+                UserCreatedEventHandler?.Invoke(this, new UserEventArgs(user.Id, parameters));
+        }
+
+        private async Task TryPerformFakeEmailActions(TUser user)
+        {
+            if (!user.HasValidEmail)
+            {
+                var fakeEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                await _userManager.ConfirmEmailAsync(user, fakeEmailToken);
+            }
         }
 
         #endregion

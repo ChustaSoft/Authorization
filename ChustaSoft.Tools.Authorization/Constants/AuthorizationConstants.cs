@@ -12,5 +12,7 @@
 
         internal const string CLAIM_PERMISSION_KEY = "PERMISSION";
 
+        internal const string NO_EMAIL_SUFFIX_FORMAT = ".noemail@no-reply.com";
+
     }
 }

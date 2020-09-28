@@ -33,9 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Business\CredentialsBusiness.cs">
-      <DependentUpon>ICredentialsBusiness.cs</DependentUpon>
-    </Compile>
     <Compile Update="Services\RoleService.cs">
       <DependentUpon>IRoleService.cs</DependentUpon>
     </Compile>
