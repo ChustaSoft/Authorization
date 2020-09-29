@@ -76,7 +76,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<bool> ActivateAsync(UserActivation userActivation)
         {
-            var user = await _userService.GetByUsername(userActivation.Username, userActivation.Password);
+            var user = await _userService.GetAsync(userActivation.Username, userActivation.Password);
 
             user.IsActive = userActivation.Activate;
 
@@ -99,9 +99,9 @@ namespace ChustaSoft.Tools.Authorization
 
             return loginType switch
             {
-                LoginType.USER => await _userService.GetByUsername(credentials.Username, credentials.Password),
-                LoginType.MAIL => await _userService.GetByEmail(credentials.Email, credentials.Password),
-                LoginType.PHONE => await _userService.GetByPhone(credentials.Phone, credentials.Password),
+                LoginType.USER => await _userService.SignByUsername(credentials.Username, credentials.Password),
+                LoginType.MAIL => await _userService.SignByEmail(credentials.Email, credentials.Password),
+                LoginType.PHONE => await _userService.SignByPhone(credentials.Phone, credentials.Password),
 
                 _ => throw new AuthenticationException("User could not by logged in into the system"),
             };

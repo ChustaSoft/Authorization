@@ -7,5 +7,7 @@ namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI
         public string CustomStringProperty { get; set; }
 
         public int CustomIntProperty { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

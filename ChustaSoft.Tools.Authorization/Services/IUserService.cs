@@ -12,11 +12,13 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<TUser> GetAsync(Guid userId);
 
-        Task<TUser> GetByUsername(string username, string password);
+        Task<TUser> GetAsync(string username, string password);
 
-        Task<TUser> GetByEmail(string email, string password);
+        Task<TUser> SignByUsername(string username, string password);
 
-        Task<TUser> GetByPhone(string phone, string password);
+        Task<TUser> SignByEmail(string email, string password);
+
+        Task<TUser> SignByPhone(string phone, string password);
 
         Task<TUser> ConfirmEmail(string email, string token);
 

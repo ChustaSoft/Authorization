@@ -4,14 +4,16 @@ using ChustaSoft.Tools.Authorization.TestCustom.WebAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ChustaSoft.Tools.Authorization.TestCustom.WebAPI.Migrations
 {
     [DbContext(typeof(AuthCustomContext))]
-    partial class AuthCustomContextModelSnapshot : ModelSnapshot
+    [Migration("20200929230915_ChustaSoft-Auth_Version3-Upgrade")]
+    partial class ChustaSoftAuth_Version3Upgrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -58,22 +58,27 @@ namespace ChustaSoft.Tools.Authorization
             return await _userManager.FindByIdAsync(userId.ToString());
         }
 
-        public async Task<TUser> GetByUsername(string username, string password)
+        public async Task<TUser> GetAsync(string username, string password)
         {
             var userSignIn = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
 
-            if (userSignIn.Succeeded) 
-            { 
-                var user = await _userManager.FindByNameAsync(username);
+            if (userSignIn.Succeeded)            
+                return await _userManager.FindByNameAsync(username);            
+            else            
+                return null;            
+        }
 
-                if (user.IsActive)
-                    return user;
-            }   
-            
+        public async Task<TUser> SignByUsername(string username, string password)
+        {
+            var user = await GetAsync(username, password);
+
+            if (user != null && user.IsActive)
+                return user;
+
             throw new AuthenticationException("User not allowed to login in the system");
         }
 
-        public async Task<TUser> GetByEmail(string email, string password)
+        public async Task<TUser> SignByEmail(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
@@ -88,7 +93,7 @@ namespace ChustaSoft.Tools.Authorization
             throw new AuthenticationException("User not allowed to login in the system");
         }
 
-        public async Task<TUser> GetByPhone(string phone, string password)
+        public async Task<TUser> SignByPhone(string phone, string password)
         {
             var user = _userManager.Users.FirstOrDefault(x => x.PhoneNumber == phone && (!_authorizationSettings.ConfirmationRequired || x.PhoneNumberConfirmed));
 
