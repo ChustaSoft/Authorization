@@ -73,7 +73,16 @@ namespace ChustaSoft.Tools.Authorization
 
             return session;
         }
-       
+
+        public async Task<bool> ActivateAsync(UserActivation userActivation)
+        {
+            var user = await _userService.GetByUsername(userActivation.Username, userActivation.Password);
+
+            user.IsActive = userActivation.Activate;
+
+            return await _userService.UpdateAsync(user);
+        }
+
         public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
         {
             return _userService.GetExternalProperties(provider, loginCallbackUrl);

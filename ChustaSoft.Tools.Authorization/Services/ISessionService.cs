@@ -13,6 +13,8 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<Session> ValidateAsync(UserValidation userValidation);
 
+        Task<bool> ActivateAsync(UserActivation userActivation);
+
         AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl);
 
     }

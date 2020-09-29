@@ -145,6 +145,13 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
+        public async Task<bool> UpdateAsync(TUser user)
+        {
+            var result = await _userManager.UpdateAsync(user);
+
+            return result.Succeeded;
+        }
+
         public async Task<bool> ExistAsync(string userEmail)
         {
             var result = await _userManager.FindByEmailAsync(userEmail);

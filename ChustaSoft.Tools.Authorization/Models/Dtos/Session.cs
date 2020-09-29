@@ -2,6 +2,7 @@
 
 namespace ChustaSoft.Tools.Authorization.Models
 {
+    [Serializable]
     public class Session
     {
 

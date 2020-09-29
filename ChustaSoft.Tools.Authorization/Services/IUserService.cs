@@ -24,6 +24,8 @@ namespace ChustaSoft.Tools.Authorization
 
         Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters);
 
+        Task<bool> UpdateAsync(TUser user);
+
         Task<bool> ExistAsync(string userEmail);
 
         AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl);

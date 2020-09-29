@@ -36,7 +36,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] Credentials credentials)
+        public async Task<IActionResult> LoginAsync([FromBody] Credentials credentials)
         {
             var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
             try
@@ -62,7 +62,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] Credentials credentials)
+        public async Task<IActionResult> RegisterAsync([FromBody] Credentials credentials)
         {
             var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
             try
@@ -88,7 +88,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         [AllowAnonymous]
         [HttpPost("confirm")]
-        public async Task<IActionResult> Confirm([FromBody] UserValidation userValidation) 
+        public async Task<IActionResult> ConfirmAsync([FromBody] UserValidation userValidation) 
         {
             var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
             try
@@ -97,6 +97,33 @@ namespace ChustaSoft.Tools.Authorization.AspNet
                 {
                     var session = await _sessionService.ValidateAsync(userValidation);
                     actionResponseBuilder.SetData(session);
+
+                    return Ok(actionResponseBuilder.Build());
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (Exception ex)
+            {
+                actionResponseBuilder.AddError(new Common.Utilities.ErrorMessage(Common.Enums.ErrorType.Invalid, ex.Message));
+                return BadRequest(actionResponseBuilder.Build());
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("activate")]
+        public async Task<IActionResult> ActivateAsync([FromBody] UserActivation userActivation)
+        {
+            var actionResponseBuilder = GetEmptyResponseBuilder<string>();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var operationFlag = await _sessionService.ActivateAsync(userActivation);
+                    actionResponseBuilder.SetData(userActivation.Username);
+                    actionResponseBuilder.SetStatus(operationFlag);
 
                     return Ok(actionResponseBuilder.Build());
                 }
