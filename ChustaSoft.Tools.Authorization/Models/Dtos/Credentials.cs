@@ -13,6 +13,7 @@ namespace ChustaSoft.Tools.Authorization.Models
         public string Email { get; set; }
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
         public string Culture { get; set; }
 
