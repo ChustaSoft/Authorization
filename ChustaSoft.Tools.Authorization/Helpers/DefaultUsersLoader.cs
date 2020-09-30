@@ -32,9 +32,9 @@ namespace ChustaSoft.Tools.Authorization
 
 
 
-        public async Task<bool> PersistAsync(ICredentialsBuilder userBuilder)
+        public async Task<bool> PersistAsync(IAutomaticCredentialsBuilder credentialsBuilder)
         {
-            var usersData = userBuilder.Build();
+            var usersData = credentialsBuilder.Build();
 
             await CheckRolesAsync(usersData);
 
@@ -45,17 +45,9 @@ namespace ChustaSoft.Tools.Authorization
                     var user = credentialsTupple.Credentials.ToUser<TUser>(_authorizationSettings.DefaultCulture);
                     var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password, credentialsTupple.Credentials.Parameters);
 
-                    if (!flag)
-                        Errors.Add(new ErrorMessage(Common.Enums.ErrorType.Unknown, $"User: {user.UserName} could not be created"));
-
-
-                    if (credentialsTupple.Roles.Any())
-                    {
-                        var roleAssignationFlag = await _userService.AssignRolesAsync(user, credentialsTupple.Roles);
-
-                        if (!roleAssignationFlag)
-                            Errors.Add(new ErrorMessage(Common.Enums.ErrorType.Invalid, $"Roles could not be assigned to User: {user.UserName}"));
-                    }
+                    await TryAllowFullAccess(credentialsTupple, user);
+                    CheckUserCreation(user, flag);
+                    await AssignRoles(credentialsTupple, user);
                 }
             }
 
@@ -63,7 +55,30 @@ namespace ChustaSoft.Tools.Authorization
         }
 
 
-        private async Task CheckRolesAsync(IEnumerable<(Credentials Credentials, IEnumerable<string> Roles)> usersData)
+        private async Task AssignRoles((AutomaticCredentials Credentials, IEnumerable<string> Roles) credentialsTupple, TUser user)
+        {
+            if (credentialsTupple.Roles.Any())
+            {
+                var roleAssignationFlag = await _userService.AssignRolesAsync(user, credentialsTupple.Roles);
+
+                if (!roleAssignationFlag)
+                    Errors.Add(new ErrorMessage(Common.Enums.ErrorType.Invalid, $"Roles could not be assigned to User: {user.UserName}"));
+            }
+        }
+
+        private void CheckUserCreation(TUser user, bool flag)
+        {
+            if (!flag)
+                Errors.Add(new ErrorMessage(Common.Enums.ErrorType.Unknown, $"User: {user.UserName} could not be created"));
+        }
+
+        private async Task TryAllowFullAccess((AutomaticCredentials Credentials, IEnumerable<string> Roles) credentialsTupple, TUser user)
+        {
+            if (credentialsTupple.Credentials.FullAccess)
+                await _userService.UpdateAsync(user.WithFullAccess());
+        }
+
+        private async Task CheckRolesAsync(IEnumerable<(AutomaticCredentials Credentials, IEnumerable<string> Roles)> usersData)
         {
             var allRoles = usersData.SelectMany(x => x.Roles).ToList();
             if (allRoles.Any())
@@ -98,7 +113,7 @@ namespace ChustaSoft.Tools.Authorization
 
         ICollection<ErrorMessage> Errors { get; }
 
-        Task<bool> PersistAsync(ICredentialsBuilder userBuilder);
+        Task<bool> PersistAsync(IAutomaticCredentialsBuilder userBuilder);
 
     }
 

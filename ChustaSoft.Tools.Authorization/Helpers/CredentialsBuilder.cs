@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class CredentialsBuilder : ICredentialsBuilder
+    public class CredentialsBuilder : ICredentialsBuilder, IAutomaticCredentialsBuilder
     {
 
-        private readonly ICollection<(Credentials Credentials, IEnumerable<string> Roles)> _usersCredentials;
+        private readonly ICollection<(AutomaticCredentials Credentials, IEnumerable<string> Roles)> _usersCredentials;
        
-        private Credentials _credentials;
+        private AutomaticCredentials _credentials;
         private ICollection<string> _rolesAssigned;
 
 
         public CredentialsBuilder()
         {
-            _usersCredentials = new List<(Credentials, IEnumerable<string>)>();
+            _usersCredentials = new List<(AutomaticCredentials, IEnumerable<string>)>();
         }
 
 
@@ -22,7 +22,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             CheckIfExistingCredentials();
 
-            _credentials = new Credentials { Username = userName, Password = userPassword, Email = $"{userName}@noreply.com" };
+            _credentials = new AutomaticCredentials { Username = userName, Password = userPassword, Email = $"{userName}@noreply.com" };
             _rolesAssigned = _rolesAssigned = new List<string>();
 
             return this;
@@ -42,7 +42,14 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
-        public IEnumerable<(Credentials Credentials, IEnumerable<string> Roles)> Build()
+        public ICredentialsBuilder WithFullAccess()
+        {
+            _credentials.FullAccess = true;
+
+            return this;
+        }
+        
+        public IEnumerable<(AutomaticCredentials Credentials, IEnumerable<string> Roles)> Build()
         {
             CheckIfExistingCredentials();
 
@@ -60,16 +67,21 @@ namespace ChustaSoft.Tools.Authorization
 
 
 
-    #region Contract
+    #region Contracts
 
     public interface ICredentialsBuilder
     {
 
         ICredentialsBuilder Add(string userName, string userPassword);
         ICredentialsBuilder WithRole(string roleName);
+        ICredentialsBuilder WithFullAccess();
 
-        IEnumerable<(Credentials Credentials, IEnumerable<string> Roles)> Build();
+    }
 
+
+    public interface IAutomaticCredentialsBuilder : ICredentialsBuilder
+    {
+        IEnumerable<(AutomaticCredentials Credentials, IEnumerable<string> Roles)> Build();
     }
 
     #endregion

@@ -83,8 +83,8 @@ namespace ChustaSoft.Tools.Authorization
                 .SetupDatabase<AuthCustomContext, CustomUser, CustomRole>()
                 .DefaultUsers(ub =>
                 {
-                    ub.Add("SYSTEM", "Sys.1234");
-                    ub.Add("ADMIN", "Admn.1234").WithRole("Admin");
+                    ub.Add("SYSTEM", "Sys.1234").WithFullAccess();
+                    ub.Add("ADMIN", "Admn.1234").WithRole("Admin").WithFullAccess();
                 });
         }
 

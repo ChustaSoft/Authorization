@@ -30,4 +30,13 @@ namespace ChustaSoft.Tools.Authorization.Models
         }
 
     }
+
+
+    public class AutomaticCredentials : Credentials 
+    {
+
+        public bool FullAccess { get; set; }
+
+    }
+
 }
