@@ -60,7 +60,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<TUser> GetAsync(string username, string password)
         {
-            var userSignIn = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
+            var userSignIn = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: true);
 
             if (userSignIn.Succeeded)            
                 return await _userManager.FindByNameAsync(username);            
@@ -84,7 +84,7 @@ namespace ChustaSoft.Tools.Authorization
 
             if (user != null && user.HasValidEmail && user.IsActive)
             {
-                var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: false);
+                var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: true);
 
                 if (userSignIn.Succeeded)
                     return user;
@@ -99,7 +99,7 @@ namespace ChustaSoft.Tools.Authorization
 
             if (user != null && user.IsActive)
             {
-                var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: false);
+                var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: true);
 
                 if (userSignIn.Succeeded)
                     return user;

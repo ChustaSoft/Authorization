@@ -121,6 +121,7 @@ namespace ChustaSoft.Tools.Authorization
                     
                     opt.Password.RequiredLength = authSettings.MinPasswordLength;
 
+                    opt.Lockout.AllowedForNewUsers = true;
                     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(authSettings.MinutesToUnlock);
                     opt.Lockout.MaxFailedAccessAttempts = authSettings.MaxAttemptsToLock;
 
@@ -180,11 +181,6 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<IRoleService<TRole>, RoleService<TRole>>();
             }
         }
-
-        #endregion
-
-
-        #region Private methods
 
         private static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, AuthorizationSettings authSettings)
             where TUser : User, new()
