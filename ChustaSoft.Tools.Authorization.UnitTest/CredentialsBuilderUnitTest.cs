@@ -7,7 +7,7 @@ namespace ChustaSoft.Tools.Authorization.UnitTest
     public class CredentialsBuilderUnitTest
     {
 
-        private static ICredentialsBuilder CredentialsBuilderUnderTest;
+        private static CredentialsBuilder CredentialsBuilderUnderTest;
 
         
         [TestInitialize]
