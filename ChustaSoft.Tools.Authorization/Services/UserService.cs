@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class UserService<TUser> : ServiceBase, IUserService<TUser>
+    public class UserService<TUser> : ServiceBase, IUserService<TUser>, IRevisable<TUser>
          where TUser : User, new()
     {
 
@@ -142,6 +142,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters)
         {
+            Review(user);
             var result = await _userManager.CreateAsync(user, password);
 
             await TryAddConfirmationTokens(user, parameters, result);
@@ -212,6 +213,14 @@ namespace ChustaSoft.Tools.Authorization
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
 
             return properties;
+        }
+
+        public void Review(TUser user) 
+        {
+            if (string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.PhoneNumber))
+                user.Email = $"{user.PhoneNumber}{AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT}";
+            if (string.IsNullOrEmpty(user.Culture))
+                user.Culture = _authorizationSettings.DefaultCulture;
         }
 
         #endregion

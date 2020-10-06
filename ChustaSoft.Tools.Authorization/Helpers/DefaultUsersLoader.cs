@@ -11,8 +11,6 @@ namespace ChustaSoft.Tools.Authorization
         where TRole : Role
     {
 
-        private readonly AuthorizationSettings _authorizationSettings;
-
         private readonly IUserService<TUser> _userService;
         private readonly IRoleService<TRole> _roleService;
 
@@ -20,11 +18,9 @@ namespace ChustaSoft.Tools.Authorization
         public ICollection<ErrorMessage> Errors { get; private set; }
 
 
-        public DefaultUsersLoader(AuthorizationSettings authorizationSettings, IUserService<TUser> userService, IRoleService<TRole> roleService)
+        public DefaultUsersLoader(IUserService<TUser> userService, IRoleService<TRole> roleService)
         {
             Errors = new List<ErrorMessage>();
-
-            _authorizationSettings = authorizationSettings;
 
             _userService = userService;
             _roleService = roleService;
@@ -42,7 +38,7 @@ namespace ChustaSoft.Tools.Authorization
             {
                 if (!await _userService.ExistAsync(credentialsTupple.Credentials.Email))
                 {
-                    var user = credentialsTupple.Credentials.ToUser<TUser>(_authorizationSettings.DefaultCulture);
+                    var user = credentialsTupple.Credentials.ToUser<TUser>();
                     var flag = await _userService.CreateAsync(user, credentialsTupple.Credentials.Password, credentialsTupple.Credentials.Parameters);
 
                     await TryAllowFullAccess(credentialsTupple, user);
@@ -96,8 +92,8 @@ namespace ChustaSoft.Tools.Authorization
     public class DefaultUsersLoader : DefaultUsersLoader<User, Role>
     {
 
-        public DefaultUsersLoader(AuthorizationSettings authorizationSettings, IUserService userService, IRoleService roleService)
-            : base(authorizationSettings, userService, roleService)
+        public DefaultUsersLoader(IUserService userService, IRoleService roleService)
+            : base(userService, roleService)
         { }
 
     }

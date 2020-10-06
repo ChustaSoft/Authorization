@@ -5,16 +5,16 @@ namespace ChustaSoft.Tools.Authorization
     internal static class UserExtensions
     {
 
-        internal static TUser ToUser<TUser>(this Credentials credentials, string defaultCulture)
+        internal static TUser ToUser<TUser>(this Credentials credentials)
             where TUser : User, new()
         {
             return new TUser
             {
                 UserName = credentials.Username,
-                Email = string.IsNullOrEmpty(credentials.Email) ? $"{credentials.Phone}{AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT}" : credentials.Email,
+                Email = credentials.Email,
                 PhoneNumber = credentials.Phone,
                 PasswordHash = credentials.Password,
-                Culture = string.IsNullOrEmpty(credentials.Culture) ? defaultCulture : credentials.Culture,
+                Culture = credentials.Culture,
                 IsActive = true
             };
         }

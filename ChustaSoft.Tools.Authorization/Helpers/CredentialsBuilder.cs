@@ -35,6 +35,13 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
+        public ICredentialsBuilder WithCulture(string culture)
+        {
+            _credentials.Culture = culture;
+
+            return this;
+        }
+
         public ICredentialsBuilder WithRole(string roleName)
         {
             _rolesAssigned.Add(roleName);
@@ -73,6 +80,7 @@ namespace ChustaSoft.Tools.Authorization
     {
 
         ICredentialsBuilder Add(string userName, string userPassword);
+        ICredentialsBuilder WithCulture(string culture);
         ICredentialsBuilder WithRole(string roleName);
         ICredentialsBuilder WithFullAccess();
 

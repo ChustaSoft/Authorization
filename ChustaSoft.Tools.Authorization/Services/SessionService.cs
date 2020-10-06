@@ -51,7 +51,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<Session> RegisterAsync(Credentials credentials)
         {
-            var user = credentials.ToUser<TUser>(_authorizationSettings.DefaultCulture);
+            var user = credentials.ToUser<TUser>();
             var resultFlag = await _userService.CreateAsync(user, credentials.Password, credentials.Parameters);
 
             if (resultFlag)
