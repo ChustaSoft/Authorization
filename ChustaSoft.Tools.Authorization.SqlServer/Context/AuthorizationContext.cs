@@ -71,9 +71,6 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
                 entity.Property(e => e.RegistrationDate).HasDefaultValueSql("sysdatetimeoffset()");
 
-                entity.Ignore(e => e.HasValidEmail);
-                entity.Ignore(e => e.HasValidPhone);
-
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasName("UserNameIndex");

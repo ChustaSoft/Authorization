@@ -82,7 +82,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            if (user != null && user.HasValidEmail && user.IsActive)
+            if (user != null && user.HasValidEmail() && user.IsActive)
             {
                 var userSignIn = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: false, lockoutOnFailure: true);
 
@@ -232,13 +232,13 @@ namespace ChustaSoft.Tools.Authorization
         {
             if (result.Succeeded && _authorizationSettings.ConfirmationRequired)
             {
-                if (user.HasValidEmail)
+                if (user.HasValidEmail())
                 {
                     var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     parameters.Add("EmailConfirmationToken", confirmEmailToken);
                 }
-                if (user.HasValidPhone)
+                if (user.HasValidPhone())
                 {
                     var confirmPhoneToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, user.PhoneNumber);
 
@@ -255,7 +255,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private async Task TryPerformFakeEmailActions(TUser user)
         {
-            if (!user.HasValidEmail)
+            if (!user.HasValidEmail())
             {
                 var fakeEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _userManager.ConfirmEmailAsync(user, fakeEmailToken);

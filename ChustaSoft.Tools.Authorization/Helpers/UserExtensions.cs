@@ -31,5 +31,17 @@ namespace ChustaSoft.Tools.Authorization
             return user;
         }
 
+        internal static bool HasValidEmail<TUser>(this TUser user)
+            where TUser : User, new()
+        { 
+            return !string.IsNullOrWhiteSpace(user.Email) && !user.Email.EndsWith(AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT);
+        }
+
+        internal static bool HasValidPhone<TUser>(this TUser user)
+            where TUser : User, new()
+        { 
+            return !string.IsNullOrWhiteSpace(user.PhoneNumber);
+        }
+
     }
 }

@@ -13,12 +13,5 @@ namespace ChustaSoft.Tools.Authorization.Models
         public DateTimeOffset RegistrationDate { get; set; }
         public bool IsActive { get; set; }
 
-
-        public bool HasValidEmail
-            => !string.IsNullOrWhiteSpace(Email) && !Email.EndsWith(AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT);
-
-        public bool HasValidPhone
-            => !string.IsNullOrWhiteSpace(PhoneNumber);
-
     }
 }
