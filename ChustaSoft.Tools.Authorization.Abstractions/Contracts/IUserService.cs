@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -29,8 +28,6 @@ namespace ChustaSoft.Tools.Authorization
         Task<bool> UpdateAsync(TUser user);
 
         Task<bool> ExistAsync(string userEmail);
-
-        AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl);
 
     }
 

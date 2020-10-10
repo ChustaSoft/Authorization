@@ -154,7 +154,9 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<IUserClaimService, UserService>();
                 services.AddTransient<IUserRoleService, UserService>();
                 services.AddTransient<IUserService, UserService>();
+
                 services.AddTransient<ISessionService, SessionService>();
+                services.AddTransient<IProviderService, ProviderService>();
 
                 services.AddTransient<ITokenHelper, TokenHelper>();
             }
@@ -163,7 +165,9 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<IUserClaimService<TUser>, UserService<TUser>>();
                 services.AddTransient<IUserRoleService<TUser>, UserService<TUser>>();
                 services.AddTransient<IUserService<TUser>, UserService<TUser>>();
+
                 services.AddTransient<ISessionService, SessionService<TUser>>();
+                services.AddTransient<IProviderService, ProviderService<TUser>>();
 
                 services.AddTransient<ITokenHelper<TUser>, TokenHelper<TUser>>();
             }

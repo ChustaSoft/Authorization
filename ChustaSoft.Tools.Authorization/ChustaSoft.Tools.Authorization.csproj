@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>3.0.0-beta.4</Version>
+    <Version>3.0.0-beta.5</Version>
     <AssemblyVersion>3.0.0</AssemblyVersion>
     <FileVersion>3.0.0</FileVersion>
     <Description>Authorization NuGet solution based on Microsoft Identity and JWT</Description>
@@ -33,17 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Services\RoleService.cs">
-      <DependentUpon>IRoleService.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Services\SessionService.cs">
-      <DependentUpon>ISessionService.cs</DependentUpon>
-    </Compile>
     <Compile Update="Helpers\TokenHelper.cs">
       <DependentUpon>ITokenHelper.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Services\UserService.cs">
-      <DependentUpon>IUserService.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

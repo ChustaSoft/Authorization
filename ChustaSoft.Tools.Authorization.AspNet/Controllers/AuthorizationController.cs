@@ -17,16 +17,18 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         #region Fields
 
         private readonly ISessionService _sessionService;
+        private readonly IProviderService _providerService;
 
         #endregion
 
 
         #region Constructor
 
-        public AuthorizationController(ILogger<AuthorizationController> logger, ISessionService sessionService)
+        public AuthorizationController(ILogger<AuthorizationController> logger, ISessionService sessionService, IProviderService providerService)
             : base(logger)
         {
             _sessionService = sessionService;
+            _providerService = providerService;
         }
 
         #endregion
@@ -145,7 +147,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
         {
             var loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
-            var properties = _sessionService.GetExternalProperties(provider, loginCallbackUrl);
+            var properties = _providerService.GetExternalProperties(provider, loginCallbackUrl);
 
             return Challenge(properties, provider);
         }

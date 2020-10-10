@@ -208,13 +208,6 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
-        public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
-        {
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
-
-            return properties;
-        }
-
         public void Review(TUser user) 
         {
             if (string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.PhoneNumber))

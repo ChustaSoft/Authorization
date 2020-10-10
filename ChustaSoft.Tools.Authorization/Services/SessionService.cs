@@ -83,11 +83,6 @@ namespace ChustaSoft.Tools.Authorization
             return await _userService.UpdateAsync(user);
         }
 
-        public AuthenticationProperties GetExternalProperties(string provider, string loginCallbackUrl)
-        {
-            return _userService.GetExternalProperties(provider, loginCallbackUrl);
-        }
-
         #endregion
 
 
