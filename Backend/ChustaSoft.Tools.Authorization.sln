@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", "ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{7ADF4E6C-752C-4FDB-9A69-AE738009F86C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization", "ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj", "{AABEC47E-59B6-4C7A-B4AA-317BD845A7D9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.UnitTest", "ChustaSoft.Tools.Authorization.UnitTest\ChustaSoft.Tools.Authorization.UnitTest.csproj", "{028EEF89-BB93-417A-A23B-841500873C83}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet", "ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{05DBE2A5-8F21-47DC-A368-D66554554977}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Examples", "3. Examples", "{924F511A-1987-48F5-BBD1-88440D8C9ECA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Test", "2. Test", "{D3CCC716-6D33-4FF7-9065-6D3DAF2A86DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Packages", "1. Packages", "{9E3D42AE-2492-456A-A08A-C99E954B2010}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestCustom.WebAPI", "ChustaSoft.Tools.Authorization.TestCustom.WebAPI\ChustaSoft.Tools.Authorization.TestCustom.WebAPI.csproj", "{FBC7599E-F21B-4267-B1E5-82615A672D29}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.SqlServer", "ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj", "{4F3DD532-03A7-4F43-850B-6B026A3AB33E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.Abstractions", "ChustaSoft.Tools.Authorization.Abstractions\ChustaSoft.Tools.Authorization.Abstractions.csproj", "{37F33347-5DF7-4F69-A986-9C322B203787}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7ADF4E6C-752C-4FDB-9A69-AE738009F86C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ADF4E6C-752C-4FDB-9A69-AE738009F86C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ADF4E6C-752C-4FDB-9A69-AE738009F86C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ADF4E6C-752C-4FDB-9A69-AE738009F86C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AABEC47E-59B6-4C7A-B4AA-317BD845A7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AABEC47E-59B6-4C7A-B4AA-317BD845A7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AABEC47E-59B6-4C7A-B4AA-317BD845A7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AABEC47E-59B6-4C7A-B4AA-317BD845A7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{028EEF89-BB93-417A-A23B-841500873C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{028EEF89-BB93-417A-A23B-841500873C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{028EEF89-BB93-417A-A23B-841500873C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{028EEF89-BB93-417A-A23B-841500873C83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05DBE2A5-8F21-47DC-A368-D66554554977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05DBE2A5-8F21-47DC-A368-D66554554977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05DBE2A5-8F21-47DC-A368-D66554554977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05DBE2A5-8F21-47DC-A368-D66554554977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBC7599E-F21B-4267-B1E5-82615A672D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBC7599E-F21B-4267-B1E5-82615A672D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBC7599E-F21B-4267-B1E5-82615A672D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBC7599E-F21B-4267-B1E5-82615A672D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3DD532-03A7-4F43-850B-6B026A3AB33E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3DD532-03A7-4F43-850B-6B026A3AB33E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3DD532-03A7-4F43-850B-6B026A3AB33E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3DD532-03A7-4F43-850B-6B026A3AB33E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F33347-5DF7-4F69-A986-9C322B203787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F33347-5DF7-4F69-A986-9C322B203787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F33347-5DF7-4F69-A986-9C322B203787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F33347-5DF7-4F69-A986-9C322B203787}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7ADF4E6C-752C-4FDB-9A69-AE738009F86C} = {924F511A-1987-48F5-BBD1-88440D8C9ECA}
+		{AABEC47E-59B6-4C7A-B4AA-317BD845A7D9} = {9E3D42AE-2492-456A-A08A-C99E954B2010}
+		{028EEF89-BB93-417A-A23B-841500873C83} = {D3CCC716-6D33-4FF7-9065-6D3DAF2A86DE}
+		{05DBE2A5-8F21-47DC-A368-D66554554977} = {9E3D42AE-2492-456A-A08A-C99E954B2010}
+		{FBC7599E-F21B-4267-B1E5-82615A672D29} = {924F511A-1987-48F5-BBD1-88440D8C9ECA}
+		{4F3DD532-03A7-4F43-850B-6B026A3AB33E} = {9E3D42AE-2492-456A-A08A-C99E954B2010}
+		{37F33347-5DF7-4F69-A986-9C322B203787} = {9E3D42AE-2492-456A-A08A-C99E954B2010}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A343E741-D502-4FC7-AF4C-6D28DDD9468C}
+	EndGlobalSection
+EndGlobal
