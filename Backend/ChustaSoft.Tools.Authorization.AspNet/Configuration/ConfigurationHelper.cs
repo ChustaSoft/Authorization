@@ -18,7 +18,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         #region Public Extension methods
 
-        public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, string corsPolicy)
         {
             if (!env.EnvironmentName.Equals("dev"))
             {
@@ -27,7 +27,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             }
 
             app.UseRouting();
-            app.UseCors();
+            app.UseCors(corsPolicy);
 
             app.UseAuthentication();
             app.UseAuthorization();

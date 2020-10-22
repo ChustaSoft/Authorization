@@ -64,6 +64,14 @@ namespace ChustaSoft.Tools.Authorization
 
             services.AddMvc()
                 .AddAuthorizationControllers();
+
+            services.AddCors(o => o.AddPolicy("IdentityPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -79,13 +87,16 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization(env, serviceProvider)
+            app.UseRouting();
+
+            app.ConfigureAuthorization(env, serviceProvider, "IdentityPolicy")
                 .SetupDatabase<AuthCustomContext, CustomUser, CustomRole>()
                 .DefaultUsers(ub =>
                 {
                     ub.Add("SYSTEM", "Sys.1234").WithFullAccess();
                     ub.Add("ADMIN", "Admn.1234").WithRole("Admin").WithFullAccess();
                 });
+
         }
 
         #endregion
