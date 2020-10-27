@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /Backend/ChustaSoft.Tools.Authorization.TestBasic.WebAPI/Properties/launchSettings.json
 /Backend/ChustaSoft.Tools.Authorization.TestCustom.WebAPI/Properties/launchSettings.json
+/Frontend/cs-authorization-connector/dist
