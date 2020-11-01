@@ -7,8 +7,7 @@ import { AuthorizationService } from '@chustasoft/cs-authorization-connector';
 export class AuthService extends AuthorizationService {
 
   constructor(@Inject('BASE_URL') baseUrl: string)
-  {
-    debugger;
+  {    
     super(baseUrl);
   }
 
