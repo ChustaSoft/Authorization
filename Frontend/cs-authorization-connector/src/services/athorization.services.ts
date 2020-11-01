@@ -12,7 +12,7 @@ export class AuthorizationService {
 
 
     public async register(credentials: Credentials): Promise<Session> {
-        return fetch(`${this.authorizationApiUrl}/api/auth/register`, {
+        return fetch(`${this.authorizationApiUrl}api/auth/register`, {
             method: 'POST',
             body: JSON.stringify(credentials),
             headers: {
