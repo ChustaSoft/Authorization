@@ -3,8 +3,16 @@ import { ActionResponse } from '@chustasoft/cs-common'
 
 export class AuthorizationService {
 
+    private authorizationApiUrl: string;
+
+    
+    constructor(authorizationApiUrl: string) {
+        this.authorizationApiUrl = authorizationApiUrl;
+    }
+
+
     public async register(credentials: Credentials): Promise<Session> {
-        return fetch('https://localhost:44374/api/auth/register', {
+        return fetch(`${this.authorizationApiUrl}/api/auth/register`, {
             method: 'POST',
             body: JSON.stringify(credentials),
             headers: {
