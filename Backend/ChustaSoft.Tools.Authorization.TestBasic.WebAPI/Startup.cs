@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.AspNet;
-using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -64,7 +63,7 @@ namespace ChustaSoft.Tools.Authorization
                 builder.AddUserSecrets<Startup>();
             }
 
-            app.ConfigureAuthorization(env, serviceProvider)
+            app.ConfigureAuthorization(env, serviceProvider, "TestPolicy")
                 .SetupDatabase()
                 .DefaultUsers(ub => 
                     {
