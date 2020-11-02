@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Authentication;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -57,7 +56,7 @@ namespace ChustaSoft.Tools.Authorization
             if (resultFlag)
             {
                 var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
-                var session = new Session(user, tokenInfo);
+                var session = new Session(user, tokenInfo, credentials.Parameters);
 
                 return session;
             }

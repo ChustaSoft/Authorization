@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,13 +22,8 @@ namespace ChustaSoft.Tools.Authorization.Models
         
         public string Culture { get; set; }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public IDictionary<string, string> Parameters { get; set; }
-
-
-        public Credentials()
-        {
-            Parameters = new Dictionary<string, string>();
-        }
 
     }
 

@@ -28,7 +28,7 @@ namespace ChustaSoft.Tools.Authorization.UnitTest
 
             Assert.AreEqual(result.First().Credentials.Username, user);
             Assert.AreEqual(result.First().Credentials.Password, password);
-            Assert.IsFalse(result.First().Credentials.Parameters.Any());
+            Assert.IsNull(result.First().Credentials.Parameters);
             Assert.IsFalse(result.First().Roles.Any());
         }
 
@@ -46,11 +46,11 @@ namespace ChustaSoft.Tools.Authorization.UnitTest
             Assert.AreEqual(result.Count(), 2);
             Assert.IsNotNull(result.First(x => x.Credentials.Username == user1).Credentials.Username);
             Assert.IsNotNull(result.First(x => x.Credentials.Password == password1).Credentials.Password);
-            Assert.IsFalse(result.First(x => x.Credentials.Username == user1).Credentials.Parameters.Any());
+            Assert.IsNull(result.First(x => x.Credentials.Username == user1).Credentials.Parameters);
             Assert.IsFalse(result.First(x => x.Credentials.Username == user1).Roles.Any());
             Assert.IsNotNull(result.First(x => x.Credentials.Username == user2).Credentials.Username);
             Assert.IsNotNull(result.First(x => x.Credentials.Password == password2).Credentials.Password);
-            Assert.IsFalse(result.First(x => x.Credentials.Username == user2).Credentials.Parameters.Any());
+            Assert.IsNull(result.First(x => x.Credentials.Username == user2).Credentials.Parameters);
             Assert.IsFalse(result.First(x => x.Credentials.Username == user2).Roles.Any());
         }
 
@@ -69,11 +69,11 @@ namespace ChustaSoft.Tools.Authorization.UnitTest
             Assert.AreEqual(result.Count(), 2);
             Assert.IsNotNull(result.First(x => x.Credentials.Username == user1).Credentials.Username);
             Assert.IsNotNull(result.First(x => x.Credentials.Password == password1).Credentials.Password);
-            Assert.IsFalse(result.First(x => x.Credentials.Username == user1).Credentials.Parameters.Any());
+            Assert.IsNull(result.First(x => x.Credentials.Username == user1).Credentials.Parameters);
             Assert.IsFalse(result.First(x => x.Credentials.Username == user1).Roles.Any());
             Assert.IsNotNull(result.First(x => x.Credentials.Username == user2).Credentials.Username);
             Assert.IsNotNull(result.First(x => x.Credentials.Password == password2).Credentials.Password);
-            Assert.IsFalse(result.First(x => x.Credentials.Username == user2).Credentials.Parameters.Any());
+            Assert.IsNull(result.First(x => x.Credentials.Username == user2).Credentials.Parameters);
             Assert.IsTrue(result.First(x => x.Credentials.Username == user2).Roles.Any());
             Assert.AreEqual(result.First(x => x.Credentials.Username == user2).Roles.First(), role2);
         }
