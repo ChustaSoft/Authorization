@@ -1,4 +1,4 @@
-import { Credentials, Session } from "..";
+import { Credentials, Session, UserValidation } from "..";
 import { HttpService } from '@chustasoft/cs-common'
 
 export class AuthorizationService {
@@ -22,6 +22,11 @@ export class AuthorizationService {
     public async login(credentials: Credentials): Promise<Session> {
         return this.httpService.post<Credentials, Session>(
             `${this.authorizationApiUrl}api/auth/login`, credentials);
+    }
+
+    public async confirm(userValidation: UserValidation): Promise<Session> {
+        return this.httpService.post<UserValidation, Session>(
+            `${this.authorizationApiUrl}api/auth/confirm`, userValidation);
     }
 
 }

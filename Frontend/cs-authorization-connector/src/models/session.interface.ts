@@ -3,5 +3,6 @@ export interface Session {
     username: string;
     token: string;
     expirationDate: Date | string;
-    culture: string;
+    culture: string;  
+    parameters: { [key: string]: string };  
 }
