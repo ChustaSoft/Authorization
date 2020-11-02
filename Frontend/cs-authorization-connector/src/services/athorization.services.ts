@@ -31,7 +31,7 @@ export class AuthorizationService {
 
     public async activate(userActivation: UserActivation): Promise<string> {
         return this.httpService.post<UserActivation, string>(
-            `${this.authorizationApiUrl}api/auth/validate`, userActivation);
+            `${this.authorizationApiUrl}api/auth/activate`, userActivation);
     }
 
 }
