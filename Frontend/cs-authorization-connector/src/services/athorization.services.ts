@@ -29,7 +29,7 @@ export class AuthorizationService {
             `${this.authorizationApiUrl}api/auth/confirm`, userValidation);
     }
 
-    public async validate(userActivation: UserActivation): Promise<string> {
+    public async activate(userActivation: UserActivation): Promise<string> {
         return this.httpService.post<UserActivation, string>(
             `${this.authorizationApiUrl}api/auth/validate`, userActivation);
     }
