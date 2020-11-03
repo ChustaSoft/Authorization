@@ -18,3 +18,11 @@
     <button mat-raised-button (click)="login()" color="primary">LOGIN</button>
   </mat-card-actions>
 </mat-card>
+<mat-card class="my-card" *ngIf="session != null">
+  <mat-card-content>
+    <h3>Confirmations</h3>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button (click)="activate()" color="accent">VALIDATE/INVALIDATE</button>
+  </mat-card-actions>
+</mat-card>

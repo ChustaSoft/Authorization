@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Credentials } from '@chustasoft/cs-authorization-connector';
+import { Credentials, Session, UserActivation } from '@chustasoft/cs-authorization-connector';
 import { AuthService } from '../auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +9,9 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  private activateActionFlag: boolean = false;
+  private userNameRetrived: string;
 
   public credentials: Credentials = {
     username: '',
@@ -18,20 +22,52 @@ export class LoginComponent implements OnInit {
     parameters: {}
   };
 
+  public session: Session;
 
-  constructor(private authService: AuthService) { }
+
+  constructor(
+    private authService: AuthService,
+    private snackBar: MatSnackBar)
+  { }
 
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void
+  { }
 
 
   public login(): void {
     this.authService.login(this.credentials)
       .then(x => {
-        //THEN: Session object is retrived here, allowing to manage user token
-        
-        return x;
+        this.session = x;
+        this.snackBar.openFromComponent(LoginCompleteSnackbar, {
+          duration: 5000,
+        });
       });
   }
+
+  public activate(): void {
+    const activationInfo: UserActivation = {
+      'username': this.session.username,
+      'password': this.credentials.password,
+      'activate': this.activateActionFlag
+    };
+    
+    this.authService.activate(activationInfo)
+      .then(x => {
+        this.userNameRetrived = x;
+        this.activateActionFlag = !this.activateActionFlag;
+      });
+  }
+
 }
+
+
+@Component({
+  selector: 'app-snackbar',
+  template: `
+  <span class="example-pizza-party">
+    Login completed successfully
+  </span>
+  `  
+})
+export class LoginCompleteSnackbar { }
