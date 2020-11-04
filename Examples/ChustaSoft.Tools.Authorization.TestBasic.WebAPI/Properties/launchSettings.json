@@ -1,0 +1,33 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:62419",
+      "sslPort": 44374
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "environmentVariables": {
+        "DATABASE_SERVER": "XELIT3-PC\\X3SQLSERVER",
+        "SECRET_DATABASE_PASSWORD": "L0v3.4286",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DATABASE_USER": "CSDBUser",
+        "Microsoft:ClientId": "d3038b49-afb1-45c4-ba85-b02aed14267c",
+        "Microsoft:ClientSecret": "3sm.2e_2w7u1P24v9ZCi.63-3LSddr5clj"
+      }
+    },
+    "ChustaSoft.Tools.Authorization": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "api/values",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    }
+  }
+}
