@@ -36,6 +36,11 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         #region Public methods
 
+        /// <summary>
+        /// Endpoint Login functionality, expecting credentials such as Username, Email or Phone and Password
+        /// </summary>
+        /// <param name="credentials">Credentials of the user</param>
+        /// <returns>Session object, with user logged, token and expiration time</returns>
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] Credentials credentials)
@@ -62,6 +67,12 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             }
         }
 
+        /// <summary>
+        /// Endpoint for Register functionality, expecting credentials for user registrarion. 
+        /// Can retrieve parameters also for being re-thrown to Client API through custom actions with IUserCreated
+        /// </summary>
+        /// <param name="credentials">Credentials of the user</param>
+        /// <returns>Session object, with user logged, token and expiration time</returns>
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] Credentials credentials)
@@ -88,6 +99,12 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             }
         }
 
+        /// <summary>
+        /// Endpoint for confirming user email or phone, expecting the email/phone and generated confirmation token.
+        /// Could be not mandatory if confirmation required is not configured on Startup.
+        /// </summary>
+        /// <param name="userValidation">Email/Phone and correspondent confirmation token</param>
+        /// <returns>Session object, with user logged, token and expiration time</returns>
         [AllowAnonymous]
         [HttpPost("confirm")]
         public async Task<IActionResult> ConfirmAsync([FromBody] UserValidation userValidation) 
@@ -114,6 +131,11 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             }
         }
 
+        /// <summary>
+        /// Endpoint for activate or deactivate user, expecting the username, password and activation or deactivation flag
+        /// </summary>
+        /// <param name="userActivation">Username, password and activation flag</param>
+        /// <returns>Username and succeed flag</returns>
         [AllowAnonymous]
         [HttpPost("activate")]
         public async Task<IActionResult> ActivateAsync([FromBody] UserActivation userActivation)
