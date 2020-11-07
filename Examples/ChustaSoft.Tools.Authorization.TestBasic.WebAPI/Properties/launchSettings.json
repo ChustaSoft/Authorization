@@ -12,12 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "environmentVariables": {
-        "DATABASE_SERVER": "XELIT3-PC\\X3SQLSERVER",
-        "SECRET_DATABASE_PASSWORD": "L0v3.4286",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DATABASE_USER": "CSDBUser",
-        "Microsoft:ClientId": "d3038b49-afb1-45c4-ba85-b02aed14267c",
-        "Microsoft:ClientSecret": "3sm.2e_2w7u1P24v9ZCi.63-3LSddr5clj"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "ChustaSoft.Tools.Authorization": {
