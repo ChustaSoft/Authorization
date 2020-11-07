@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class UserService<TUser> : ServiceBase, IUserService<TUser>, IRevisable<TUser>
+    public class UserService<TUser> : ServiceBase, IUserService<TUser>, IReviewModelService<TUser>
          where TUser : User, new()
     {
 
