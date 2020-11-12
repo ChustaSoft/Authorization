@@ -40,15 +40,7 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Public methods
 
-        public async Task<Session> AuthenticateAsync(Credentials credentials)
-        {
-            var user = await LoginAsync(credentials);
-            var session = GetUserSession(user);
-
-            return session;
-        }
-
-        public async Task<Session> RegisterAsync(Credentials credentials)
+        public async Task<ValidableSession> RegisterAsync(ValidableCredentials credentials)
         {
             var user = credentials.ToUser<TUser>();
             var resultFlag = await _userService.CreateAsync(user, credentials.Password, credentials.Parameters);
@@ -56,12 +48,20 @@ namespace ChustaSoft.Tools.Authorization
             if (resultFlag)
             {
                 var tokenInfo = _tokenHelper.Generate(user, _securitySettings.PrivateKey);
-                var session = new Session(user, tokenInfo, credentials.Parameters);
+                var session = new ValidableSession(user, tokenInfo, credentials.Parameters);
 
                 return session;
             }
             else
                 throw new AuthenticationException($"User {user.UserName} could not be created");
+        }
+
+        public async Task<Session> AuthenticateAsync(Credentials credentials)
+        {
+            var user = await LoginAsync(credentials);
+            var session = GetUserSession(user);
+
+            return session;
         }
 
         public async Task<Session> ValidateAsync(UserValidation userValidation)

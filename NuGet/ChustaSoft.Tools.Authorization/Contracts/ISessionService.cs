@@ -10,18 +10,18 @@ namespace ChustaSoft.Tools.Authorization
     {
 
         /// <summary>
+        /// Register user
+        /// </summary>
+        /// <param name="credentials">User credentials</param>
+        /// <returns>Session with token for the user, and confirmation tokens</returns>
+        Task<ValidableSession> RegisterAsync(ValidableCredentials credentials);
+
+        /// <summary>
         /// Authenticate user, independently of the mechanims
         /// </summary>
         /// <param name="credentials">User credentials</param>
         /// <returns>Session with token for the user</returns>
         Task<Session> AuthenticateAsync(Credentials credentials);
-
-        /// <summary>
-        /// Register user
-        /// </summary>
-        /// <param name="credentials">User credentials</param>
-        /// <returns>Session with token for the user, and confirmation tokens</returns>
-        Task<Session> RegisterAsync(Credentials credentials);
 
         /// <summary>
         /// Validate user email or phone

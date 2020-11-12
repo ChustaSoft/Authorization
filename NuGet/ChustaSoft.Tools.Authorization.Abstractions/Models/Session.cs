@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace ChustaSoft.Tools.Authorization.Models
 {
@@ -13,9 +11,6 @@ namespace ChustaSoft.Tools.Authorization.Models
         public string Token { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string Culture { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public IDictionary<string, string> Parameters { get; set; }
         
 
         public Session() { }
@@ -27,12 +22,6 @@ namespace ChustaSoft.Tools.Authorization.Models
             Culture = user.Culture;
             Token = tokenInfo.Token;
             ExpirationDate = tokenInfo.ExpirationDate;
-        }
-
-        public Session(User user, TokenInfo tokenInfo, IDictionary<string, string> parameters)
-            : this(user, tokenInfo)
-        {
-            this.Parameters = parameters;
         }
 
     }

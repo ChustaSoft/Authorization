@@ -75,9 +75,9 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         /// <returns>Session object, with user logged, token and expiration time</returns>
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] Credentials credentials)
+        public async Task<IActionResult> RegisterAsync([FromBody] ValidableCredentials credentials)
         {
-            var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
+            var actionResponseBuilder = GetEmptyResponseBuilder<ValidableSession>();
             try
             {
                 if (ModelState.IsValid)
