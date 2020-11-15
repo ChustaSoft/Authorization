@@ -206,9 +206,9 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void SetupExternalProviders(IServiceCollection services, AuthorizationSettings authSettings)
         {
-            foreach (var providerName in authSettings.ExternalProviders.Keys)
+            foreach (var providerName in authSettings.ExternalAuthentication.Providers.Keys)
             {
-                var providerConfig = authSettings.ExternalProviders[providerName];
+                var providerConfig = authSettings.ExternalAuthentication.Providers[providerName];
 
                 if (!string.IsNullOrEmpty(providerConfig.ClientId) && !string.IsNullOrEmpty(providerConfig.ClientSecret))
                 {

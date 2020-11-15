@@ -1,4 +1,6 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -92,6 +94,37 @@ namespace ChustaSoft.Tools.Authorization
         /// <param name="userEmail">email to be checked</param>
         /// <returns>True if already exists, false otherwise</returns>
         Task<bool> ExistAsync(string userEmail);
+
+        /// <summary>
+        /// Build the object where we set the authentication properties
+        /// </summary>
+        /// <param name="provider">Provider name</param>
+        /// <param name="loginCallbackUrl">Url to redirect after authentication</param>
+        /// <returns></returns>
+        AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl);
+
+        /// <summary>
+        /// Creates an external user in db, assigning a role if required, and storing the userLogin information in database
+        /// </summary>
+        /// <param name="loginInfo">Object with information realted with the login</param>
+        /// <returns></returns>
+        Task CreateExternalAsync(ExternalLoginInfo loginInfo);
+
+        /// <summary>
+        /// Get information about the current external login operation
+        /// </summary>
+        /// <returns></returns>
+        Task<ExternalLoginInfo> GetExternalLoginInfoAsync();
+
+        /// <summary>
+        /// Perform the login of an external user
+        /// </summary>
+        /// <param name="providerName">Name of the provider the user is using to login</param>
+        /// <param name="providerKey">Key of the provider</param>
+        /// <param name="isPersistent">Flag indicating whether the sign-in cookie should persist after the browser is closed</param>
+        /// <returns></returns>
+        Task<SignInResult> ExternalSignInAsync(string providerName, string providerKey, bool isPersistent);
+
 
     }
 

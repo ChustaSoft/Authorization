@@ -1,4 +1,6 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -80,6 +82,32 @@ namespace ChustaSoft.Tools.Authorization
             user.IsActive = userActivation.Activate;
 
             return await _userService.UpdateAsync(user);
+        }
+
+        public AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl)
+        {
+            return _userService.BuildAuthenticationProperties(provider, loginCallbackUrl);
+        }
+
+        public async Task AuthenticateExternalAsync()
+        {
+            var loginInfo = await _userService.GetExternalLoginInfoAsync();
+
+            var result = await _userService.ExternalSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: false);
+
+            if (result == SignInResult.Success)
+            {
+                return;
+            }
+            else if (result == SignInResult.LockedOut)
+            {
+                throw new AuthenticationException($"User is locked");
+            }
+            else
+            {
+                await _userService.CreateExternalAsync(loginInfo);
+                await _userService.ExternalSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent: false);
+            }
         }
 
         #endregion

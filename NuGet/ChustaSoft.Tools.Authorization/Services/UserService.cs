@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,16 @@ namespace ChustaSoft.Tools.Authorization
 
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserManager<TUser> _userManager;
+        private readonly string _defaultExternalRole;
+
+
+        #endregion
+
+        #region Constants
+
+        private const string CREATE_ACTION = "create";
+        private const string LOGIN_ACTION = "login";
+        private const string USER_NOT_ALLOWED_TO_LOGIN = "User not allowed to login in the system";
 
         #endregion
 
@@ -31,13 +42,14 @@ namespace ChustaSoft.Tools.Authorization
         #region Constructor
 
         public UserService(AuthorizationSettings authorizationSettings, SignInManager<TUser> signInManager, UserManager<TUser> userManager)
-            : this(authorizationSettings, signInManager, userManager, null)
+            : this(authorizationSettings, signInManager, userManager, null, null)
         { }
 
         public UserService(
                 AuthorizationSettings authorizationSettings, 
                 SignInManager<TUser> signInManager, UserManager<TUser> userManager, 
-                EventHandler<UserEventArgs> userCreatedEventHandler)
+                EventHandler<UserEventArgs> userCreatedEventHandler, 
+                string defaultExternalRole = "")
             : base(authorizationSettings)
         {
             _signInManager = signInManager;
@@ -45,8 +57,10 @@ namespace ChustaSoft.Tools.Authorization
             
             if(userCreatedEventHandler != null)
                 UserCreatedEventHandler += userCreatedEventHandler;
+
+            _defaultExternalRole = defaultExternalRole;
         }
-        
+
         #endregion
 
 
@@ -74,7 +88,7 @@ namespace ChustaSoft.Tools.Authorization
             if (user != null && user.IsActive)
                 return user;
 
-            throw new AuthenticationException("User not allowed to login in the system");
+            throw new AuthenticationException(USER_NOT_ALLOWED_TO_LOGIN);
         }
 
         public async Task<TUser> SignByEmail(string email, string password)
@@ -89,7 +103,7 @@ namespace ChustaSoft.Tools.Authorization
                     return user;
             }
 
-            throw new AuthenticationException("User not allowed to login in the system");
+            throw new AuthenticationException(USER_NOT_ALLOWED_TO_LOGIN);
         }
 
         public async Task<TUser> SignByPhone(string phone, string password)
@@ -215,6 +229,44 @@ namespace ChustaSoft.Tools.Authorization
                 user.Culture = _authorizationSettings.DefaultCulture;
         }
 
+        public AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl)
+        {
+            AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
+            return properties;
+        }
+
+        public async Task<SignInResult> ExternalSignInAsync(string providerName, string providerKey, bool isPersistent)
+        {
+            return await _signInManager.ExternalLoginSignInAsync(providerName, providerKey, isPersistent);
+        }
+
+        public async Task CreateExternalAsync(ExternalLoginInfo loginInfo)
+        {
+            TUser user = new TUser
+            {
+                UserName = NormalizeUsername(loginInfo),
+                Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email)
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            manageIdentityResult(result, CREATE_ACTION);
+
+            if (!string.IsNullOrEmpty(_defaultExternalRole))
+            {
+                await AssignRoleAsync(user, _defaultExternalRole);
+            }
+
+            result = await _userManager.AddLoginAsync(user, loginInfo);
+
+            manageIdentityResult(result, LOGIN_ACTION);
+        }
+
+        public async Task<ExternalLoginInfo> GetExternalLoginInfoAsync()
+        {
+            return await _signInManager.GetExternalLoginInfoAsync();
+        }
+
         #endregion
 
 
@@ -256,6 +308,25 @@ namespace ChustaSoft.Tools.Authorization
 
         #endregion
 
+        #region Private methods
+
+        private void manageIdentityResult(IdentityResult result, string actionName)
+        {
+            if (result != IdentityResult.Success)
+            {
+                string errorMessage = result.Errors != null && result.Errors.Count() > 0 ? result.Errors.First().Description : string.Empty;
+                throw new AuthenticationException($"Unable to {actionName} user. {errorMessage}");
+            }
+        }
+
+        private string NormalizeUsername(ExternalLoginInfo loginInfo)
+        {
+            string username = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
+            return !string.IsNullOrEmpty(username) ? username.Replace(" ", string.Empty) : string.Empty;
+        }
+
+        #endregion
+
     }
 
 
@@ -268,8 +339,8 @@ namespace ChustaSoft.Tools.Authorization
             : base(authorizationSettings, signInManager, userManager)
         { }
 
-        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func)
-           : base(authorizationSettings, signInManager, userManager, func)
+        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func, string defaultExternalRole = null)
+           : base(authorizationSettings, signInManager, userManager, func, defaultExternalRole)
         { }
     }
 

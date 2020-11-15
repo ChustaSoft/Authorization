@@ -63,9 +63,9 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
-        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings)
+        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationProviderSettings)
         {
-            AuthorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationSettings);
+            AuthorizationSettings.ExternalAuthentication.Providers.Add(providerName, externalAuthenticationProviderSettings);
 
             return this;
         }
@@ -73,6 +73,13 @@ namespace ChustaSoft.Tools.Authorization
         public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret)
         {
             AddExternalProvider(providerName, new ExternalAuthenticationProviderSettings { ClientId = clientId, ClientSecret = clientSecret });
+
+            return this;
+        }
+
+        public AuthorizationSettingsBuilder SetExternalAuthorizationDefaultRole(string defaultRole)
+        {
+            AuthorizationSettings.ExternalAuthentication.DefaultRole = defaultRole;
 
             return this;
         }
@@ -91,6 +98,8 @@ namespace ChustaSoft.Tools.Authorization
         AuthorizationSettingsBuilder SetSiteName(string siteName);
         AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings);
         AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret);
+        AuthorizationSettingsBuilder SetExternalAuthorizationDefaultRole(string defaultRole);
+
     }
 
 }

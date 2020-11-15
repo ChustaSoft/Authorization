@@ -1,5 +1,6 @@
 ﻿using ChustaSoft.Common.Base;
 using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -165,21 +166,30 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
 
         [AllowAnonymous]
-        [HttpGet("external-login/{provider}/{redirectUrl}", Name = "web-session-external-login")]
+        [HttpGet("external-login/{provider}/{*redirectUrl}", Name = "web-session-external-login")]
         public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
         {
-            var loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
-            var properties = _providerService.GetExternalProperties(provider, loginCallbackUrl);
+            string loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
 
-            return Challenge(properties, provider);
+            if (!User.Identity.IsAuthenticated)
+            {
+                AuthenticationProperties properties = _sessionService.BuildAuthenticationProperties(provider, loginCallbackUrl);
+                return Challenge(properties, provider);
+            }
+            else
+            {
+                return Redirect(loginCallbackUrl);
+            }
         }
 
         [HttpGet("external-login/{redirectUrl}/callback", Name = "web-session-external-login-callback")]
-        public IActionResult ExternalLoginCallback([FromRoute]string redirectUrl)
+        public async Task<IActionResult> ExternalLoginCallback([FromRoute]string redirectUrl)
         {
-            var ub = new UriBuilder("https", redirectUrl);
-
-            return new RedirectResult(ub.ToString());
+            if (!User.Identity.IsAuthenticated)
+            {
+                await _sessionService.AuthenticateExternalAsync();
+            }
+            return Redirect(Uri.UnescapeDataString(redirectUrl));
         }
 
         #endregion

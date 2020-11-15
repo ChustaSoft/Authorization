@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
@@ -37,5 +38,18 @@ namespace ChustaSoft.Tools.Authorization
         /// <returns>Result flag</returns>
         Task<bool> ActivateAsync(UserActivation userActivation);
 
+        /// <summary>
+        /// Builds AuthenticationProperties object from the provider name and the callback url
+        /// </summary>
+        /// <param name="provider">Name of the provider</param>
+        /// <param name="loginCallbackUrl">Url to redirect after the login</param>
+        /// <returns></returns>
+        AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl);
+
+        /// <summary>
+        /// Authenticate the external user, creating it first if not exists
+        /// </summary>
+        /// <returns></returns>
+        Task AuthenticateExternalAsync();
     }
 }
