@@ -18,7 +18,6 @@ namespace ChustaSoft.Tools.Authorization
 
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserManager<TUser> _userManager;
-        private readonly string _defaultExternalRole;
 
 
         #endregion
@@ -42,14 +41,13 @@ namespace ChustaSoft.Tools.Authorization
         #region Constructor
 
         public UserService(AuthorizationSettings authorizationSettings, SignInManager<TUser> signInManager, UserManager<TUser> userManager)
-            : this(authorizationSettings, signInManager, userManager, null, null)
+            : this(authorizationSettings, signInManager, userManager, null)
         { }
 
         public UserService(
                 AuthorizationSettings authorizationSettings, 
                 SignInManager<TUser> signInManager, UserManager<TUser> userManager, 
-                EventHandler<UserEventArgs> userCreatedEventHandler, 
-                string defaultExternalRole = "")
+                EventHandler<UserEventArgs> userCreatedEventHandler)
             : base(authorizationSettings)
         {
             _signInManager = signInManager;
@@ -57,8 +55,6 @@ namespace ChustaSoft.Tools.Authorization
             
             if(userCreatedEventHandler != null)
                 UserCreatedEventHandler += userCreatedEventHandler;
-
-            _defaultExternalRole = defaultExternalRole;
         }
 
         #endregion
@@ -229,42 +225,35 @@ namespace ChustaSoft.Tools.Authorization
                 user.Culture = _authorizationSettings.DefaultCulture;
         }
 
-        public AuthenticationProperties BuildAuthenticationProperties(string provider, string loginCallbackUrl)
+        public async Task<SignInResult> ExternalSignInAsync(bool isPersistent)
         {
-            AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, loginCallbackUrl);
-            return properties;
+            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
+            return await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent);
         }
 
-        public async Task<SignInResult> ExternalSignInAsync(string providerName, string providerKey, bool isPersistent)
+        public async Task CreateExternalAsync(string defaultRole)
         {
-            return await _signInManager.ExternalLoginSignInAsync(providerName, providerKey, isPersistent);
-        }
+            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
 
-        public async Task CreateExternalAsync(ExternalLoginInfo loginInfo)
-        {
-            TUser user = new TUser
-            {
-                UserName = NormalizeUsername(loginInfo),
-                Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email)
+            Credentials credentials = new Credentials{ 
+                Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email),
+                Username = NormalizeUsername(loginInfo)
             };
 
+            TUser user = credentials.ToUser<TUser>().WithFullAccess();
+            
             var result = await _userManager.CreateAsync(user);
 
             manageIdentityResult(result, CREATE_ACTION);
 
-            if (!string.IsNullOrEmpty(_defaultExternalRole))
+            if (!string.IsNullOrEmpty(defaultRole))
             {
-                await AssignRoleAsync(user, _defaultExternalRole);
+                await AssignRoleAsync(user, defaultRole);
             }
 
             result = await _userManager.AddLoginAsync(user, loginInfo);
 
             manageIdentityResult(result, LOGIN_ACTION);
-        }
-
-        public async Task<ExternalLoginInfo> GetExternalLoginInfoAsync()
-        {
-            return await _signInManager.GetExternalLoginInfoAsync();
         }
 
         #endregion
@@ -321,8 +310,28 @@ namespace ChustaSoft.Tools.Authorization
 
         private string NormalizeUsername(ExternalLoginInfo loginInfo)
         {
+            string emailUsername = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+            emailUsername = !string.IsNullOrEmpty(emailUsername) && emailUsername.Contains("@") ? emailUsername.Split("@")[0] : string.Empty;
+
             string username = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
-            return !string.IsNullOrEmpty(username) ? username.Replace(" ", string.Empty) : string.Empty;
+
+            string normalizedUsername = string.Empty;
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                normalizedUsername = username;
+            }
+            if (!string.IsNullOrEmpty(emailUsername))
+            {
+                normalizedUsername += $"_{emailUsername}";
+            }
+
+            if (normalizedUsername.StartsWith("_"))
+            {
+                normalizedUsername = normalizedUsername.Substring(1);
+            }
+
+            return normalizedUsername;
         }
 
         #endregion
@@ -339,8 +348,8 @@ namespace ChustaSoft.Tools.Authorization
             : base(authorizationSettings, signInManager, userManager)
         { }
 
-        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func, string defaultExternalRole = null)
-           : base(authorizationSettings, signInManager, userManager, func, defaultExternalRole)
+        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func)
+           : base(authorizationSettings, signInManager, userManager, func)
         { }
     }
 

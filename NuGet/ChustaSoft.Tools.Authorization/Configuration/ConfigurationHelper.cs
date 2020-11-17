@@ -117,7 +117,7 @@ namespace ChustaSoft.Tools.Authorization
                     opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
                     opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
                     
-                    opt.SignIn.RequireConfirmedAccount = authSettings.ConfirmationRequired;
+                    opt.SignIn.RequireConfirmedAccount = authSettings.ConfirmationRequired;                    
                     
                     opt.Password.RequiredLength = authSettings.MinPasswordLength;
 
@@ -146,7 +146,7 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        private static void SetupUserTypedServices<TUser>(IServiceCollection services)
+        private static void SetupUserTypedServices<TUser>(IServiceCollection services, AuthorizationSettings authSettings)
             where TUser : User, new()
         {
             if (typeof(TUser) == typeof(User))
@@ -195,7 +195,7 @@ namespace ChustaSoft.Tools.Authorization
 
             SetupJwtAuthentication(services, authSettings, privateKey);
             SetupTypedServices<TUser, TRole>(services);
-            SetupUserTypedServices<TUser>(services);
+            SetupUserTypedServices<TUser>(services, authSettings);
             SetupRoleTypedServices<TRole>(services);
             SetupExternalProviders(services, authSettings);
 
@@ -206,9 +206,9 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void SetupExternalProviders(IServiceCollection services, AuthorizationSettings authSettings)
         {
-            foreach (var providerName in authSettings.ExternalAuthentication.Providers.Keys)
+            foreach (var providerName in authSettings.ExternalAuthentication.Keys)
             {
-                var providerConfig = authSettings.ExternalAuthentication.Providers[providerName];
+                var providerConfig = authSettings.ExternalAuthentication[providerName];
 
                 if (!string.IsNullOrEmpty(providerConfig.ClientId) && !string.IsNullOrEmpty(providerConfig.ClientSecret))
                 {

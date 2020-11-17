@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization.AspNet
 {
-    [Authorize]
     [ApiController]
     [Route("api/auth")]
     public class AuthorizationController : ApiControllerBase<AuthorizationController>
@@ -173,7 +172,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
             if (!User.Identity.IsAuthenticated)
             {
-                AuthenticationProperties properties = _sessionService.BuildAuthenticationProperties(provider, loginCallbackUrl);
+                AuthenticationProperties properties = _providerService.GetExternalProperties(provider, loginCallbackUrl);
                 return Challenge(properties, provider);
             }
             else
