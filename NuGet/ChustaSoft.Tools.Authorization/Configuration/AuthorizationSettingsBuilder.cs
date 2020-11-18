@@ -72,7 +72,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationSettings externalAuthenticationProviderSettings)
         {
-            AuthorizationSettings.ExternalAuthentication.Add(providerName, externalAuthenticationProviderSettings);
+            AuthorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationProviderSettings);
 
             return this;
         }

@@ -18,8 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj" />
     <ProjectReference Include="..\..\NuGet\ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj" />
-  </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  </ItemGroup>  
 
 </Project>

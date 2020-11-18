@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization

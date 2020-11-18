@@ -15,7 +15,7 @@ namespace ChustaSoft.Tools.Authorization
         public string DefaultCulture { get; set; }
         public bool ConfirmationRequired { get; set; }
         public string DefaultRole { get; set; }
-        public IDictionary<ExternalAuthenticationProviders, ExternalAuthenticationSettings> ExternalAuthentication { get; set; }
+        public IDictionary<ExternalAuthenticationProviders, ExternalAuthenticationSettings> ExternalProviders { get; set; }
 
         public AuthorizationSettings()
         {
@@ -24,7 +24,7 @@ namespace ChustaSoft.Tools.Authorization
             MinutesToExpire = AuthorizationConstants.DEFAULT_MINUTES_TO_EXPIRE;
             MaxAttemptsToLock = AuthorizationConstants.DEFAULT_MAX_ATTEMPTS_TO_LOCK;
             MinutesToUnlock = AuthorizationConstants.DEFAULT_MINUTES_TO_UNLOCK;
-            ExternalAuthentication = new Dictionary<ExternalAuthenticationProviders, ExternalAuthenticationSettings>();
+            ExternalProviders = new Dictionary<ExternalAuthenticationProviders, ExternalAuthenticationSettings>();
         }
 
     }
