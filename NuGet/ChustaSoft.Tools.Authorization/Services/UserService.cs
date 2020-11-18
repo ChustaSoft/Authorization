@@ -313,7 +313,7 @@ namespace ChustaSoft.Tools.Authorization
             string emailUsername = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
             emailUsername = !string.IsNullOrEmpty(emailUsername) && emailUsername.Contains("@") ? emailUsername.Split("@")[0] : string.Empty;
 
-            string username = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
+            string username = loginInfo.Principal.FindFirstValue(ClaimTypes.Name)?.Replace(" ", "");
 
             string normalizedUsername = string.Empty;
 
