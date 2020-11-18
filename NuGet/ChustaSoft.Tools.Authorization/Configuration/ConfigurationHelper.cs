@@ -117,7 +117,7 @@ namespace ChustaSoft.Tools.Authorization
                     opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
                     opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
                     
-                    opt.SignIn.RequireConfirmedAccount = authSettings.ConfirmationRequired;                    
+                    opt.SignIn.RequireConfirmedAccount = authSettings.ConfirmationRequired;
                     
                     opt.Password.RequiredLength = authSettings.MinPasswordLength;
 
