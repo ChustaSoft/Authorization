@@ -146,7 +146,7 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        private static void SetupUserTypedServices<TUser>(IServiceCollection services, AuthorizationSettings authSettings)
+        private static void SetupUserTypedServices<TUser>(IServiceCollection services)
             where TUser : User, new()
         {
             if (typeof(TUser) == typeof(User))
@@ -195,7 +195,7 @@ namespace ChustaSoft.Tools.Authorization
 
             SetupJwtAuthentication(services, authSettings, privateKey);
             SetupTypedServices<TUser, TRole>(services);
-            SetupUserTypedServices<TUser>(services, authSettings);
+            SetupUserTypedServices<TUser>(services);
             SetupRoleTypedServices<TRole>(services);
             SetupExternalProviders(services, authSettings);
 
