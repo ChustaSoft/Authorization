@@ -91,17 +91,17 @@ namespace ChustaSoft.Tools.Authorization
             }            
             else if (result == SignInResult.Failed)
             {
-                await _userService.CreateExternalAsync(_authorizationSettings.DefaultRole);
+                await _userService.CreateExternalAsync();
                 result = await _userService.ExternalSignInAsync(isPersistent: false);
 
                 if (result != SignInResult.Success)
                 {
-                    ManageUnsucceededSignin(result);
+                    SignInExtension.ManageUnsucceededSignin(result);
                 }
             }
             else
             {
-                ManageUnsucceededSignin(result);
+                SignInExtension.ManageUnsucceededSignin(result);
             }
         }
 
@@ -141,27 +141,7 @@ namespace ChustaSoft.Tools.Authorization
             var session = new Session(user, tokenInfo);
 
             return session;
-        }
-
-        private void ManageUnsucceededSignin(SignInResult result)
-        {
-            if (result == SignInResult.LockedOut)
-            {
-                throw new AuthenticationException($"User is locked");
-            }
-            else if (result == SignInResult.NotAllowed)
-            {
-                throw new AuthenticationException($"User is not allowed to sign in");
-            }
-            else if (result == SignInResult.TwoFactorRequired)
-            {
-                throw new AuthenticationException($"Two factor authentication is required");
-            }
-            else
-            {
-                throw new AuthenticationException($"Unable to sign in user");
-            }
-        }
+        }        
 
         #endregion
 

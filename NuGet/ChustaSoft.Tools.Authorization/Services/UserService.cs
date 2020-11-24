@@ -227,33 +227,33 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<SignInResult> ExternalSignInAsync(bool isPersistent)
         {
-            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
+            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();            
             return await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent);
         }
 
-        public async Task CreateExternalAsync(string defaultRole)
+        public async Task CreateExternalAsync()
         {
             var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
 
             Credentials credentials = new Credentials{ 
                 Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email),
-                Username = NormalizeUsername(loginInfo)
+                Username = UserExtensions.NormalizeUsername(loginInfo)
             };
 
             TUser user = credentials.ToUser<TUser>().WithFullAccess();
             
             var result = await _userManager.CreateAsync(user);
 
-            manageIdentityResult(result, CREATE_ACTION);
+            ManageIdentityResult(result, CREATE_ACTION);            
 
-            if (!string.IsNullOrEmpty(defaultRole))
+            if (!string.IsNullOrEmpty(_authorizationSettings.DefaultRole))
             {
-                await AssignRoleAsync(user, defaultRole);
+                await AssignRoleAsync(user, _authorizationSettings.DefaultRole);
             }
 
             result = await _userManager.AddLoginAsync(user, loginInfo);
 
-            manageIdentityResult(result, LOGIN_ACTION);
+            ManageIdentityResult(result, LOGIN_ACTION);
         }
 
         #endregion
@@ -295,44 +295,14 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        #endregion
-
-        #region Private methods
-
-        private void manageIdentityResult(IdentityResult result, string actionName)
+        private void ManageIdentityResult(IdentityResult result, string actionName)
         {
             if (result != IdentityResult.Success)
             {
                 string errorMessage = result.Errors != null && result.Errors.Count() > 0 ? result.Errors.First().Description : string.Empty;
                 throw new AuthenticationException($"Unable to {actionName} user. {errorMessage}");
             }
-        }
-
-        private string NormalizeUsername(ExternalLoginInfo loginInfo)
-        {
-            string emailUsername = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
-            emailUsername = !string.IsNullOrEmpty(emailUsername) && emailUsername.Contains("@") ? emailUsername.Split("@")[0] : string.Empty;
-
-            string username = loginInfo.Principal.FindFirstValue(ClaimTypes.Name)?.Replace(" ", "");
-
-            string normalizedUsername = string.Empty;
-
-            if (!string.IsNullOrEmpty(username))
-            {
-                normalizedUsername = username;
-            }
-            if (!string.IsNullOrEmpty(emailUsername))
-            {
-                normalizedUsername += $"_{emailUsername}";
-            }
-
-            if (normalizedUsername.StartsWith("_"))
-            {
-                normalizedUsername = normalizedUsername.Substring(1);
-            }
-
-            return normalizedUsername;
-        }
+        }        
 
         #endregion
 
