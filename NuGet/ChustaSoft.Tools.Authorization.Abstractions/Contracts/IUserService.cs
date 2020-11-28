@@ -97,8 +97,8 @@ namespace ChustaSoft.Tools.Authorization
         /// <summary>
         /// Creates an external user in db, assigning a role if required, and storing the userLogin information in database
         /// </summary>
-        /// <returns></returns>
-        Task CreateExternalAsync();       
+        /// <returns>Created user</returns>
+        Task<TUser> CreateExternalAsync();       
 
         /// <summary>
         /// Perform the login of an external user

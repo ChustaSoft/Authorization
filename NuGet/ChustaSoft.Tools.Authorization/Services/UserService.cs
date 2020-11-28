@@ -231,7 +231,7 @@ namespace ChustaSoft.Tools.Authorization
             return await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent);
         }
 
-        public async Task CreateExternalAsync()
+        public async Task<TUser> CreateExternalAsync()
         {
             var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
 
@@ -242,7 +242,7 @@ namespace ChustaSoft.Tools.Authorization
 
             TUser user = credentials.ToUser<TUser>().WithFullAccess();
             
-            var result = await _userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user);            
 
             ManageIdentityResult(result, CREATE_ACTION);            
 
@@ -254,6 +254,8 @@ namespace ChustaSoft.Tools.Authorization
             result = await _userManager.AddLoginAsync(user, loginInfo);
 
             ManageIdentityResult(result, LOGIN_ACTION);
+
+            return user;
         }
 
         #endregion
