@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,15 @@ namespace ChustaSoft.Tools.Authorization
 
         private readonly SignInManager<TUser> _signInManager;
         private readonly UserManager<TUser> _userManager;
+
+
+        #endregion
+
+        #region Constants
+
+        private const string CREATE_ACTION = "create";
+        private const string LOGIN_ACTION = "login";
+        private const string USER_NOT_ALLOWED_TO_LOGIN = "User not allowed to login in the system";
 
         #endregion
 
@@ -46,7 +56,7 @@ namespace ChustaSoft.Tools.Authorization
             if(userCreatedEventHandler != null)
                 UserCreatedEventHandler += userCreatedEventHandler;
         }
-        
+
         #endregion
 
 
@@ -74,7 +84,7 @@ namespace ChustaSoft.Tools.Authorization
             if (user != null && user.IsActive)
                 return user;
 
-            throw new AuthenticationException("User not allowed to login in the system");
+            throw new AuthenticationException(USER_NOT_ALLOWED_TO_LOGIN);
         }
 
         public async Task<TUser> SignByEmail(string email, string password)
@@ -89,7 +99,7 @@ namespace ChustaSoft.Tools.Authorization
                     return user;
             }
 
-            throw new AuthenticationException("User not allowed to login in the system");
+            throw new AuthenticationException(USER_NOT_ALLOWED_TO_LOGIN);
         }
 
         public async Task<TUser> SignByPhone(string phone, string password)
@@ -215,6 +225,39 @@ namespace ChustaSoft.Tools.Authorization
                 user.Culture = _authorizationSettings.DefaultCulture;
         }
 
+        public async Task<SignInResult> ExternalSignInAsync(bool isPersistent)
+        {
+            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();            
+            return await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent);
+        }
+
+        public async Task<TUser> CreateExternalAsync()
+        {
+            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
+
+            Credentials credentials = new Credentials{ 
+                Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email),
+                Username = UserExtensions.NormalizeUsername(loginInfo)
+            };
+
+            TUser user = credentials.ToUser<TUser>().WithFullAccess();
+            
+            var result = await _userManager.CreateAsync(user);            
+
+            ManageIdentityResult(result, CREATE_ACTION);            
+
+            if (!string.IsNullOrEmpty(_authorizationSettings.DefaultRole))
+            {
+                await AssignRoleAsync(user, _authorizationSettings.DefaultRole);
+            }
+
+            result = await _userManager.AddLoginAsync(user, loginInfo);
+
+            ManageIdentityResult(result, LOGIN_ACTION);
+
+            return user;
+        }
+
         #endregion
 
 
@@ -253,6 +296,15 @@ namespace ChustaSoft.Tools.Authorization
                 await _userManager.ConfirmEmailAsync(user, fakeEmailToken);
             }
         }
+
+        private void ManageIdentityResult(IdentityResult result, string actionName)
+        {
+            if (result != IdentityResult.Success)
+            {
+                string errorMessage = result.Errors != null && result.Errors.Count() > 0 ? result.Errors.First().Description : string.Empty;
+                throw new AuthenticationException($"Unable to {actionName} user. {errorMessage}");
+            }
+        }        
 
         #endregion
 

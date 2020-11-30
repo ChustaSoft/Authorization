@@ -63,16 +63,23 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
-        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings)
+        public AuthorizationSettingsBuilder SetDefaultRole(string defaultRole)
         {
-            AuthorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationSettings);
+            AuthorizationSettings.DefaultRole = defaultRole;
+
+            return this;
+        }
+
+        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationSettings externalAuthenticationProviderSettings)
+        {
+            AuthorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationProviderSettings);
 
             return this;
         }
 
         public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret)
         {
-            AddExternalProvider(providerName, new ExternalAuthenticationProviderSettings { ClientId = clientId, ClientSecret = clientSecret });
+            AddExternalProvider(providerName, new ExternalAuthenticationSettings { ClientId = clientId, ClientSecret = clientSecret });
 
             return this;
         }
@@ -89,8 +96,10 @@ namespace ChustaSoft.Tools.Authorization
         AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength);
         AuthorizationSettingsBuilder SetConfirmationRequired(bool flag);
         AuthorizationSettingsBuilder SetSiteName(string siteName);
-        AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationProviderSettings externalAuthenticationSettings);
+        AuthorizationSettingsBuilder SetDefaultRole(string defaultRole);
+        AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationSettings externalAuthenticationSettings);
         AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret);
+
     }
 
 }

@@ -1,4 +1,6 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -29,14 +31,11 @@ namespace ChustaSoft.Tools.Authorization
             : base(authorizationSettings)
         {
             _securitySettings = securitySettings;
-
             _userService = userService;
-            
-            _tokenHelper = tokenService;
+            _tokenHelper = tokenService;            
         }
 
         #endregion
-
 
         #region Public methods
 
@@ -82,6 +81,30 @@ namespace ChustaSoft.Tools.Authorization
             return await _userService.UpdateAsync(user);
         }
 
+        public async Task AuthenticateExternalAsync()
+        {
+            var result = await _userService.ExternalSignInAsync(isPersistent: false);
+
+            if (result == SignInResult.Success)
+            {
+                return;
+            }            
+            else if (result == SignInResult.Failed)
+            {
+                await _userService.CreateExternalAsync();
+                result = await _userService.ExternalSignInAsync(isPersistent: false);
+
+                if (result != SignInResult.Success)
+                {
+                    SignInExtension.ManageUnsucceededSignin(result);
+                }
+            }
+            else
+            {
+                SignInExtension.ManageUnsucceededSignin(result);
+            }
+        }
+
         #endregion
 
 
@@ -118,7 +141,7 @@ namespace ChustaSoft.Tools.Authorization
             var session = new Session(user, tokenInfo);
 
             return session;
-        }
+        }        
 
         #endregion
 

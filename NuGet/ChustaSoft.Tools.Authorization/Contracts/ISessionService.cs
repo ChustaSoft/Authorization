@@ -37,5 +37,10 @@ namespace ChustaSoft.Tools.Authorization
         /// <returns>Result flag</returns>
         Task<bool> ActivateAsync(UserActivation userActivation);
 
+        /// <summary>
+        /// Authenticate the external user, creating it first if not exists
+        /// </summary>
+        /// <returns></returns>
+        Task AuthenticateExternalAsync();
     }
 }

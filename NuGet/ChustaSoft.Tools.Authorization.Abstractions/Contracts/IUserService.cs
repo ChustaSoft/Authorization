@@ -1,4 +1,5 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -92,6 +93,20 @@ namespace ChustaSoft.Tools.Authorization
         /// <param name="userEmail">email to be checked</param>
         /// <returns>True if already exists, false otherwise</returns>
         Task<bool> ExistAsync(string userEmail);
+
+        /// <summary>
+        /// Creates an external user in db, assigning a role if required, and storing the userLogin information in database
+        /// </summary>
+        /// <returns>Created user</returns>
+        Task<TUser> CreateExternalAsync();       
+
+        /// <summary>
+        /// Perform the login of an external user
+        /// </summary>
+        /// <param name="isPersistent">Flag indicating whether the sign-in cookie should persist after the browser is closed</param>
+        /// <returns></returns>
+        Task<SignInResult> ExternalSignInAsync(bool isPersistent);
+
 
     }
 
