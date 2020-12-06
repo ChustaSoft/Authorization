@@ -1,0 +1,29 @@
+{
+  "name": "@chustasoft/cs-authorization-connector",
+  "version": "1.0.0",
+  "description": "JS connector library for ChustaSoft Authorization library based on Microsoft AspNet Identity",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -project tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChustaSoft/Authorization.git"
+  },
+  "keywords": [
+    "chustasoft",
+    "authorization",
+    "identity",
+    "microsoft"
+  ],
+  "author": "ChustaSoft",
+  "license": "GPL-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@chustasoft/cs-common": "1.0.0"
+  }
+}
