@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -21,6 +20,7 @@ namespace ChustaSoft.Tools.Authorization
 
 
         #endregion
+
 
         #region Constants
 
@@ -234,24 +234,13 @@ namespace ChustaSoft.Tools.Authorization
         public async Task<TUser> CreateExternalAsync()
         {
             var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
+            var user = loginInfo.ToUser<TUser>();
 
-            Credentials credentials = new Credentials{ 
-                Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email),
-                Username = UserExtensions.NormalizeUsername(loginInfo)
-            };
+            var result = await _userManager.CreateAsync(user);
 
-            TUser user = credentials.ToUser<TUser>().WithFullAccess();
-            
-            var result = await _userManager.CreateAsync(user);            
-
-            ManageIdentityResult(result, CREATE_ACTION);            
-
-            if (!string.IsNullOrEmpty(_authorizationSettings.DefaultRole))
-            {
-                await AssignRoleAsync(user, _authorizationSettings.DefaultRole);
-            }
-
-            result = await _userManager.AddLoginAsync(user, loginInfo);
+            ManageIdentityResult(result, CREATE_ACTION);
+            await ManageRoleAssignation(user);
+            result = await ManageLoginInformation(loginInfo, user);
 
             ManageIdentityResult(result, LOGIN_ACTION);
 
@@ -304,7 +293,22 @@ namespace ChustaSoft.Tools.Authorization
                 string errorMessage = result.Errors != null && result.Errors.Count() > 0 ? result.Errors.First().Description : string.Empty;
                 throw new AuthenticationException($"Unable to {actionName} user. {errorMessage}");
             }
-        }        
+        }
+
+        private async Task<IdentityResult> ManageLoginInformation(ExternalLoginInfo loginInfo, TUser user)
+        {
+            var result = await _userManager.AddLoginAsync(user, loginInfo);
+
+            return result;
+        }
+
+        private async Task ManageRoleAssignation(TUser user)
+        {
+            if (!string.IsNullOrEmpty(_authorizationSettings.DefaultRole))
+            {
+                await AssignRoleAsync(user, _authorizationSettings.DefaultRole);
+            }
+        }
 
         #endregion
 

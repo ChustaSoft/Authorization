@@ -107,7 +107,6 @@ namespace ChustaSoft.Tools.Authorization
         /// <returns></returns>
         Task<SignInResult> ExternalSignInAsync(bool isPersistent);
 
-
     }
 
 

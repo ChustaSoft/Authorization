@@ -1,6 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -85,23 +83,23 @@ namespace ChustaSoft.Tools.Authorization
         {
             var result = await _userService.ExternalSignInAsync(isPersistent: false);
 
-            if (result == SignInResult.Success)
+            if (result.Successful())
             {
                 return;
             }            
-            else if (result == SignInResult.Failed)
+            else if (result.Failed())
             {
                 await _userService.CreateExternalAsync();
                 result = await _userService.ExternalSignInAsync(isPersistent: false);
 
-                if (result != SignInResult.Success)
+                if (!result.Successful())
                 {
-                    SignInExtension.ManageUnsucceededSignin(result);
+                    result.ManageUnsucceededSignin();
                 }
             }
             else
             {
-                SignInExtension.ManageUnsucceededSignin(result);
+                result.ManageUnsucceededSignin();
             }
         }
 

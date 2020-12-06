@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace ChustaSoft.Tools.Authorization
-{    
+﻿namespace ChustaSoft.Tools.Authorization
+{
     public class ExternalAuthenticationSettings
     {
         public string ClientId { get; set; }

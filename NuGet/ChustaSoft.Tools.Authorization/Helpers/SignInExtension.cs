@@ -5,7 +5,14 @@ namespace ChustaSoft.Tools.Authorization
 {
     internal static class SignInExtension
     {
-        internal static void ManageUnsucceededSignin(SignInResult result)
+
+        internal static bool Successful(this SignInResult result) => result == SignInResult.Success;
+
+
+        internal static bool Failed(this SignInResult result) => result == SignInResult.Failed;
+
+
+        internal static void ManageUnsucceededSignin(this SignInResult result)
         {
             if (result == SignInResult.LockedOut)
             {
@@ -23,7 +30,9 @@ namespace ChustaSoft.Tools.Authorization
             {
                 throw new AuthenticationException($"Unable to sign in user");
             }
-        }        
+        }
+        
+
 
     }
 }

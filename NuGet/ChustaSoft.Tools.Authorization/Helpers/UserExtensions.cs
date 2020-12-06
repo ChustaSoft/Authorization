@@ -21,6 +21,19 @@ namespace ChustaSoft.Tools.Authorization
             };
         }
 
+        internal static TUser ToUser<TUser>(this ExternalLoginInfo loginInfo)
+           where TUser : User, new()
+        {
+            var credentials = new Credentials
+            {
+                Email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email),
+                Username = NormalizeUsername(loginInfo)
+            };
+
+            TUser user = credentials.ToUser<TUser>().WithFullAccess();
+
+            return user;
+        }
 
         internal static TUser WithFullAccess<TUser>(this TUser user)
             where TUser : User, new()
@@ -45,7 +58,8 @@ namespace ChustaSoft.Tools.Authorization
             return !string.IsNullOrWhiteSpace(user.PhoneNumber);
         }
 
-        internal static string NormalizeUsername(ExternalLoginInfo loginInfo)
+
+        private static string NormalizeUsername(ExternalLoginInfo loginInfo)
         {
             string emailUsername = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
             emailUsername = !string.IsNullOrEmpty(emailUsername) && emailUsername.Contains("@") ? emailUsername.Split("@")[0] : string.Empty;
@@ -54,19 +68,14 @@ namespace ChustaSoft.Tools.Authorization
 
             string normalizedUsername = string.Empty;
 
-            if (!string.IsNullOrEmpty(username))
-            {
+            if (!string.IsNullOrEmpty(username))            
                 normalizedUsername = username;
-            }
-            if (!string.IsNullOrEmpty(emailUsername))
-            {
-                normalizedUsername += $"_{emailUsername}";
-            }
+            
+            if (!string.IsNullOrEmpty(emailUsername))            
+                normalizedUsername += $"_{emailUsername}";            
 
-            if (normalizedUsername.StartsWith("_"))
-            {
-                normalizedUsername = normalizedUsername.Substring(1);
-            }
+            if (normalizedUsername.StartsWith("_"))            
+                normalizedUsername = normalizedUsername.Substring(1);            
 
             return normalizedUsername;
         }

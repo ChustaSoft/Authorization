@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ChustaSoft.Tools.Authorization.Models
@@ -20,14 +19,6 @@ namespace ChustaSoft.Tools.Authorization.Models
         public string Phone { get; set; }
         
         public string Culture { get; set; }
-
-    }
-
-
-    public class AutomaticCredentials : Credentials 
-    {
-
-        public bool FullAccess { get; set; }
 
     }
 
