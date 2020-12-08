@@ -6,8 +6,8 @@
     <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
     <Version>3.1.0-alpha.1</Version>
-    <AssemblyVersion>3.1.0-alpha.1</AssemblyVersion>
-    <FileVersion>3.1.0-alpha.1</FileVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
     <Description>Authorization NuGet solution based on Microsoft Identity and JWT</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
