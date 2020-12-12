@@ -1,5 +1,4 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -47,7 +46,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private SecurityTokenDescriptor GenerateTokenDescriptor(User user, string privateKey)
         {
-            var claim = new[] { new Claim(JwtRegisteredClaimNames.Sub, user.UserName) };
+            var claims = new[] { new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), new Claim(ClaimTypes.Name, user.UserName), new Claim(ClaimTypes.Email, user.Email) };
             var signingKey = SecurityKeyHelper.GetSecurityKey(privateKey);
             var expiringDate = DateTime.UtcNow.AddMinutes(_authorizationSettings.MinutesToExpire);
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
@@ -56,7 +55,7 @@ namespace ChustaSoft.Tools.Authorization
             {
                 Issuer = _authorizationSettings.SiteName,
                 Audience = _authorizationSettings.SiteName,
-                Subject = new ClaimsIdentity(claim),
+                Subject = new ClaimsIdentity(claims),
                 Expires = expiringDate,
                 SigningCredentials = signingCredentials
             };
@@ -68,7 +67,7 @@ namespace ChustaSoft.Tools.Authorization
 
 
 
-    public class TokenHelper : TokenHelper<User>, ITokenHelper 
+    public class TokenHelper : TokenHelper<User>, ITokenHelper
     {
 
         public TokenHelper(AuthorizationSettings authorizationSettings)
