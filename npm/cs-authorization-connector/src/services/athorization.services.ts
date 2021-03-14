@@ -16,22 +16,22 @@ export class AuthorizationService {
 
     public async register(credentials: Credentials): Promise<Session> {
         return this.httpService.post<Credentials, Session>(
-            `${this.authorizationApiUrl}auth/register`, credentials);
+            `${this.authorizationApiUrl}/auth/register`, credentials);
     }
 
     public async login(credentials: Credentials): Promise<Session> {
         return this.httpService.post<Credentials, Session>(
-            `${this.authorizationApiUrl}auth/login`, credentials);
+            `${this.authorizationApiUrl}/auth/login`, credentials);
     }
 
     public async confirm(userValidation: UserValidation): Promise<Session> {
         return this.httpService.post<UserValidation, Session>(
-            `${this.authorizationApiUrl}auth/confirm`, userValidation);
+            `${this.authorizationApiUrl}/auth/confirm`, userValidation);
     }
 
     public async activate(userActivation: UserActivation): Promise<string> {
         return this.httpService.post<UserActivation, string>(
-            `${this.authorizationApiUrl}auth/activate`, userActivation);
+            `${this.authorizationApiUrl}/auth/activate`, userActivation);
     }
 
 }
