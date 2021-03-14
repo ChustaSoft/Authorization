@@ -22,9 +22,9 @@ Current implementation allow to configure the project inside an API, providing m
 For getting started, visit the home page of our project [wiki](https://github.com/ChustaSoft/Authorization/wiki)
 
 To know how to use this version, take a look on 
-- [API usage and frontend connector example](https://github.com/ChustaSoft/Authorization/tree/master/Backend/ChustaSoft.Tools.Authorization.TestConsumer.WebUI)
-- [Basic API Example without custom properties](https://github.com/ChustaSoft/Authorization/tree/master/Backend/ChustaSoft.Tools.Authorization.TestBasic.WebAPI)
-- [Custom example extending context](https://github.com/ChustaSoft/Authorization/tree/master/Backend/ChustaSoft.Tools.Authorization.TestCustom.WebAPI)
+- [API usage and frontend connector example](https://github.com/ChustaSoft/Authorization/tree/master/Examples/ChustaSoft.Tools.Authorization.TestConsumer.WebUI)
+- [Basic API Example without custom properties](https://github.com/ChustaSoft/Authorization/tree/master/Examples/ChustaSoft.Tools.Authorization.TestBasic.WebAPI)
+- [Custom example extending context](https://github.com/ChustaSoft/Authorization/tree/master/Examples/ChustaSoft.Tools.Authorization.TestCustom.WebAPI)
 
 
 *Thanks for using and contributing*
