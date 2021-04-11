@@ -18,6 +18,14 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         #region Public Extension methods
 
+        /// <summary>
+        /// Configuration extension method for main security settings
+        /// </summary>
+        /// <param name="app">ApplicationBuilder</param>
+        /// <param name="env">WebHostEnvironment</param>
+        /// <param name="serviceProvider">ServiceProvider for obtaining injected dependencies inside DI container</param>
+        /// <param name="corsPolicy">CORS policy name configured</param>
+        /// <returns>IAuthorizationBuilder for additional configurations</returns>
         public static IAuthorizationBuilder ConfigureAuthorization(this IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, string corsPolicy)
         {
             if (!env.EnvironmentName.Equals("dev"))
@@ -40,6 +48,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             return serviceProvider.GetRequiredService<IAuthorizationBuilder>();
         }
 
+        
         public static IMvcBuilder AddAuthorizationControllers(this IMvcBuilder mvcBuilder)
         {
             var assembly = Assembly.Load(ASP_ASSEMBLY_NAME);
