@@ -48,7 +48,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
             return serviceProvider.GetRequiredService<IAuthorizationBuilder>();
         }
 
-        
+        [Obsolete("This method is no longer needed, just using services.AddControllers() should be enough, will be removed in future releases")]
         public static IMvcBuilder AddAuthorizationControllers(this IMvcBuilder mvcBuilder)
         {
             var assembly = Assembly.Load(ASP_ASSEMBLY_NAME);
