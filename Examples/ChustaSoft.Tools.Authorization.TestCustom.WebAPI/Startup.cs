@@ -62,8 +62,7 @@ namespace ChustaSoft.Tools.Authorization
                 .WithUserCreatedAction<CustomUser, CustomUserAction>()
                 .WithSqlServerProvider<AuthCustomContext, CustomUser, CustomRole>(BuildConnectionString());
 
-            services.AddMvc()
-                .AddAuthorizationControllers();
+            services.AddMvc();
 
             services.AddCors(o => o.AddPolicy("IdentityPolicy", builder =>
             {
