@@ -46,8 +46,7 @@ namespace ChustaSoft.Tools.Authorization
             services.RegisterAuthorization(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
                 .WithSqlServerProvider(BuildConnectionString());
 
-            services.AddMvc()
-                .AddAuthorizationControllers();
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

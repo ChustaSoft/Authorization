@@ -11,6 +11,12 @@ namespace ChustaSoft.Tools.Authorization.Models
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public IDictionary<string, string> Parameters { get; set; }
 
+
+        public ValidableCredentials()
+        {
+            Parameters = new Dictionary<string, string>();
+        }
+
     }
 
 
@@ -18,6 +24,9 @@ namespace ChustaSoft.Tools.Authorization.Models
     {
 
         public bool FullAccess { get; set; }
+
+
+        public AutomaticCredentials() : base() { }
 
     }
 

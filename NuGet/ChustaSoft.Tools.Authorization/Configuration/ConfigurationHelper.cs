@@ -1,5 +1,6 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,7 +80,47 @@ namespace ChustaSoft.Tools.Authorization
         #endregion
 
 
-        #region Private methods
+        #region Private methods        
+
+        private static AuthorizationSettings GetSettingsFromBuilder(Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
+        {
+            var settingsBuilder = new AuthorizationSettingsBuilder();
+
+            settingsBuildingAction.Invoke(settingsBuilder);
+
+            var authSettings = settingsBuilder.Build();
+            return authSettings;
+        }
+
+        private static AuthorizationSettings GetSettingsFromConfiguration(IConfiguration configuration, string authSectionName)
+        {
+            var authSettings = configuration.GetSection(authSectionName).Get<AuthorizationSettings>();
+
+            if (authSettings == null)
+                authSettings = new AuthorizationSettings();
+
+            return authSettings;
+        }
+        
+
+        private static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, AuthorizationSettings authSettings)
+            where TUser : User, new()
+            where TRole : Role, new()
+        {
+            services.AddSingleton(authSettings);
+            services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
+
+            SetupJwtAuthentication(services, authSettings, privateKey);
+            SetJwtAuthorization(services);
+            SetupTypedServices<TUser, TRole>(services);
+            SetupUserTypedServices<TUser>(services);
+            SetupRoleTypedServices<TRole>(services);
+            SetupExternalProviders(services, authSettings);
+
+            var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
+
+            return identityBuilder;
+        }
 
         private static void SetupJwtAuthentication(IServiceCollection services, AuthorizationSettings authSettings, string privateKey)
         {
@@ -106,28 +147,12 @@ namespace ChustaSoft.Tools.Authorization
                 });
         }
 
-        private static IdentityBuilder GetConfiguredIdentityBuilder<TUser, TRole>(IServiceCollection services, AuthorizationSettings authSettings)
-            where TUser : User, new()
-            where TRole : Role, new()
+        private static void SetJwtAuthorization(IServiceCollection services)
         {
-            return services.AddIdentity<TUser, TRole>(opt =>
-                {
-                    opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
-                    opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
-                    opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
-                    opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
-                    
-                    opt.SignIn.RequireConfirmedAccount = authSettings.ConfirmationRequired;
-                    
-                    opt.Password.RequiredLength = authSettings.MinPasswordLength;
-
-                    opt.Lockout.AllowedForNewUsers = true;
-                    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(authSettings.MinutesToUnlock);
-                    opt.Lockout.MaxFailedAccessAttempts = authSettings.MaxAttemptsToLock;
-
-                    opt.User.RequireUniqueEmail = true;
-                })
-                .AddDefaultTokenProviders();
+            services.AddAuthorization(x => x.DefaultPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .Build());
         }
 
         private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)
@@ -186,24 +211,6 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        private static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, AuthorizationSettings authSettings)
-            where TUser : User, new()
-            where TRole : Role, new()
-        {
-            services.AddSingleton(authSettings);
-            services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
-
-            SetupJwtAuthentication(services, authSettings, privateKey);
-            SetupTypedServices<TUser, TRole>(services);
-            SetupUserTypedServices<TUser>(services);
-            SetupRoleTypedServices<TRole>(services);
-            SetupExternalProviders(services, authSettings);
-
-            var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
-
-            return identityBuilder;
-        }
-
         private static void SetupExternalProviders(IServiceCollection services, AuthorizationSettings authSettings)
         {
             foreach (var providerName in authSettings.ExternalProviders.Keys)
@@ -233,24 +240,28 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
-        private static AuthorizationSettings GetSettingsFromBuilder(Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
+        private static IdentityBuilder GetConfiguredIdentityBuilder<TUser, TRole>(IServiceCollection services, AuthorizationSettings authSettings)
+            where TUser : User, new()
+            where TRole : Role, new()
         {
-            var settingsBuilder = new AuthorizationSettingsBuilder();
+            return services.AddIdentity<TUser, TRole>(opt =>
+                {
+                    opt.Password.RequireDigit = authSettings.StrongSecurityPassword;
+                    opt.Password.RequireNonAlphanumeric = authSettings.StrongSecurityPassword;
+                    opt.Password.RequireLowercase = authSettings.StrongSecurityPassword;
+                    opt.Password.RequireUppercase = authSettings.StrongSecurityPassword;
 
-            settingsBuildingAction.Invoke(settingsBuilder);
+                    opt.SignIn.RequireConfirmedAccount = authSettings.ConfirmationRequired;
 
-            var authSettings = settingsBuilder.Build();
-            return authSettings;
-        }
+                    opt.Password.RequiredLength = authSettings.MinPasswordLength;
 
-        private static AuthorizationSettings GetSettingsFromConfiguration(IConfiguration configuration, string authSectionName)
-        {
-            var authSettings = configuration.GetSection(authSectionName).Get<AuthorizationSettings>();
+                    opt.Lockout.AllowedForNewUsers = true;
+                    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(authSettings.MinutesToUnlock);
+                    opt.Lockout.MaxFailedAccessAttempts = authSettings.MaxAttemptsToLock;
 
-            if (authSettings == null)
-                authSettings = new AuthorizationSettings();
-
-            return authSettings;
+                    opt.User.RequireUniqueEmail = true;
+                })
+                .AddDefaultTokenProviders();
         }
 
         #endregion
