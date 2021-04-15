@@ -1,6 +1,6 @@
 {
   "name": "@chustasoft/cs-authorization-connector",
-  "version": "1.1.1-beta.3",
+  "version": "1.1.1",
   "description": "JS connector library for ChustaSoft Authorization library based on Microsoft AspNet Identity",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
