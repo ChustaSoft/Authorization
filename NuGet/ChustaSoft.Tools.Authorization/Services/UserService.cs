@@ -195,6 +195,13 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
+        public async Task<IEnumerable<string>> GetRolesAsync(TUser user) 
+        {
+            var result = await _userManager.GetRolesAsync(user);
+
+            return result;
+        }
+
         public async Task<bool> AssignClaimAsync(Guid userId, string claimName)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -215,6 +222,13 @@ namespace ChustaSoft.Tools.Authorization
             var result = await _userManager.AddClaimsAsync(user, claims);
 
             return result.Succeeded;
+        }
+
+        public async Task<IEnumerable<Claim>> GetClaimsAsync(TUser user)
+        {
+            var result = await _userManager.GetClaimsAsync(user);
+
+            return result;
         }
 
         public void Review(TUser user) 
