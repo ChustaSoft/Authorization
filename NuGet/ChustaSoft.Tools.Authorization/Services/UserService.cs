@@ -247,6 +247,15 @@ namespace ChustaSoft.Tools.Authorization
             return user;
         }
 
+        public async Task<string> GenerateResetPasswordTokenAsync(TUser user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task ResetPassword(TUser user, string token, string newPassword)
+        {
+            await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
         #endregion
 
 

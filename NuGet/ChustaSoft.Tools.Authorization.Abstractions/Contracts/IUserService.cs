@@ -107,6 +107,21 @@ namespace ChustaSoft.Tools.Authorization
         /// <returns></returns>
         Task<SignInResult> ExternalSignInAsync(bool isPersistent);
 
+        /// <summary>
+        /// Generates the user password reset token
+        /// </summary>
+        /// <param name="user">The user</param>
+        /// <returns></returns>
+        Task<string> GenerateResetPasswordTokenAsync(TUser user);
+
+        /// <summary>
+        /// Reset user password
+        /// </summary>
+        /// <param name="user">The user to reset the password</param>
+        /// <param name="token">Reset password token</param>
+        /// <param name="newPassword">New password to set</param>
+        /// <returns></returns>
+        Task ResetPassword(TUser user, string token, string newPassword);
     }
 
 

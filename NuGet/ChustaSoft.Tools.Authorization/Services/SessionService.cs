@@ -30,7 +30,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             _securitySettings = securitySettings;
             _userService = userService;
-            _tokenHelper = tokenService;            
+            _tokenHelper = tokenService;
         }
 
         #endregion
@@ -86,7 +86,7 @@ namespace ChustaSoft.Tools.Authorization
             if (result.Successful())
             {
                 return;
-            }            
+            }
             else if (result.Failed())
             {
                 await _userService.CreateExternalAsync();
@@ -103,6 +103,17 @@ namespace ChustaSoft.Tools.Authorization
             }
         }
 
+        public async Task<string> GenerateResetPasswordTokenAsync(ResetPasswordCredentials credentials)
+        {
+            var user = credentials.ToUser<TUser>();
+            return await _userService.GenerateResetPasswordTokenAsync(user);
+        }
+
+        public async Task ResetPasswordAsync(ResetPasswordCredentials credentials)
+        {
+            var user = credentials.ToUser<TUser>();
+            await _userService.ResetPassword(user, credentials.Token, credentials.NewPassword);
+        }
         #endregion
 
 
@@ -139,7 +150,7 @@ namespace ChustaSoft.Tools.Authorization
             var session = new Session(user, tokenInfo);
 
             return session;
-        }        
+        }
 
         #endregion
 

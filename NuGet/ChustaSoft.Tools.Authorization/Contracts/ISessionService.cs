@@ -42,5 +42,20 @@ namespace ChustaSoft.Tools.Authorization
         /// </summary>
         /// <returns></returns>
         Task AuthenticateExternalAsync();
+
+        /// <summary>
+        /// Generated the token to reset user password
+        /// </summary>
+        /// <param name="credentials">User credentials</param>
+        /// <returns></returns>
+        Task<string> GenerateResetPasswordTokenAsync(ResetPasswordCredentials credentials);
+
+        /// <summary>
+        /// Reset user password
+        /// </summary>
+        /// <param name="user">The user to reset the password</param>
+        /// <param name="token">Reset password token</param>
+        /// <param name="newPassword">New password to set</param>
+        Task ResetPasswordAsync(ResetPasswordCredentials credentials);
     }
 }

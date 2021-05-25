@@ -107,7 +107,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         /// <returns>Session object, with user logged, token and expiration time</returns>
         [AllowAnonymous]
         [HttpPost("confirm")]
-        public async Task<IActionResult> ConfirmAsync([FromBody] UserValidation userValidation) 
+        public async Task<IActionResult> ConfirmAsync([FromBody] UserValidation userValidation)
         {
             var actionResponseBuilder = GetEmptyResponseBuilder<Session>();
             try
@@ -117,6 +117,63 @@ namespace ChustaSoft.Tools.Authorization.AspNet
                     var session = await _sessionService.ValidateAsync(userValidation);
                     actionResponseBuilder.SetData(session);
 
+                    return Ok(actionResponseBuilder.Build());
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (Exception ex)
+            {
+                actionResponseBuilder.AddError(new Common.Utilities.ErrorMessage(Common.Enums.ErrorType.Invalid, ex.Message));
+                return BadRequest(actionResponseBuilder.Build());
+            }
+        }
+
+        /// <summary>
+        /// Get the token to reset the user password
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
+        [HttpPost("GenerateResetPasswordToken")]
+        public async Task<IActionResult> GenerateResetPasswordToken([FromBody] ResetPasswordCredentials credentials)
+        {
+            var actionResponseBuilder = GetEmptyResponseBuilder<string>();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var token = await _sessionService.GenerateResetPasswordTokenAsync(credentials);
+                    actionResponseBuilder.SetData(token);
+                    return Ok(actionResponseBuilder.Build());
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (Exception ex)
+            {
+                actionResponseBuilder.AddError(new Common.Utilities.ErrorMessage(Common.Enums.ErrorType.Invalid, ex.Message));
+                return BadRequest(actionResponseBuilder.Build());
+            }
+        }
+
+        /// <summary>
+        /// Reset the user password
+        /// </summary>
+        /// <param name="credentials">User reset credentials</param>
+        /// <returns></returns>
+        [HttpPost("GenerateResetPasswordToken")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCredentials credentials)
+        {
+            var actionResponseBuilder = GetEmptyResponseBuilder<string>();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _sessionService.ResetPasswordAsync(credentials);
                     return Ok(actionResponseBuilder.Build());
                 }
                 else
@@ -166,7 +223,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
 
         [AllowAnonymous]
         [HttpGet("external-login/{provider}/{*redirectUrl}", Name = "web-session-external-login")]
-        public IActionResult ExternalLogin([FromRoute]string provider, [FromRoute]string redirectUrl)
+        public IActionResult ExternalLogin([FromRoute] string provider, [FromRoute] string redirectUrl)
         {
             string loginCallbackUrl = Url.RouteUrl("web-session-external-login-callback", new { redirectUrl });
 
@@ -182,7 +239,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         }
 
         [HttpGet("external-login/{redirectUrl}/callback", Name = "web-session-external-login-callback")]
-        public async Task<IActionResult> ExternalLoginCallback([FromRoute]string redirectUrl)
+        public async Task<IActionResult> ExternalLoginCallback([FromRoute] string redirectUrl)
         {
             if (!User.Identity.IsAuthenticated)
             {
