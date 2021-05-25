@@ -136,6 +136,7 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         /// </summary>
         /// <param name="credentials"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpPost("GenerateResetPasswordToken")]
         public async Task<IActionResult> GenerateResetPasswordToken([FromBody] ResetPasswordCredentials credentials)
         {
@@ -165,7 +166,8 @@ namespace ChustaSoft.Tools.Authorization.AspNet
         /// </summary>
         /// <param name="credentials">User reset credentials</param>
         /// <returns></returns>
-        [HttpPost("GenerateResetPasswordToken")]
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCredentials credentials)
         {
             var actionResponseBuilder = GetEmptyResponseBuilder<string>();
