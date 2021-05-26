@@ -105,14 +105,36 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<string> GenerateResetPasswordTokenAsync(ResetPasswordCredentials credentials)
         {
-            var user = credentials.ToUser<TUser>();
-            return await _userService.GenerateResetPasswordTokenAsync(user);
+            var loginType = credentials.GetLoginType();
+
+            return loginType switch
+            {
+                LoginType.USER => await _userService.GetResetTokenByUserNameAsync(credentials.Username),
+                LoginType.MAIL => await _userService.GetResetTokenByEmailAsync(credentials.Email),
+                LoginType.PHONE => await _userService.GetResetTokenByPhoneAsync(credentials.Phone),
+
+                _ => throw new AuthenticationException("User could not by logged in into the system"),
+            };
         }
 
         public async Task ResetPasswordAsync(ResetPasswordCredentials credentials)
         {
-            var user = credentials.ToUser<TUser>();
-            await _userService.ResetPassword(user, credentials.Token, credentials.NewPassword);
+            var loginType = credentials.GetLoginType();
+
+            switch (loginType)
+            {
+                case LoginType.USER:
+                    await _userService.ResetPasswordByUsernameAsync(credentials.Username, credentials.Token, credentials.NewPassword);
+                    break;
+                case LoginType.MAIL:
+                    await _userService.ResetPasswordByEmailAsync(credentials.Email, credentials.Token, credentials.NewPassword);
+                    break;
+                case LoginType.PHONE:
+                    await _userService.ResetPasswordByPhoneAsync(credentials.Phone, credentials.Token, credentials.NewPassword);
+                    break;
+                default:
+                    throw new AuthenticationException("User could not by logged in into the system");
+            };
         }
         #endregion
 

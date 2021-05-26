@@ -45,15 +45,15 @@ namespace ChustaSoft.Tools.Authorization
         { }
 
         public UserService(
-                AuthorizationSettings authorizationSettings, 
-                SignInManager<TUser> signInManager, UserManager<TUser> userManager, 
+                AuthorizationSettings authorizationSettings,
+                SignInManager<TUser> signInManager, UserManager<TUser> userManager,
                 EventHandler<UserEventArgs> userCreatedEventHandler)
             : base(authorizationSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            
-            if(userCreatedEventHandler != null)
+
+            if (userCreatedEventHandler != null)
                 UserCreatedEventHandler += userCreatedEventHandler;
         }
 
@@ -71,10 +71,10 @@ namespace ChustaSoft.Tools.Authorization
         {
             var userSignIn = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: true);
 
-            if (userSignIn.Succeeded)            
-                return await _userManager.FindByNameAsync(username);            
-            else            
-                return null;            
+            if (userSignIn.Succeeded)
+                return await _userManager.FindByNameAsync(username);
+            else
+                return null;
         }
 
         public async Task<TUser> SignByUsername(string username, string password)
@@ -139,7 +139,7 @@ namespace ChustaSoft.Tools.Authorization
             if (user != null)
             {
                 var confirmationResult = await _userManager.ChangePhoneNumberAsync(user, user.PhoneNumber, token);
-                
+
                 await TryPerformFakeEmailActions(user);
 
                 if (confirmationResult.Succeeded)
@@ -217,7 +217,7 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
-        public void Review(TUser user) 
+        public void Review(TUser user)
         {
             if (string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.PhoneNumber))
                 user.Email = $"{user.PhoneNumber}{AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT}";
@@ -227,7 +227,7 @@ namespace ChustaSoft.Tools.Authorization
 
         public async Task<SignInResult> ExternalSignInAsync(bool isPersistent)
         {
-            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();            
+            var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
             return await _signInManager.ExternalLoginSignInAsync(loginInfo.LoginProvider, loginInfo.ProviderKey, isPersistent);
         }
 
@@ -247,13 +247,38 @@ namespace ChustaSoft.Tools.Authorization
             return user;
         }
 
-        public async Task<string> GenerateResetPasswordTokenAsync(TUser user)
+        public async Task<string> GetResetTokenByEmailAsync(string email)
         {
+            var user = await _userManager.FindByEmailAsync(email);
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
 
-        public async Task ResetPassword(TUser user, string token, string newPassword)
+        public async Task<string> GetResetTokenByUserNameAsync(string username)
         {
+            var user = await _userManager.FindByNameAsync(username);
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<string> GetResetTokenByPhoneAsync(string phoneNumber)
+        {
+            var user = _userManager.Users.Single(x => x.PhoneNumber == phoneNumber);
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task ResetPasswordByPhoneAsync(string phoneNumber, string token, string newPassword)
+        {
+            var user = _userManager.Users.Single(x => x.PhoneNumber == phoneNumber);
+            await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
+
+        public async Task ResetPasswordByEmailAsync(string email, string token, string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
+        public async Task ResetPasswordByUsernameAsync(string username, string token, string newPassword)
+        {
+            var user = await _userManager.FindByNameAsync(username);
             await _userManager.ResetPasswordAsync(user, token, newPassword);
         }
         #endregion

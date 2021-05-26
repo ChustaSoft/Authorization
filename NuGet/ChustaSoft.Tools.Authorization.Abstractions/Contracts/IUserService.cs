@@ -110,18 +110,50 @@ namespace ChustaSoft.Tools.Authorization
         /// <summary>
         /// Generates the user password reset token
         /// </summary>
-        /// <param name="user">The user</param>
+        /// <param name="email">User Email</param>
         /// <returns></returns>
-        Task<string> GenerateResetPasswordTokenAsync(TUser user);
+        Task<string> GetResetTokenByEmailAsync(string email);
+
+        /// <summary>
+        /// Generates the user password reset token
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <returns></returns>
+        Task<string> GetResetTokenByUserNameAsync(string username);
+
+        /// <summary>
+        /// Generates the user password reset token
+        /// </summary>
+        /// <param name="phoneNumber">User phone number</param>
+        /// <returns></returns>
+        Task<string> GetResetTokenByPhoneAsync(string phoneNumber);
 
         /// <summary>
         /// Reset user password
         /// </summary>
-        /// <param name="user">The user to reset the password</param>
+        /// <param name="username">Username</param>
         /// <param name="token">Reset password token</param>
         /// <param name="newPassword">New password to set</param>
         /// <returns></returns>
-        Task ResetPassword(TUser user, string token, string newPassword);
+        Task ResetPasswordByUsernameAsync(string username, string token, string newPassword);
+
+        /// <summary>
+        /// Reset user password
+        /// </summary>
+        /// <param name="phoneNumber">User phone number</param>
+        /// <param name="token">Reset password token</param>
+        /// <param name="newPassword">New password to set</param>
+        /// <returns></returns>
+        Task ResetPasswordByPhoneAsync(string phoneNumber, string token, string newPassword);
+
+        /// <summary>
+        /// Reset user password
+        /// </summary>
+        /// <param name="email">User email</param>
+        /// <param name="token">Reset password token</param>
+        /// <param name="newPassword">New password to set</param>
+        /// <returns></returns>
+        Task ResetPasswordByEmailAsync(string email, string token, string newPassword);
     }
 
 
