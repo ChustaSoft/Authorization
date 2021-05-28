@@ -40,7 +40,7 @@ namespace ChustaSoft.Tools.Authorization
             => !string.IsNullOrEmpty(credentials.Phone) && !string.IsNullOrEmpty(credentials.Password);
 
         private static bool IsUsernameLogin(ResetPasswordCredentials credentials)
-    => !string.IsNullOrEmpty(credentials.Username);
+            => !string.IsNullOrEmpty(credentials.Username);
 
         private static bool IsEmailLogin(ResetPasswordCredentials credentials)
             => !string.IsNullOrEmpty(credentials.Email);

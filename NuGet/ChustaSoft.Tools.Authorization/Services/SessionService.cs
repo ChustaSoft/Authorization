@@ -25,12 +25,12 @@ namespace ChustaSoft.Tools.Authorization
                 AuthorizationSettings authorizationSettings,
                 ISecuritySettings securitySettings,
                 IUserService<TUser> userService,
-                ITokenHelper<TUser> tokenService)
+                ITokenHelper<TUser> tokenHelper)
             : base(authorizationSettings)
         {
             _securitySettings = securitySettings;
             _userService = userService;
-            _tokenHelper = tokenService;
+            _tokenHelper = tokenHelper;
         }
 
         #endregion
