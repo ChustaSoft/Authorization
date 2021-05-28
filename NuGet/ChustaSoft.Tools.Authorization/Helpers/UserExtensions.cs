@@ -46,6 +46,18 @@ namespace ChustaSoft.Tools.Authorization
             return user;
         }
 
+        internal static TUser ToUser<TUser>(this ResetPasswordCredentials credentials)
+           where TUser : User, new()
+        {
+            return new TUser
+            {
+                UserName = credentials.Username,
+                Email = credentials.Email,
+                PhoneNumber = credentials.Phone,                
+                IsActive = true
+            };
+        }
+
         internal static bool HasValidEmail<TUser>(this TUser user)
             where TUser : User, new()
         { 
