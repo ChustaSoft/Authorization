@@ -124,7 +124,8 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void SetupJwtAuthentication(IServiceCollection services, AuthorizationSettings authSettings, string privateKey)
         {
-            services.AddAuthentication(opt =>
+            services
+                .AddAuthentication(opt =>
                 {
                     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -149,10 +150,11 @@ namespace ChustaSoft.Tools.Authorization
 
         private static void SetJwtAuthorization(IServiceCollection services)
         {
-            services.AddAuthorization(x => x.DefaultPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                .Build());
+            services
+                .AddAuthorization(x => x.DefaultPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .Build());
         }
 
         private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)

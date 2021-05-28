@@ -1,6 +1,8 @@
-﻿using ChustaSoft.Tools.Authorization.Models;
+﻿using ChustaSoft.Tools.Authorization.Helpers;
+using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -30,10 +32,11 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Public methods
 
-        public TokenInfo Generate(TUser user, string privateKey)
+        public TokenInfo Generate(TUser user, IEnumerable<string> roles, IEnumerable<Claim> claims, string privateKey)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = GenerateTokenDescriptor(user, privateKey);
+            var allClaims = GenerateClaims(user, roles, claims);
+            var tokenDescriptor = GenerateTokenDescriptor(allClaims, privateKey);
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return new TokenInfo(tokenHandler.WriteToken(token), token.ValidTo);
@@ -44,9 +47,8 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Private methods
 
-        private SecurityTokenDescriptor GenerateTokenDescriptor(User user, string privateKey)
-        {
-            var claims = new[] { new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), new Claim(ClaimTypes.Name, user.UserName), new Claim(ClaimTypes.Email, user.Email) };
+        private SecurityTokenDescriptor GenerateTokenDescriptor(Claim[] claims, string privateKey)
+        {            
             var signingKey = SecurityKeyHelper.GetSecurityKey(privateKey);
             var expiringDate = DateTime.UtcNow.AddMinutes(_authorizationSettings.MinutesToExpire);
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
@@ -59,6 +61,15 @@ namespace ChustaSoft.Tools.Authorization
                 Expires = expiringDate,
                 SigningCredentials = signingCredentials
             };
+        }
+
+        private Claim[] GenerateClaims(TUser user, IEnumerable<string> roles, IEnumerable<Claim> claims)
+        {
+            var claimsBuilder = new ClaimsIdentityBuilder<TUser>(user)
+                .AddRoles(roles)
+                .AddClaims(claims);
+
+            return claimsBuilder.Build();
         }
 
         #endregion
