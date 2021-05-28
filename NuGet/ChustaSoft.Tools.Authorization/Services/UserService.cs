@@ -195,6 +195,13 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
+        public async Task<IEnumerable<string>> GetRolesAsync(TUser user) 
+        {
+            var result = await _userManager.GetRolesAsync(user);
+
+            return result;
+        }
+
         public async Task<bool> AssignClaimAsync(Guid userId, string claimName)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -217,7 +224,14 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
-        public void Review(TUser user)
+        public async Task<IEnumerable<Claim>> GetClaimsAsync(TUser user)
+        {
+            var result = await _userManager.GetClaimsAsync(user);
+
+            return result;
+        }
+
+        public void Review(TUser user) 
         {
             if (string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.PhoneNumber))
                 user.Email = $"{user.PhoneNumber}{AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT}";
@@ -276,11 +290,13 @@ namespace ChustaSoft.Tools.Authorization
             var user = await _userManager.FindByEmailAsync(email);
             await _userManager.ResetPasswordAsync(user, token, newPassword);
         }
+
         public async Task ResetPasswordByUsernameAsync(string username, string token, string newPassword)
         {
             var user = await _userManager.FindByNameAsync(username);
             await _userManager.ResetPasswordAsync(user, token, newPassword);
         }
+        
         #endregion
 
 

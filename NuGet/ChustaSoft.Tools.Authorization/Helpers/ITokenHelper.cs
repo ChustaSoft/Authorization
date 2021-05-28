@@ -1,4 +1,6 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -6,7 +8,7 @@ namespace ChustaSoft.Tools.Authorization
         where TUser : User, new()
     {
 
-        TokenInfo Generate(TUser user, string privateKey);
+        TokenInfo Generate(TUser user, IEnumerable<string> roles, IEnumerable<Claim> claims, string privateKey);
 
     }
 

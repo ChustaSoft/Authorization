@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
@@ -189,6 +190,13 @@ namespace ChustaSoft.Tools.Authorization
         /// <returns>Result flag</returns>
         Task<bool> AssignRolesAsync(TUser user, IEnumerable<string> roleNames);
 
+        /// <summary>
+        /// Get roles assigned to a user
+        /// </summary>
+        /// <param name="user">User to retrive the roles</param>
+        /// <returns>Roles assigned</returns>
+        Task<IEnumerable<string>> GetRolesAsync(TUser user);
+
     }
 
 
@@ -220,6 +228,13 @@ namespace ChustaSoft.Tools.Authorization
         /// <param name="claimNames">Claims to be assign</param>
         /// <returns>Result flag</returns>
         Task<bool> AssignClaimsAsync(TUser user, IEnumerable<string> claimNames);
+
+        /// <summary>
+        /// Get claims assigned to a user
+        /// </summary>
+        /// <param name="user">User to retrive the claims</param>
+        /// <returns>Claims assigned</returns>
+        Task<IEnumerable<Claim>> GetClaimsAsync(TUser user);
 
     }
 
