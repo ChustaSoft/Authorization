@@ -1,6 +1,7 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
 using System.Collections.Generic;
 using System.Security.Authentication;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization
@@ -46,7 +47,8 @@ namespace ChustaSoft.Tools.Authorization
             if (resultFlag)
             {
                 var roles = await _userService.GetRolesAsync(user);
-                var tokenInfo = _tokenHelper.Generate(user, roles, _securitySettings.PrivateKey);
+                var claims = await _userService.GetClaimsAsync(user);
+                var tokenInfo = _tokenHelper.Generate(user, roles, claims, _securitySettings.PrivateKey);
                 var session = new ValidableSession(user, tokenInfo, credentials.Parameters);
 
                 return session;
@@ -59,8 +61,9 @@ namespace ChustaSoft.Tools.Authorization
         {
             var user = await LoginAsync(credentials);
             var roles = await _userService.GetRolesAsync(user);
+            var claims = await _userService.GetClaimsAsync(user);
 
-            var session = GetUserSession(user, roles);
+            var session = GetUserSession(user, roles, claims);
 
             return session;
         }
@@ -70,7 +73,8 @@ namespace ChustaSoft.Tools.Authorization
             var loginType = userValidation.GetLoginType();
             var user = await PerformValidation(userValidation, loginType);
             var roles = await _userService.GetRolesAsync(user);
-            var session = GetUserSession(user, roles);
+            var claims = await _userService.GetClaimsAsync(user);
+            var session = GetUserSession(user, roles, claims);
 
             return session;
         }
@@ -138,9 +142,9 @@ namespace ChustaSoft.Tools.Authorization
             };
         }
 
-        private Session GetUserSession(TUser user, IEnumerable<string> roles)
+        private Session GetUserSession(TUser user, IEnumerable<string> roles, IEnumerable<Claim> claims)
         {
-            var tokenInfo = _tokenHelper.Generate(user, roles, _securitySettings.PrivateKey);
+            var tokenInfo = _tokenHelper.Generate(user, roles, claims, _securitySettings.PrivateKey);
             var session = new Session(user, tokenInfo);
 
             return session;

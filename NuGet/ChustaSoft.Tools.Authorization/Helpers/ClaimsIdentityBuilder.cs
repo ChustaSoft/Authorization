@@ -24,7 +24,7 @@ namespace ChustaSoft.Tools.Authorization.Helpers
         }
 
 
-        public ClaimsIdentityBuilder<TUser> AddRoles(IEnumerable<string> roles)
+        internal ClaimsIdentityBuilder<TUser> AddRoles(IEnumerable<string> roles)
         {
             foreach (var role in roles)
                 _claims.Add(new Claim(ClaimTypes.Role, role));
@@ -32,7 +32,16 @@ namespace ChustaSoft.Tools.Authorization.Helpers
             return this;
         }
 
+        internal ClaimsIdentityBuilder<TUser> AddClaims(IEnumerable<Claim> claims)
+        {
+            foreach (var claim in claims)
+                _claims.Add(claim);
+
+            return this;
+        }
+
         public Claim[] Build() => _claims.ToArray();
 
+        
     }
 }

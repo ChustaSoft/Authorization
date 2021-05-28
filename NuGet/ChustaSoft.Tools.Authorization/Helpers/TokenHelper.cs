@@ -32,11 +32,11 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Public methods
 
-        public TokenInfo Generate(TUser user, IEnumerable<string> roles, string privateKey)
+        public TokenInfo Generate(TUser user, IEnumerable<string> roles, IEnumerable<Claim> claims, string privateKey)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var claims = GenerateClaims(user, roles);
-            var tokenDescriptor = GenerateTokenDescriptor(claims, privateKey);
+            var allClaims = GenerateClaims(user, roles, claims);
+            var tokenDescriptor = GenerateTokenDescriptor(allClaims, privateKey);
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return new TokenInfo(tokenHandler.WriteToken(token), token.ValidTo);
@@ -63,9 +63,11 @@ namespace ChustaSoft.Tools.Authorization
             };
         }
 
-        private Claim[] GenerateClaims(TUser user, IEnumerable<string> roles)
+        private Claim[] GenerateClaims(TUser user, IEnumerable<string> roles, IEnumerable<Claim> claims)
         {
-            var claimsBuilder = new ClaimsIdentityBuilder<TUser>(user).AddRoles(roles);
+            var claimsBuilder = new ClaimsIdentityBuilder<TUser>(user)
+                .AddRoles(roles)
+                .AddClaims(claims);
 
             return claimsBuilder.Build();
         }
