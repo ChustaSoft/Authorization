@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>3.2.0-alpha.1</Version>
+    <Version>3.2.0</Version>
     <AssemblyVersion>3.2.0</AssemblyVersion>
     <FileVersion>3.2.0</FileVersion>
     <Description>Authorization NuGet solution based on Microsoft Identity and JWT</Description>
@@ -24,7 +24,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.8" />        
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
 
   <ItemGroup>

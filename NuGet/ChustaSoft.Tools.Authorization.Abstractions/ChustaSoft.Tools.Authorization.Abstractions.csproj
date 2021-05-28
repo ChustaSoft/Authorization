@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.Abstractions</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>3.1.0-alpha.1</Version>
+    <Version>3.1.0</Version>
     <AssemblyVersion>3.1.0</AssemblyVersion>
     <FileVersion>3.1.0</FileVersion>
     <Description>Abstractions package for ChustaSoft.Tools.Authorization project</Description>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common" Version="2.0.0" />
+    <PackageReference Include="ChustaSoft.Common" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.8" />
   </ItemGroup>
 
