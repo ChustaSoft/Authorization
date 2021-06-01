@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.AspNet</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
@@ -19,12 +19,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChustaSoft.Common.AspNet" Version="2.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <ProjectReference Include="..\ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj" />
+    
+    <PackageReference Include="ChustaSoft.Common.AspNet" Version="2.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.15" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
   </ItemGroup>
 
 </Project>
