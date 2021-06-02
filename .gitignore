@@ -263,3 +263,5 @@ __pycache__/
 /Backend/ChustaSoft.Tools.Authorization.TestCustom.WebAPI/Properties/launchSettings.json
 /Backend/ChustaSoft.Tools.Authorization.TestConsumer.WebUI/ClientApp/dist/ClientApp
 /npm/cs-authorization-connector/dist
+/Examples/.NetCore 3.1/ChustaSoft.Tools.Authorization.TestConsumer.WebUI/ClientApp/dist/ClientApp
+/Examples/.NetCore 3.1/ChustaSoft.Tools.Authorization.TestConsumer.WebUI/ClientApp/e2e

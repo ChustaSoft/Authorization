@@ -21,13 +21,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.UnitTest", "NuGet\ChustaSoft.Tools.Authorization.UnitTest\ChustaSoft.Tools.Authorization.UnitTest.csproj", "{BA81678F-6279-4006-AF66-9A8FE4171BCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestConsumer.WebUI", "Examples\ChustaSoft.Tools.Authorization.TestConsumer.WebUI\ChustaSoft.Tools.Authorization.TestConsumer.WebUI.csproj", "{504D4550-FF38-4221-80DC-73A22DE17E71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestConsumer.WebUI", "Examples\.NetCore 3.1\ChustaSoft.Tools.Authorization.TestConsumer.WebUI\ChustaSoft.Tools.Authorization.TestConsumer.WebUI.csproj", "{504D4550-FF38-4221-80DC-73A22DE17E71}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", "Examples\ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{0A61C7EF-1102-4B38-ADC1-F62A4DBBD9E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", "Examples\.NetCore 3.1\ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{0A61C7EF-1102-4B38-ADC1-F62A4DBBD9E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestCustom.WebAPI", "Examples\ChustaSoft.Tools.Authorization.TestCustom.WebAPI\ChustaSoft.Tools.Authorization.TestCustom.WebAPI.csproj", "{53AB1936-6CB5-4133-AB14-424EDC14BB7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestCustom.WebAPI", "Examples\.NetCore 3.1\ChustaSoft.Tools.Authorization.TestCustom.WebAPI\ChustaSoft.Tools.Authorization.TestCustom.WebAPI.csproj", "{53AB1936-6CB5-4133-AB14-424EDC14BB7A}"
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cs-authorization-connector", "npm\cs-authorization-connector\cs-authorization-connector.njsproj", "{5BBCC169-361D-4F66-9DAC-98203AA6D4FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Net Core 3.1", ".Net Core 3.1", "{1A110FBC-9D96-46DE-B219-60AB8AABE1B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET 5,0", ".NET 5,0", "{32968A3E-2837-4849-B492-F1533EA2FDD7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", "Examples\.NET 5.0\ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{16B8FC8E-CCB4-46D4-89E9-E880C94D027D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +77,10 @@ Global
 		{5BBCC169-361D-4F66-9DAC-98203AA6D4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BBCC169-361D-4F66-9DAC-98203AA6D4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BBCC169-361D-4F66-9DAC-98203AA6D4FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,10 +91,13 @@ Global
 		{EE0B72D1-CAD9-443E-A86C-F9573CFF5969} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
 		{83BCE83D-C36A-4A05-A4F4-9355F7E25730} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
 		{BA81678F-6279-4006-AF66-9A8FE4171BCA} = {079D0357-D2C4-4FF5-969D-CDA567A4170C}
-		{504D4550-FF38-4221-80DC-73A22DE17E71} = {1B02D724-E788-4821-9E5B-A16658888912}
-		{0A61C7EF-1102-4B38-ADC1-F62A4DBBD9E8} = {1B02D724-E788-4821-9E5B-A16658888912}
-		{53AB1936-6CB5-4133-AB14-424EDC14BB7A} = {1B02D724-E788-4821-9E5B-A16658888912}
+		{504D4550-FF38-4221-80DC-73A22DE17E71} = {1A110FBC-9D96-46DE-B219-60AB8AABE1B8}
+		{0A61C7EF-1102-4B38-ADC1-F62A4DBBD9E8} = {1A110FBC-9D96-46DE-B219-60AB8AABE1B8}
+		{53AB1936-6CB5-4133-AB14-424EDC14BB7A} = {1A110FBC-9D96-46DE-B219-60AB8AABE1B8}
 		{5BBCC169-361D-4F66-9DAC-98203AA6D4FB} = {7FCD9EF4-F6A3-4DAD-8D50-B7C14E38608D}
+		{1A110FBC-9D96-46DE-B219-60AB8AABE1B8} = {1B02D724-E788-4821-9E5B-A16658888912}
+		{32968A3E-2837-4849-B492-F1533EA2FDD7} = {1B02D724-E788-4821-9E5B-A16658888912}
+		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5056E0F-5434-434A-8A4E-A5214A704B64}
