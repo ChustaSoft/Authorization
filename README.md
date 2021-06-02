@@ -24,12 +24,12 @@ For getting started, visit the home page of our project [wiki](https://github.co
 To know how to use this version, take a look on 
 
 - NET 5.0_
-  - [Basic API Example without custom properties](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NET 5.0/ChustaSoft.Tools.Authorization.TestBasic.WebAPI)
+  - [Basic API Example without custom properties](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NET%205.0/ChustaSoft.Tools.Authorization.TestBasic.WebAPI)
   
 - .Net Core 3.1:
-  - [API usage and frontend connector example](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NetCore 3.1/ChustaSoft.Tools.Authorization.TestConsumer.WebUI)
-  - [Basic API Example without custom properties](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NetCore 3.1/ChustaSoft.Tools.Authorization.TestBasic.WebAPI)
-  - [Custom example extending context](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NetCore 3.1/ChustaSoft.Tools.Authorization.TestCustom.WebAPI)
+  - [API usage and frontend connector example](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NetCore%203.1/ChustaSoft.Tools.Authorization.TestConsumer.WebUI)
+  - [Basic API Example without custom properties](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NetCore%203.1/ChustaSoft.Tools.Authorization.TestBasic.WebAPI)
+  - [Custom example extending context](https://github.com/ChustaSoft/Authorization/tree/master/Examples/.NetCore%203.1/ChustaSoft.Tools.Authorization.TestCustom.WebAPI)
   
 _*NOTE*: Code is cross comptaible between framework versions, so examples are implicitly valid for all versions taking into account the multiple configuration options available_
 
