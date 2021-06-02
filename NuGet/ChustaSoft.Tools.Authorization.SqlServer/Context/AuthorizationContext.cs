@@ -42,7 +42,11 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.NormalizedName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.Name).IsUnique();
+#if NETCOREAPP3_1
                 entity.HasIndex(e => e.NormalizedName).IsUnique().HasName("RoleNameIndex");
+#else
+                entity.HasIndex(e => e.NormalizedName).IsUnique().HasDatabaseName("RoleNameIndex");
+#endif
 
                 entity.ToTable($"{nameof(Role)}s", SCHEMA_NAME);
             });
@@ -72,12 +76,20 @@ namespace ChustaSoft.Tools.Authorization
                 entity.Property(e => e.RegistrationDate).HasDefaultValueSql("sysdatetimeoffset()");
 
                 entity.HasKey(e => e.Id);
+
+#if NETCOREAPP3_1
                 entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasName("EmailIndex");
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasName("UserNameIndex");
                 entity.HasIndex(e => e.PhoneNumber).IsUnique().HasName("PhoneNumberIndex");
-
+#else
+                entity.HasIndex(e => e.NormalizedEmail).IsUnique().HasDatabaseName("EmailIndex");
+                entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasDatabaseName("UserNameIndex");
+                entity.HasIndex(e => e.PhoneNumber).IsUnique().HasDatabaseName("PhoneNumberIndex");
+#endif
                 entity.ToTable($"{nameof(User)}s", SCHEMA_NAME);
+
             });
+
 
             modelBuilder.Entity<UserClaim>(entity =>
             {
@@ -127,7 +139,7 @@ namespace ChustaSoft.Tools.Authorization
             });
         }
 
-        #endregion
+#endregion
 
     }
 
