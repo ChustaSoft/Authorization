@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <PackageId>ChustaSoft.Tools.Authorization.OAuth</PackageId>
+    <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Description>OAuth 2.0 package for ChustaSoft.Tools.Authorization project</Description>
+    <Copyright>ChustaSoft</Copyright>
+    <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/ChustaSoft/Authorization</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/ChustaSoft/Authorization/wiki/Release-notes</PackageReleaseNotes>
+    <RepositoryType>GIT</RepositoryType>
+    <RepositoryUrl>https://github.com/ChustaSoft/Authorization.git</RepositoryUrl>
+    <PackageTags>Authorization;DotNetCore;DotNet;ASPNET;ASPMVC;JWT;Security</PackageTags>
+  </PropertyGroup>
+
+</Project>
