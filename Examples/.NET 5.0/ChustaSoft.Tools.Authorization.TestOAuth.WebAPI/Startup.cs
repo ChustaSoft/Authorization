@@ -19,7 +19,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
 
             services.WithOAuthProvider();
         }
@@ -32,6 +32,8 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
             }
 
             app.UseOAuthProvider();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
