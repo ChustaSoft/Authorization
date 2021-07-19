@@ -1,4 +1,4 @@
-﻿
+﻿using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using Microsoft.AspNetCore.Builder;
@@ -22,9 +22,9 @@ namespace ChustaSoft.Tools.Authorization
                 .AddDeveloperSigningCredential()
                 .AddTestUsers(GetUsers())
                 .AddInMemoryIdentityResources(GetResources())
+                .AddInMemoryApiScopes(GetApiScopes())
                 .AddInMemoryClients(GetClients());
         }
-
 
         public static void UseOAuthProvider(this IApplicationBuilder app) 
         {
@@ -71,9 +71,36 @@ namespace ChustaSoft.Tools.Authorization
             };
         }
 
+        private static IEnumerable<ApiScope> GetApiScopes()
+        {
+            return new List<ApiScope>
+            {
+                new ApiScope("test-api")
+            };
+        }
+
         private static IEnumerable<Client> GetClients() 
         {
-            return new List<Client> { };
+            return new List<Client> 
+            {
+                new Client
+                { 
+                    ClientName = "Client Test",
+                    ClientId = "client-test-id",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RequirePkce = false,
+                    RedirectUris = new List<string>()
+                    {
+                        "https://localhost:44392/signin-oidc"
+                    },
+                    AllowedScopes = { 
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "test-api" 
+                    },
+                    ClientSecrets = { new Secret("secret".Sha256()) }
+                }
+            };
         }
 
     }

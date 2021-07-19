@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.OAuth", "ChustaSoft.Tools.Authorization.OAuth\ChustaSoft.Tools.Authorization.OAuth.csproj", "{08B41227-5F20-41F1-82C2-E36E3A735062}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebAPI", "Examples\.NET 5.0\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI.csproj", "{643CB023-0356-4D07-AB1B-8D45DF2828E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebAPI", "Examples\.NET 5.0\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI.csproj", "{643CB023-0356-4D07-AB1B-8D45DF2828E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebClient", "ChustaSoft.Tools.Authorization.TestOAuth.WebClient\ChustaSoft.Tools.Authorization.TestOAuth.WebClient.csproj", "{4F1E318B-902B-4B04-B1C6-C47CF8C49049}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{643CB023-0356-4D07-AB1B-8D45DF2828E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{643CB023-0356-4D07-AB1B-8D45DF2828E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{643CB023-0356-4D07-AB1B-8D45DF2828E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F1E318B-902B-4B04-B1C6-C47CF8C49049}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F1E318B-902B-4B04-B1C6-C47CF8C49049}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F1E318B-902B-4B04-B1C6-C47CF8C49049}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F1E318B-902B-4B04-B1C6-C47CF8C49049}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
 		{08B41227-5F20-41F1-82C2-E36E3A735062} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
 		{643CB023-0356-4D07-AB1B-8D45DF2828E9} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
+		{4F1E318B-902B-4B04-B1C6-C47CF8C49049} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5056E0F-5434-434A-8A4E-A5214A704B64}
