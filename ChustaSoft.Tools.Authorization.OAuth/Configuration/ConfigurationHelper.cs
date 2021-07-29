@@ -93,6 +93,10 @@ namespace ChustaSoft.Tools.Authorization
                     {
                         "https://localhost:44392/signin-oidc"
                     },
+                    PostLogoutRedirectUris = new List<string>()
+                    {
+                        "https://localhost:44392/signout-callback-oidc"
+                    },
                     AllowedScopes = { 
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,

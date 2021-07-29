@@ -12,7 +12,9 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+
         private readonly ILogger<HomeController> _logger;
+
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -24,6 +26,12 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Controllers
             await WriteInfo();
 
             return View();
+        }
+
+        public async Task Logout() 
+        {
+            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc");
         }
 
         public IActionResult Privacy()
