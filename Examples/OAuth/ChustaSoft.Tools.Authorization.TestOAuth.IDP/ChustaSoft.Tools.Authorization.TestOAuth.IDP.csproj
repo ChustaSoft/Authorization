@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ChustaSoft.Tools.Authorization.OAuth\ChustaSoft.Tools.Authorization.OAuth.csproj" />
+    <ProjectReference Include="..\..\..\NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider\ChustaSoft.Tools.Authorization.OAuth.Provider.csproj" />
   </ItemGroup>
 
 </Project>

@@ -35,11 +35,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET 5,0", ".NET 5,0", "{32
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", "Examples\.NET 5.0\ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{16B8FC8E-CCB4-46D4-89E9-E880C94D027D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.OAuth", "ChustaSoft.Tools.Authorization.OAuth\ChustaSoft.Tools.Authorization.OAuth.csproj", "{08B41227-5F20-41F1-82C2-E36E3A735062}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.OAuth.Provider", "NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider\ChustaSoft.Tools.Authorization.OAuth.Provider.csproj", "{08B41227-5F20-41F1-82C2-E36E3A735062}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebAPI", "Examples\.NET 5.0\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI.csproj", "{643CB023-0356-4D07-AB1B-8D45DF2828E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.IDP", "Examples\OAuth\ChustaSoft.Tools.Authorization.TestOAuth.IDP\ChustaSoft.Tools.Authorization.TestOAuth.IDP.csproj", "{643CB023-0356-4D07-AB1B-8D45DF2828E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebClient", "ChustaSoft.Tools.Authorization.TestOAuth.WebClient\ChustaSoft.Tools.Authorization.TestOAuth.WebClient.csproj", "{4F1E318B-902B-4B04-B1C6-C47CF8C49049}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebClient", "Examples\OAuth\ChustaSoft.Tools.Authorization.TestOAuth.WebClient\ChustaSoft.Tools.Authorization.TestOAuth.WebClient.csproj", "{4F1E318B-902B-4B04-B1C6-C47CF8C49049}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OAuth", "OAuth", "{13C13A20-BCD6-4457-8C8A-C5D651961687}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,8 +119,9 @@ Global
 		{32968A3E-2837-4849-B492-F1533EA2FDD7} = {1B02D724-E788-4821-9E5B-A16658888912}
 		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
 		{08B41227-5F20-41F1-82C2-E36E3A735062} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
-		{643CB023-0356-4D07-AB1B-8D45DF2828E9} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
-		{4F1E318B-902B-4B04-B1C6-C47CF8C49049} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
+		{643CB023-0356-4D07-AB1B-8D45DF2828E9} = {13C13A20-BCD6-4457-8C8A-C5D651961687}
+		{4F1E318B-902B-4B04-B1C6-C47CF8C49049} = {13C13A20-BCD6-4457-8C8A-C5D651961687}
+		{13C13A20-BCD6-4457-8C8A-C5D651961687} = {1B02D724-E788-4821-9E5B-A16658888912}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5056E0F-5434-434A-8A4E-A5214A704B64}

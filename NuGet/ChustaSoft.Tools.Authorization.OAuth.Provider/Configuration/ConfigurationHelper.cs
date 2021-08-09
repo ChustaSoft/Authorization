@@ -22,6 +22,7 @@ namespace ChustaSoft.Tools.Authorization
                 .AddDeveloperSigningCredential()
                 .AddTestUsers(GetUsers())
                 .AddInMemoryIdentityResources(GetResources())
+                .AddInMemoryApiResources(GetApiResources())
                 .AddInMemoryApiScopes(GetApiScopes())
                 .AddInMemoryClients(GetClients());
         }
@@ -71,6 +72,15 @@ namespace ChustaSoft.Tools.Authorization
             };
         }
 
+
+        private static IEnumerable<ApiResource> GetApiResources()
+        {
+            return new List<ApiResource>
+            {
+                new ApiResource("test-api")
+            };
+        }
+
         private static IEnumerable<ApiScope> GetApiScopes()
         {
             return new List<ApiScope>
@@ -101,7 +111,7 @@ namespace ChustaSoft.Tools.Authorization
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "test-api" 
-                    },
+                    },                    
                     ClientSecrets = { new Secret("secret".Sha256()) }
                 }
             };

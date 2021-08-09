@@ -40,6 +40,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
                     opt.SignInScheme = "Cookies";
                     opt.Scope.Add("test-api");
                     opt.SaveTokens = true;
+                    opt.GetClaimsFromUserInfoEndpoint = true;
                 });
 
 
