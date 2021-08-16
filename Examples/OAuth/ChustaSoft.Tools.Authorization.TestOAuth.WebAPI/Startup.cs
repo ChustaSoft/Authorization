@@ -1,3 +1,4 @@
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,8 +11,8 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
     public class Startup
     {
         public readonly IConfiguration _configuration;
-        
-        
+
+
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -20,6 +21,12 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(opt =>
+                {
+                    opt.Authority = "https://localhost:44319/";
+                    opt.ApiName = "client-test-web_api";
+                });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -39,6 +46,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
