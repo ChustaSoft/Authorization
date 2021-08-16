@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,19 +27,19 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
             services
                 .AddAuthentication(opt =>
                 {
-                    opt.DefaultScheme = "Cookies";
-                    opt.DefaultChallengeScheme = "oidc";
+                    opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
-                .AddCookie("Cookies")
-                .AddOpenIdConnect("oidc", opt => 
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, opt => 
                 {
+                    opt.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     opt.Authority = "https://localhost:44319/";
                     opt.ClientId = "client-test-web_ui";
                     opt.ClientSecret = "secret";
-                    opt.ResponseType = "code id_token";
-                    //opt.UsePkce = true;
+                    opt.ResponseType = "code";
+                    opt.UsePkce = true;
                     //opt.ResponseMode = "query";
-                    opt.SignInScheme = "Cookies";
                     opt.Scope.Add("roles");
                     opt.Scope.Add("client-test-web_api");
                     opt.SaveTokens = true;

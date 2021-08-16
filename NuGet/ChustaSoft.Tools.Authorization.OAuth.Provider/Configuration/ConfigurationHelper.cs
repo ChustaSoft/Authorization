@@ -98,8 +98,8 @@ namespace ChustaSoft.Tools.Authorization
                 { 
                     ClientName = "Client Test",
                     ClientId = "client-test-web_ui",
-                    AllowedGrantTypes = GrantTypes.Hybrid,
-                    RequirePkce = false,
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
                     RedirectUris = new List<string>()
                     {
                         "https://localhost:44392/signin-oidc"
