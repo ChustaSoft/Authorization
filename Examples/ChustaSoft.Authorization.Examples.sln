@@ -23,7 +23,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Net Core 3.1 Examples", ".
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".NET 5.0 Examples", ".NET 5.0 Examples", "{3423B5D4-A0A8-4452-8580-01452D793F84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", ".NET 5.0\ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{CB0DAFF0-3046-455D-B740-68463778420D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", ".NET 5.0\ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{CB0DAFF0-3046-455D-B740-68463778420D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OAuth Example", "OAuth Example", "{660AACB3-E921-4C37-992E-814768F9BC93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.IDP", "OAuth\ChustaSoft.Tools.Authorization.TestOAuth.IDP\ChustaSoft.Tools.Authorization.TestOAuth.IDP.csproj", "{BBC2C5DC-43F8-4B25-AD34-09D255C2F06A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebAPI", "OAuth\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI.csproj", "{D1129058-48FB-4674-83AE-B12D109802F8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebClient", "OAuth\ChustaSoft.Tools.Authorization.TestOAuth.WebClient\ChustaSoft.Tools.Authorization.TestOAuth.WebClient.csproj", "{E2EF2903-425A-447D-9227-2AD27F4A1942}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +71,18 @@ Global
 		{CB0DAFF0-3046-455D-B740-68463778420D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB0DAFF0-3046-455D-B740-68463778420D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB0DAFF0-3046-455D-B740-68463778420D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBC2C5DC-43F8-4B25-AD34-09D255C2F06A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBC2C5DC-43F8-4B25-AD34-09D255C2F06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBC2C5DC-43F8-4B25-AD34-09D255C2F06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBC2C5DC-43F8-4B25-AD34-09D255C2F06A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1129058-48FB-4674-83AE-B12D109802F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1129058-48FB-4674-83AE-B12D109802F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1129058-48FB-4674-83AE-B12D109802F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1129058-48FB-4674-83AE-B12D109802F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2EF2903-425A-447D-9227-2AD27F4A1942}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2EF2903-425A-447D-9227-2AD27F4A1942}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2EF2903-425A-447D-9227-2AD27F4A1942}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2EF2903-425A-447D-9227-2AD27F4A1942}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +96,9 @@ Global
 		{14820279-D636-4B4E-A853-61282B688733} = {A427C50F-A5B3-46D5-A491-EC93C839776F}
 		{AA81D9B4-1B27-4E21-9C3E-A62D94B61903} = {A427C50F-A5B3-46D5-A491-EC93C839776F}
 		{CB0DAFF0-3046-455D-B740-68463778420D} = {3423B5D4-A0A8-4452-8580-01452D793F84}
+		{BBC2C5DC-43F8-4B25-AD34-09D255C2F06A} = {660AACB3-E921-4C37-992E-814768F9BC93}
+		{D1129058-48FB-4674-83AE-B12D109802F8} = {660AACB3-E921-4C37-992E-814768F9BC93}
+		{E2EF2903-425A-447D-9227-2AD27F4A1942} = {660AACB3-E921-4C37-992E-814768F9BC93}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A343E741-D502-4FC7-AF4C-6D28DDD9468C}

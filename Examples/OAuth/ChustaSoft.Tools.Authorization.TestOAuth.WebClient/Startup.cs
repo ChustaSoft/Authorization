@@ -32,13 +32,14 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
                 .AddOpenIdConnect("oidc", opt => 
                 {
                     opt.Authority = "https://localhost:44319/";
-                    opt.ClientId = "client-test-id";
+                    opt.ClientId = "client-test-web_ui";
                     opt.ClientSecret = "secret";
                     opt.ResponseType = "code id_token";
                     //opt.UsePkce = true;
                     //opt.ResponseMode = "query";
                     opt.SignInScheme = "Cookies";
-                    opt.Scope.Add("test-api");
+                    opt.Scope.Add("roles");
+                    opt.Scope.Add("client-test-web_api");
                     opt.SaveTokens = true;
                     opt.GetClaimsFromUserInfoEndpoint = true;
                 });

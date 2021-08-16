@@ -77,7 +77,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             return new List<ApiResource>
             {
-                new ApiResource("test-api")
+                new ApiResource("client-test-web_api", "Test Client REST WebAPI")
             };
         }
 
@@ -85,7 +85,8 @@ namespace ChustaSoft.Tools.Authorization
         {
             return new List<ApiScope>
             {
-                new ApiScope("test-api")
+                new ApiScope("roles"),
+                new ApiScope("client-test-web_api", "Test Client REST WebAPI")
             };
         }
 
@@ -96,7 +97,7 @@ namespace ChustaSoft.Tools.Authorization
                 new Client
                 { 
                     ClientName = "Client Test",
-                    ClientId = "client-test-id",
+                    ClientId = "client-test-web_ui",
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RequirePkce = false,
                     RedirectUris = new List<string>()
@@ -110,7 +111,8 @@ namespace ChustaSoft.Tools.Authorization
                     AllowedScopes = { 
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "test-api" 
+                        "roles",
+                        "client-test-web_api" 
                     },                    
                     ClientSecrets = { new Secret("secret".Sha256()) }
                 }

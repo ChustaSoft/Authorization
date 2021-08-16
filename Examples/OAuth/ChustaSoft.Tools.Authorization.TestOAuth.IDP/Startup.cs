@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
+namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
 {
     public class Startup
     {

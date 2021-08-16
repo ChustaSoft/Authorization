@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OAuth", "OAuth", "{13C13A20-BCD6-4457-8C8A-C5D651961687}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebAPI", "Examples\OAuth\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI.csproj", "{7C13400D-132A-4DA5-AD94-4C5A10A3A974}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{4F1E318B-902B-4B04-B1C6-C47CF8C49049}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F1E318B-902B-4B04-B1C6-C47CF8C49049}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F1E318B-902B-4B04-B1C6-C47CF8C49049}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C13400D-132A-4DA5-AD94-4C5A10A3A974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C13400D-132A-4DA5-AD94-4C5A10A3A974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C13400D-132A-4DA5-AD94-4C5A10A3A974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C13400D-132A-4DA5-AD94-4C5A10A3A974}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{643CB023-0356-4D07-AB1B-8D45DF2828E9} = {13C13A20-BCD6-4457-8C8A-C5D651961687}
 		{4F1E318B-902B-4B04-B1C6-C47CF8C49049} = {13C13A20-BCD6-4457-8C8A-C5D651961687}
 		{13C13A20-BCD6-4457-8C8A-C5D651961687} = {1B02D724-E788-4821-9E5B-A16658888912}
+		{7C13400D-132A-4DA5-AD94-4C5A10A3A974} = {13C13A20-BCD6-4457-8C8A-C5D651961687}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5056E0F-5434-434A-8A4E-A5214A704B64}
