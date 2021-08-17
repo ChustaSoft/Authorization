@@ -77,7 +77,11 @@ namespace ChustaSoft.Tools.Authorization
         {
             return new List<ApiResource>
             {
-                new ApiResource("client-test-web_api", "Test Client REST WebAPI")
+                new ApiResource("client-test-web_api", "Test Client REST WebAPI", new[] { "role" })
+                    {
+                        Scopes = { "client-test-web_api"},
+                        ApiSecrets = { new Secret("secret_api".Sha256()) }
+                    }
             };
         }
 

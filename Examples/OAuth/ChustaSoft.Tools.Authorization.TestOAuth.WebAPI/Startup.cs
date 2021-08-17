@@ -26,6 +26,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
                 {
                     opt.Authority = "https://localhost:44319/";
                     opt.ApiName = "client-test-web_api";
+                    opt.ApiSecret = "secret_api";
                 });
 
             services.AddControllers();
@@ -45,6 +46,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
