@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ChustaSoft.Tools.Authorization.TestOAuth.WebAPI": {
+    "ChustaSoft.Tools.Authorization.TestOAuth.IDP": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

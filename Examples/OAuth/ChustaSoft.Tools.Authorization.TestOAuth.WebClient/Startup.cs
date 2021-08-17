@@ -1,3 +1,4 @@
+using ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.Net.Http.Headers;
+using System;
 
 namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
 {
@@ -23,6 +26,23 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddHttpContextAccessor();
+            services.AddTransient<BearerTokenHandler>();
+
+            services.AddHttpClient("APIClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44308/");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            }).AddHttpMessageHandler<BearerTokenHandler>();
+
+            services.AddHttpClient("IDPClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:44319/");
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+            });
 
             services
                 .AddAuthentication(opt =>
