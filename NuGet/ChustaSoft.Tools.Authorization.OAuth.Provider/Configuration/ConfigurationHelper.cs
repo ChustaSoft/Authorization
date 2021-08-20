@@ -14,24 +14,32 @@ namespace ChustaSoft.Tools.Authorization
     public static class ConfigurationHelper
     {
 
-        public static void WithOAuthProvider(this IdentityBuilder identityBuilder) => WithOAuthProvider(identityBuilder.Services);
+        public static IIdentityServerBuilder WithOAuthProvider(this IdentityBuilder identityBuilder) 
+            => WithOAuthProvider(identityBuilder.Services);
 
-        public static void WithOAuthProvider(this IServiceCollection services, string thumbPrint = null)
+        public static IIdentityServerBuilder WithOAuthProvider(this IServiceCollection services, string thumbPrint = null)
         {
-            var builder = services
-                .AddIdentityServer();
+            //            var identityServerBuilder = services
+            //                .AddIdentityServer();
 
-#if DEBUG
-            builder.AddDeveloperSigningCredential()
-                .AddTestUsers(GetUsers())
-                .AddInMemoryIdentityResources(GetResources())
-                .AddInMemoryApiResources(GetApiResources())
-                .AddInMemoryApiScopes(GetApiScopes())
-                .AddInMemoryClients(GetClients());
+            //#if DEBUG
+            //            identityServerBuilder.AddDeveloperSigningCredential()
+            //                .AddTestUsers(GetUsers())
+            //                .AddInMemoryIdentityResources(GetResources())
+            //                .AddInMemoryApiResources(GetApiResources())
+            //                .AddInMemoryApiScopes(GetApiScopes())
+            //                .AddInMemoryClients(GetClients());
 
-#else
-            builder.AddSigningCredential(LoadCertificate(thumbPrint));
-#endif
+            //#else
+            //            builder.AddSigningCredential(LoadCertificate(thumbPrint));
+            //#endif
+
+            //            return identityServerBuilder;
+
+
+            return services
+                .AddIdentityServer()
+                .AddDeveloperSigningCredential();
         }
 
         public static void UseOAuthProvider(this IApplicationBuilder app) 

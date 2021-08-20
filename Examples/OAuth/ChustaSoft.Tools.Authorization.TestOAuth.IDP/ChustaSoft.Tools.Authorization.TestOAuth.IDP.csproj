@@ -5,7 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider\ChustaSoft.Tools.Authorization.OAuth.Provider.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

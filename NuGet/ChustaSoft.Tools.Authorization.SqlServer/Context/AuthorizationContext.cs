@@ -1,4 +1,5 @@
-﻿using ChustaSoft.Tools.Authorization.Models;
+﻿using ChustaSoft.Tools.Authorization.Constants;
+using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,16 +10,7 @@ namespace ChustaSoft.Tools.Authorization
             : IdentityDbContext<TUser, TRole, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
         where TUser : User, new()
         where TRole : Role
-    {
-        
-        #region Constants
-
-        private const string SCHEMA_NAME = "Auth";
-        private const int MAX_FULL_VARCHAR_LENGTH = 256;
-        private const int MAX_HALF_VARCHAR_LENGTH = 128;
-
-        #endregion
-
+    {        
 
         #region Constructor
 
@@ -38,8 +30,8 @@ namespace ChustaSoft.Tools.Authorization
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.ConcurrencyStamp).IsConcurrencyToken();
-                entity.Property(e => e.Name).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
-                entity.Property(e => e.NormalizedName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
+                entity.Property(e => e.Name).HasMaxLength(AuthDbConstants.MAX_FULL_VARCHAR_LENGTH).IsRequired();
+                entity.Property(e => e.NormalizedName).HasMaxLength(AuthDbConstants.MAX_FULL_VARCHAR_LENGTH).IsRequired();
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.Name).IsUnique();
 #if NETCOREAPP3_1
@@ -48,7 +40,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasIndex(e => e.NormalizedName).IsUnique().HasDatabaseName("RoleNameIndex");
 #endif
 
-                entity.ToTable($"{nameof(Role)}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(Role)}s", AuthDbConstants.SCHEMA_NAME);
             });
 
             modelBuilder.Entity<RoleClaim>(entity =>
@@ -60,17 +52,17 @@ namespace ChustaSoft.Tools.Authorization
 
                 entity.HasOne<TRole>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable($"{nameof(RoleClaim)}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(RoleClaim)}s", AuthDbConstants.SCHEMA_NAME);
             });
 
             modelBuilder.Entity<TUser>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.ConcurrencyStamp).IsConcurrencyToken();
-                entity.Property(e => e.UserName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
-                entity.Property(e => e.Email).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
-                entity.Property(e => e.NormalizedEmail).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
-                entity.Property(e => e.NormalizedUserName).HasMaxLength(MAX_FULL_VARCHAR_LENGTH).IsRequired();
+                entity.Property(e => e.UserName).HasMaxLength(AuthDbConstants.MAX_FULL_VARCHAR_LENGTH).IsRequired();
+                entity.Property(e => e.Email).HasMaxLength(AuthDbConstants.MAX_FULL_VARCHAR_LENGTH).IsRequired();
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(AuthDbConstants.MAX_FULL_VARCHAR_LENGTH).IsRequired();
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(AuthDbConstants.MAX_FULL_VARCHAR_LENGTH).IsRequired();
 
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
                 entity.Property(e => e.RegistrationDate).HasDefaultValueSql("sysdatetimeoffset()");
@@ -86,7 +78,7 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasIndex(e => e.NormalizedUserName).IsUnique().HasDatabaseName("UserNameIndex");
                 entity.HasIndex(e => e.PhoneNumber).IsUnique().HasDatabaseName("PhoneNumberIndex");
 #endif
-                entity.ToTable($"{nameof(User)}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(User)}s", AuthDbConstants.SCHEMA_NAME);
 
             });
 
@@ -100,20 +92,20 @@ namespace ChustaSoft.Tools.Authorization
 
                 entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable($"{nameof(UserClaim)}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserClaim)}s", AuthDbConstants.SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserLogin>(entity =>
             {
-                entity.Property(e => e.LoginProvider).HasMaxLength(MAX_HALF_VARCHAR_LENGTH);
-                entity.Property(e => e.ProviderKey).HasMaxLength(MAX_HALF_VARCHAR_LENGTH);
+                entity.Property(e => e.LoginProvider).HasMaxLength(AuthDbConstants.MAX_HALF_VARCHAR_LENGTH);
+                entity.Property(e => e.ProviderKey).HasMaxLength(AuthDbConstants.MAX_HALF_VARCHAR_LENGTH);
                 entity.Property(e => e.UserId).IsRequired();
                 entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
                 entity.HasIndex(e => e.UserId);
 
                 entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable($"{nameof(UserLogin)}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserLogin)}s", AuthDbConstants.SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserRole>(entity =>
@@ -124,18 +116,18 @@ namespace ChustaSoft.Tools.Authorization
                 entity.HasOne<TRole>().WithMany().HasForeignKey(e => e.RoleId).OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable($"{nameof(UserRole)}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserRole)}s", AuthDbConstants.SCHEMA_NAME);
             });
 
             modelBuilder.Entity<UserToken>(entity =>
             {
-                entity.Property(e => e.LoginProvider).HasMaxLength(MAX_HALF_VARCHAR_LENGTH);
-                entity.Property(e => e.Name).HasMaxLength(MAX_HALF_VARCHAR_LENGTH);
+                entity.Property(e => e.LoginProvider).HasMaxLength(AuthDbConstants.MAX_HALF_VARCHAR_LENGTH);
+                entity.Property(e => e.Name).HasMaxLength(AuthDbConstants.MAX_HALF_VARCHAR_LENGTH);
                 entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
 
                 entity.HasOne<TUser>().WithMany().HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.ToTable($"{nameof(UserToken)}s", SCHEMA_NAME);
+                entity.ToTable($"{nameof(UserToken)}s", AuthDbConstants.SCHEMA_NAME);
             });
         }
 
