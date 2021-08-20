@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Reflection;
 
 namespace ChustaSoft.Tools.Authorization
@@ -34,11 +35,19 @@ namespace ChustaSoft.Tools.Authorization
             where TUser : User, new()
             where TRole : Role, new()
         {
-            var authorizationContext = authorizationBuilder.ServiceProvider.GetRequiredService<TAuthContext>();
-
-            authorizationContext.Database.Migrate();
+            authorizationBuilder.ServiceProvider.MigrateDatabase<TAuthContext>();
 
             return authorizationBuilder;
+        }
+
+        public static void MigrateDatabase<TContext>(this IServiceProvider services)
+            where TContext : DbContext
+        {
+            using (var serviceScope = services.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<TContext>().Database.Migrate();
+
+            }
         }
 
         #endregion

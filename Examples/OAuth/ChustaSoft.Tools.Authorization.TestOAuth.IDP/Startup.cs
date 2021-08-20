@@ -35,7 +35,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseOAuthProvider();
+            app.UseOAuthProvider().SetupDatabase();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }
