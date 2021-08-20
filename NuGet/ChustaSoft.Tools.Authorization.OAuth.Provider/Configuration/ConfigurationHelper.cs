@@ -17,23 +17,6 @@ namespace ChustaSoft.Tools.Authorization
 
         public static IIdentityServerBuilder WithOAuthProvider(this IServiceCollection services, string thumbPrint = null)
         {
-            //            var identityServerBuilder = services
-            //                .AddIdentityServer();
-
-            //#if DEBUG
-            //            identityServerBuilder.AddDeveloperSigningCredential()
-            //                .AddTestUsers(GetUsers())
-            //                .AddInMemoryIdentityResources(GetResources())
-            //                .AddInMemoryApiResources(GetApiResources())
-            //                .AddInMemoryApiScopes(GetApiScopes())
-            //                .AddInMemoryClients(GetClients());
-
-            //#else
-            //            builder.AddSigningCredential(LoadCertificate(thumbPrint));
-            //#endif
-
-            //            return identityServerBuilder;
-
             return services
                 .AddIdentityServer()
                 .AddTestUsers(GetUsers())

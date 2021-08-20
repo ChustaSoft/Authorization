@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChustaSoft.Tools.Authorization.Context
 {
-    public class AuthConfigurationContext : ConfigurationDbContext<AuthConfigurationContext>
+    public class AuthOperationContext : PersistedGrantDbContext<AuthOperationContext>
     {
 
-        public AuthConfigurationContext(DbContextOptions<AuthConfigurationContext> options, ConfigurationStoreOptions storeOptions) 
+        public AuthOperationContext(DbContextOptions<AuthOperationContext> options, OperationalStoreOptions storeOptions)
             : base(options, storeOptions)
         { }
 

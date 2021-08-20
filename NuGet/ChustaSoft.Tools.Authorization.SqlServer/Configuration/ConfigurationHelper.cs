@@ -35,21 +35,13 @@ namespace ChustaSoft.Tools.Authorization
             where TUser : User, new()
             where TRole : Role, new()
         {
-            authorizationBuilder.ServiceProvider.MigrateDatabase<TAuthContext>();
+            var authorizationContext = authorizationBuilder.ServiceProvider.GetRequiredService<TAuthContext>();
+
+            authorizationContext.Database.Migrate();
 
             return authorizationBuilder;
         }
-
-        public static void MigrateDatabase<TContext>(this IServiceProvider services)
-            where TContext : DbContext
-        {
-            using (var serviceScope = services.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                serviceScope.ServiceProvider.GetRequiredService<TContext>().Database.Migrate();
-
-            }
-        }
-
+       
         #endregion
 
 

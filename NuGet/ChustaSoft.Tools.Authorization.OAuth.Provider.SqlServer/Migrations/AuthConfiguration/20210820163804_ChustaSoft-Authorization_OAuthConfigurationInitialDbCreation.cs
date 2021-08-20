@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ChustaSoft.Tools.Authorization.Migrations
+namespace ChustaSoft.Tools.Authorization.Migrations.AuthConfiguration
 {
-    public partial class ChustaSoftAuthorization_OAuthInitialDbCreation : Migration
+    public partial class ChustaSoftAuthorization_OAuthConfigurationInitialDbCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
