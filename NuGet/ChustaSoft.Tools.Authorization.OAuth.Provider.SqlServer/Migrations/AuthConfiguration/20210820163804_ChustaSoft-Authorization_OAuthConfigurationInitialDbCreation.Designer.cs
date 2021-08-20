@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ChustaSoft.Tools.Authorization.Migrations
+namespace ChustaSoft.Tools.Authorization.Migrations.AuthConfiguration
 {
     [DbContext(typeof(AuthConfigurationContext))]
     [Migration("20210820163804_ChustaSoft-Authorization_OAuthConfigurationInitialDbCreation")]
