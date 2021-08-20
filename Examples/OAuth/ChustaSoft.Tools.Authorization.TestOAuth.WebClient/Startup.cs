@@ -62,6 +62,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
                     //opt.ResponseMode = "query";
                     opt.Scope.Add("roles");
                     opt.Scope.Add("client-test-web_api");
+                    opt.Scope.Add("offline_access");
                     opt.SaveTokens = true;
                     opt.GetClaimsFromUserInfoEndpoint = true;
                 });
