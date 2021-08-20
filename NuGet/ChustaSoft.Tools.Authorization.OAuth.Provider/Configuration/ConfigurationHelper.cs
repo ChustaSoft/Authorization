@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -15,21 +16,43 @@ namespace ChustaSoft.Tools.Authorization
 
         public static void WithOAuthProvider(this IdentityBuilder identityBuilder) => WithOAuthProvider(identityBuilder.Services);
 
-        public static void WithOAuthProvider(this IServiceCollection services)
+        public static void WithOAuthProvider(this IServiceCollection services, string thumbPrint = null)
         {
-            services
-                .AddIdentityServer()
-                .AddDeveloperSigningCredential()
+            var builder = services
+                .AddIdentityServer();
+
+#if DEBUG
+            builder.AddDeveloperSigningCredential()
                 .AddTestUsers(GetUsers())
                 .AddInMemoryIdentityResources(GetResources())
                 .AddInMemoryApiResources(GetApiResources())
                 .AddInMemoryApiScopes(GetApiScopes())
                 .AddInMemoryClients(GetClients());
+
+#else
+            builder.AddSigningCredential(LoadCertificate(thumbPrint));
+#endif
         }
 
         public static void UseOAuthProvider(this IApplicationBuilder app) 
         {
             app.UseIdentityServer();
+        }
+
+
+        private static X509Certificate2 LoadCertificate(string thumbPrint) 
+        {
+            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine)) 
+            {
+                store.Open(OpenFlags.ReadOnly);
+
+                var certCollection = store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, true);
+
+                if (certCollection.Count == 0)
+                    throw new Exception("The specified certificate wasn't found.");
+
+                return certCollection[0];
+            }
         }
 
 
@@ -96,10 +119,11 @@ namespace ChustaSoft.Tools.Authorization
 
         private static IEnumerable<Client> GetClients() 
         {
-            return new List<Client> 
+            return new List<Client>
             {
                 new Client
-                { 
+                {
+                    UpdateAccessTokenClaimsOnRefresh = true,
                     ClientName = "Client Test",
                     ClientId = "client-test-web_ui",
                     AllowedGrantTypes = GrantTypes.Code,
