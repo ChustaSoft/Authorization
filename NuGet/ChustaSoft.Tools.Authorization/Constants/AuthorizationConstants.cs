@@ -15,5 +15,7 @@
         
         internal const string NO_EMAIL_SUFFIX_FORMAT = ".noemail@no-reply.com";
 
+        internal const string AUTH_SETINGS_SECTION = "Authorization";
+
     }
 }

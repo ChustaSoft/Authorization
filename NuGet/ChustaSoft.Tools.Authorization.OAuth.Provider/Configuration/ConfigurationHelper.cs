@@ -1,10 +1,8 @@
-﻿using IdentityServer4.Test;
+﻿using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 
 namespace ChustaSoft.Tools.Authorization
@@ -12,22 +10,66 @@ namespace ChustaSoft.Tools.Authorization
     public static class ConfigurationHelper
     {
 
-        public static IIdentityServerBuilder WithOAuthProvider(this IdentityBuilder identityBuilder) 
-            => WithOAuthProvider(identityBuilder.Services);
-
-        public static IIdentityServerBuilder WithOAuthProvider(this IServiceCollection services, string thumbPrint = null)
+        public static IOAuthProviderAuthorizationBuilder RegisterAuthorization(this IServiceCollection services, IConfiguration configuration, string privateKey, string authSectionName = AuthorizationConstants.AUTH_SETINGS_SECTION)
         {
-            return services
-                .AddIdentityServer()
-                .AddTestUsers(GetUsers())
-                .AddDeveloperSigningCredential();
+            var authSettings = AuthorizationSettings.GetFromFile<OAuthorizationSettings>(configuration, authSectionName);
+            var identityServerBuilder = services.SetupOAuthProvider(authSettings);
+            var identityBuilder = services.RegisterAuthorizationServices<User, Role>(privateKey, authSettings);
+
+            return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
+        }
+
+        public static IOAuthProviderAuthorizationBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string privateKey, string authSectionName = AuthorizationConstants.AUTH_SETINGS_SECTION)
+            where TUser : User, new()
+            where TRole : Role, new()
+        {
+            var authSettings = AuthorizationSettings.GetFromFile<OAuthorizationSettings>(configuration, authSectionName);
+            var identityServerBuilder = services.SetupOAuthProvider(authSettings);
+            var identityBuilder = services.RegisterAuthorizationServices<TUser, TRole>(privateKey, authSettings);
+
+            return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
+        }
+
+        public static IOAuthProviderAuthorizationBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<OAuthorizationSettingsBuilder> settingsBuildingAction)
+        {
+            var authSettings = AuthorizationSettings.GetFromBuilder<OAuthorizationSettings, OAuthorizationSettingsBuilder>(settingsBuildingAction);
+            var identityServerBuilder = services.SetupOAuthProvider(authSettings);
+            var identityBuilder = services.RegisterAuthorizationServices<User, Role>(privateKey, authSettings);
+
+            return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
+        }
+
+        public static IOAuthProviderAuthorizationBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, Action<OAuthorizationSettingsBuilder> settingsBuildingAction)
+            where TUser : User, new()
+            where TRole : Role, new()
+        {
+            var authSettings = AuthorizationSettings.GetFromBuilder<OAuthorizationSettings, OAuthorizationSettingsBuilder>(settingsBuildingAction);
+            var identityServerBuilder = services.SetupOAuthProvider(authSettings);
+            var identityBuilder = services.RegisterAuthorizationServices<TUser, TRole>(privateKey, authSettings);
+
+            return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
         }
 
         public static IApplicationBuilder UseOAuthProvider(this IApplicationBuilder app)
         {
-            return app.UseIdentityServer();
+            app.UseIdentityServer();
+            app.UseAuthorization();
+
+            return app;
         }
 
+
+        private static IIdentityServerBuilder SetupOAuthProvider(this IServiceCollection services, OAuthorizationSettings authSettings)
+        {
+            var builder = services.AddIdentityServer();
+
+            if(string.IsNullOrWhiteSpace(authSettings.ThumbPrint))
+                builder.AddDeveloperSigningCredential();
+            else
+                builder.AddSigningCredential(LoadCertificate(authSettings.ThumbPrint));
+
+            return builder;
+        }
 
         private static X509Certificate2 LoadCertificate(string thumbPrint) 
         {
@@ -43,39 +85,6 @@ namespace ChustaSoft.Tools.Authorization
                 return certCollection[0];
             }
         }
-
-
-
-        private static List<TestUser> GetUsers() 
-        {
-            return new List<TestUser> 
-            { 
-                new TestUser
-                { 
-                    SubjectId = Guid.NewGuid().ToString(),
-                    Username = "User1",
-                    Password = "Test.1234",
-                    Claims = new List<Claim>
-                    { 
-                        new Claim("permission", "test"),
-                        new Claim("role", "test-role")
-                    }
-                },
-                new TestUser
-                {
-                    SubjectId = Guid.NewGuid().ToString(),
-                    Username = "User2",
-                    Password = "Test.1234",
-                    Claims = new List<Claim>
-                    {
-                        new Claim("permission", "test"),
-                        new Claim("role", "test-role")
-                    }
-                }
-            };
-        }
-
-      
 
     }
 }
