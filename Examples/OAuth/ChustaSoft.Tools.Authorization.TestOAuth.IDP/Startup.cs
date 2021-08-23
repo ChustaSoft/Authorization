@@ -25,7 +25,11 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
         {
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
-            services.WithOAuthProvider().WithSqlServerProvider(_configuration.GetConnectionString(CONNECTIONSTRING_NAME));
+            services.RegisterAuthorization("d5ab5e3f5799445fb9f68d1fcdda3b9f", x =>
+                {
+                    x.SetSiteName("AuthorizationApi");
+                })
+                .WithSqlServerProvider(_configuration.GetConnectionString(CONNECTIONSTRING_NAME));
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
