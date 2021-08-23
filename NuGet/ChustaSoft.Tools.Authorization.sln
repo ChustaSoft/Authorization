@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.UnitTest", "ChustaSoft.Tools.Authorization.UnitTest\ChustaSoft.Tools.Authorization.UnitTest.csproj", "{028EEF89-BB93-417A-A23B-841500873C83}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet", "ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{05DBE2A5-8F21-47DC-A368-D66554554977}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet.JWTBearer", "ChustaSoft.Tools.Authorization.AspNet.JWTBearer\ChustaSoft.Tools.Authorization.AspNet.JWTBearer.csproj", "{05DBE2A5-8F21-47DC-A368-D66554554977}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Test", "2. Test", "{D3CCC716-6D33-4FF7-9065-6D3DAF2A86DE}"
 EndProject

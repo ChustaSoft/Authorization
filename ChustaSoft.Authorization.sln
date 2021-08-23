@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.Abstractions", "NuGet\ChustaSoft.Tools.Authorization.Abstractions\ChustaSoft.Tools.Authorization.Abstractions.csproj", "{953F2928-A631-4A93-9304-D17BC972B533}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet", "NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{EE0B72D1-CAD9-443E-A86C-F9573CFF5969}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet.JWTBearer", "NuGet\ChustaSoft.Tools.Authorization.AspNet.JWTBearer\ChustaSoft.Tools.Authorization.AspNet.JWTBearer.csproj", "{EE0B72D1-CAD9-443E-A86C-F9573CFF5969}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.SqlServer", "NuGet\ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj", "{83BCE83D-C36A-4A05-A4F4-9355F7E25730}"
 EndProject
@@ -45,7 +45,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OAuth", "OAuth", "{13C13A20
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebAPI", "Examples\OAuth\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI\ChustaSoft.Tools.Authorization.TestOAuth.WebAPI.csproj", "{7C13400D-132A-4DA5-AD94-4C5A10A3A974}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer", "NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer.csproj", "{2A30F03E-0555-494E-9B98-8834FFC8AA9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer", "NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer.csproj", "{2A30F03E-0555-494E-9B98-8834FFC8AA9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.JWTBearer", "NuGet\ChustaSoft.Tools.Authorization.JWTBearer\ChustaSoft.Tools.Authorization.JWTBearer.csproj", "{668A956C-6BE6-4EC5-B5DE-9458F4F7A832}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JWTBearer", "JWTBearer", "{8D033238-5A83-4A5F-AD2C-DE8A20B6236F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.AspNet", "NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +119,14 @@ Global
 		{2A30F03E-0555-494E-9B98-8834FFC8AA9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A30F03E-0555-494E-9B98-8834FFC8AA9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A30F03E-0555-494E-9B98-8834FFC8AA9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{668A956C-6BE6-4EC5-B5DE-9458F4F7A832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{668A956C-6BE6-4EC5-B5DE-9458F4F7A832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{668A956C-6BE6-4EC5-B5DE-9458F4F7A832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{668A956C-6BE6-4EC5-B5DE-9458F4F7A832}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,8 +141,8 @@ Global
 		{0A61C7EF-1102-4B38-ADC1-F62A4DBBD9E8} = {1A110FBC-9D96-46DE-B219-60AB8AABE1B8}
 		{53AB1936-6CB5-4133-AB14-424EDC14BB7A} = {1A110FBC-9D96-46DE-B219-60AB8AABE1B8}
 		{5BBCC169-361D-4F66-9DAC-98203AA6D4FB} = {7FCD9EF4-F6A3-4DAD-8D50-B7C14E38608D}
-		{1A110FBC-9D96-46DE-B219-60AB8AABE1B8} = {1B02D724-E788-4821-9E5B-A16658888912}
-		{32968A3E-2837-4849-B492-F1533EA2FDD7} = {1B02D724-E788-4821-9E5B-A16658888912}
+		{1A110FBC-9D96-46DE-B219-60AB8AABE1B8} = {8D033238-5A83-4A5F-AD2C-DE8A20B6236F}
+		{32968A3E-2837-4849-B492-F1533EA2FDD7} = {8D033238-5A83-4A5F-AD2C-DE8A20B6236F}
 		{16B8FC8E-CCB4-46D4-89E9-E880C94D027D} = {32968A3E-2837-4849-B492-F1533EA2FDD7}
 		{08B41227-5F20-41F1-82C2-E36E3A735062} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
 		{643CB023-0356-4D07-AB1B-8D45DF2828E9} = {13C13A20-BCD6-4457-8C8A-C5D651961687}
@@ -136,6 +150,9 @@ Global
 		{13C13A20-BCD6-4457-8C8A-C5D651961687} = {1B02D724-E788-4821-9E5B-A16658888912}
 		{7C13400D-132A-4DA5-AD94-4C5A10A3A974} = {13C13A20-BCD6-4457-8C8A-C5D651961687}
 		{2A30F03E-0555-494E-9B98-8834FFC8AA9C} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
+		{668A956C-6BE6-4EC5-B5DE-9458F4F7A832} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
+		{8D033238-5A83-4A5F-AD2C-DE8A20B6236F} = {1B02D724-E788-4821-9E5B-A16658888912}
+		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5056E0F-5434-434A-8A4E-A5214A704B64}
