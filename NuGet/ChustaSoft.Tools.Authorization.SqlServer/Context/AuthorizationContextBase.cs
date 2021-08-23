@@ -135,15 +135,4 @@ namespace ChustaSoft.Tools.Authorization
 
     }
 
-
-
-    public class AuthorizationContext : AuthorizationContextBase<User, Role>
-    {
-
-        public AuthorizationContext(DbContextOptions<AuthorizationContext> options)
-           : base(options)
-        { }
-
-    }
-
 }
