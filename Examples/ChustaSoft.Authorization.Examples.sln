@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization", "..\NuGet\ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj", "{B0429F51-39B8-49D2-88EA-2F45F53C7918}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet", "..\NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{14820279-D636-4B4E-A853-61282B688733}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet.JWTBearer", "..\NuGet\ChustaSoft.Tools.Authorization.AspNet.JWTBearer\ChustaSoft.Tools.Authorization.AspNet.JWTBearer.csproj", "{14820279-D636-4B4E-A853-61282B688733}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.SqlServer", "..\NuGet\ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj", "{AA81D9B4-1B27-4E21-9C3E-A62D94B61903}"
 EndProject

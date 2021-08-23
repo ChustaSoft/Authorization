@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj" />
+    <ProjectReference Include="..\..\..\NuGet\ChustaSoft.Tools.Authorization.AspNet.JWTBearer\ChustaSoft.Tools.Authorization.AspNet.JWTBearer.csproj" />
     <ProjectReference Include="..\..\..\NuGet\ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj" />
   </ItemGroup>
 
