@@ -71,6 +71,8 @@ namespace ChustaSoft.Tools.Authorization
         {
             var userSignIn = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: true);
 
+            if (userSignIn.IsLockedOut)
+                throw new AuthenticationException("The requested user is blocked. Please contact your administrator");
             if (userSignIn.Succeeded)
                 return await _userManager.FindByNameAsync(username);
             else
