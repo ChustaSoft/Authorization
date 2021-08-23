@@ -31,8 +31,6 @@ namespace ChustaSoft.Tools.Authorization
                 throw new AuthenticationException($"Unable to sign in user");
             }
         }
-        
-
 
     }
 }

@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <PackageId>ChustaSoft.Tools.Authorization</PackageId>
+    <PackageId>ChustaSoft.Tools.Authorization.JWTBearer</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
     <Version>3.4.0</Version>
     <AssemblyVersion>3.4.0</AssemblyVersion>
     <FileVersion>3.4.0</FileVersion>
-    <Description>Authorization NuGet solution based on Microsoft Identity</Description>
+    <Description>Authorization NuGet solution based on Microsoft Identity and JWT</Description>
     <Copyright>ChustaSoft</Copyright>
     <PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ChustaSoft/Authorization</PackageProjectUrl>
@@ -19,19 +19,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChustaSoft.Tools.Authorization.Abstractions\ChustaSoft.Tools.Authorization.Abstractions.csproj" />
+    <ProjectReference Include="..\ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj" />
     
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.16" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.16" />    
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.16" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Helpers\TokenHelper.cs">
+      <DependentUpon>ITokenHelper.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

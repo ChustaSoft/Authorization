@@ -1,11 +1,7 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IdentityModel.Tokens;
 using System;
 
 namespace ChustaSoft.Tools.Authorization
@@ -13,45 +9,24 @@ namespace ChustaSoft.Tools.Authorization
     public static class ConfigurationHelper
     {
 
-        #region Constants
+        public static IdentityBuilder RegisterAuthorizationServices(this IServiceCollection services, string privateKey, AuthorizationSettings authSettings)
+            => services.RegisterAuthorizationServices<User, Role>(privateKey, authSettings);
 
-        private const string AUTH_SETINGS_SECTION = "Authorization";
-
-        #endregion
-
-
-        #region Public Extension methods
-
-        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, IConfiguration configuration, string privateKey, string authSectionName = AUTH_SETINGS_SECTION)
-        {
-            var authSettings = GetSettingsFromConfiguration(configuration, authSectionName);
-
-            return services.RegisterAuthorization<User, Role>(privateKey, authSettings);
-        }
-
-        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, IConfiguration configuration, string privateKey, string authSectionName = AUTH_SETINGS_SECTION)
+        public static IdentityBuilder RegisterAuthorizationServices<TUser, TRole>(this IServiceCollection services, string privateKey, AuthorizationSettings authSettings)
             where TUser : User, new()
             where TRole : Role, new()
         {
-            var authSettings = GetSettingsFromConfiguration(configuration, authSectionName);
+            services.AddSingleton(authSettings);
+            services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
 
-            return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
-        }
+            SetupTypedServices<TUser, TRole>(services);
+            SetupUserTypedServices<TUser>(services);
+            SetupRoleTypedServices<TRole>(services);
+            SetupExternalProviders(services, authSettings);
 
-        public static IdentityBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
-        {
-            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
+            var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
 
-            return services.RegisterAuthorization<User, Role>(privateKey, authSettings);
-        }
-
-        public static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
-            where TUser : User, new()
-            where TRole : Role, new()
-        {
-            var authSettings = GetSettingsFromBuilder(settingsBuildingAction);
-
-            return services.RegisterAuthorization<TUser, TRole>(privateKey, authSettings);
+            return identityBuilder;
         }
 
         public static IdentityBuilder WithUserCreatedAction<TUser, TUserCreatedImpl>(this IdentityBuilder identityBuilder)
@@ -76,87 +51,8 @@ namespace ChustaSoft.Tools.Authorization
 
             return identityBuilder;
         }
-
-        #endregion
-
-
-        #region Private methods        
-
-        private static AuthorizationSettings GetSettingsFromBuilder(Action<IAuthorizationSettingsBuilder> settingsBuildingAction)
-        {
-            var settingsBuilder = new AuthorizationSettingsBuilder();
-
-            settingsBuildingAction.Invoke(settingsBuilder);
-
-            var authSettings = settingsBuilder.Build();
-            return authSettings;
-        }
-
-        private static AuthorizationSettings GetSettingsFromConfiguration(IConfiguration configuration, string authSectionName)
-        {
-            var authSettings = configuration.GetSection(authSectionName).Get<AuthorizationSettings>();
-
-            if (authSettings == null)
-                authSettings = new AuthorizationSettings();
-
-            return authSettings;
-        }
         
-
-        private static IdentityBuilder RegisterAuthorization<TUser, TRole>(this IServiceCollection services, string privateKey, AuthorizationSettings authSettings)
-            where TUser : User, new()
-            where TRole : Role, new()
-        {
-            services.AddSingleton(authSettings);
-            services.AddTransient<ISecuritySettings>(x => new SecuritySettings(privateKey));
-
-            SetupJwtAuthentication(services, authSettings, privateKey);
-            SetJwtAuthorization(services);
-            SetupTypedServices<TUser, TRole>(services);
-            SetupUserTypedServices<TUser>(services);
-            SetupRoleTypedServices<TRole>(services);
-            SetupExternalProviders(services, authSettings);
-
-            var identityBuilder = GetConfiguredIdentityBuilder<TUser, TRole>(services, authSettings);
-
-            return identityBuilder;
-        }
-
-        private static void SetupJwtAuthentication(IServiceCollection services, AuthorizationSettings authSettings, string privateKey)
-        {
-            services
-                .AddAuthentication(opt =>
-                {
-                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(opt =>
-                {
-                    opt.SaveToken = true;
-                    opt.RequireHttpsMetadata = true;
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidAudience = authSettings.SiteName,
-                        ValidIssuer = authSettings.SiteName,
-                        IssuerSigningKey = SecurityKeyHelper.GetSecurityKey(privateKey)
-                    };
-                });
-        }
-
-        private static void SetJwtAuthorization(IServiceCollection services)
-        {
-            services
-                .AddAuthorization(x => x.DefaultPolicy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .Build());
-        }
-
+        
         private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)
            where TUser : User, new()
            where TRole : Role, new()
@@ -181,22 +77,16 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<IUserClaimService, UserService>();
                 services.AddTransient<IUserRoleService, UserService>();
                 services.AddTransient<IUserService, UserService>();
-
-                services.AddTransient<ISessionService, SessionService>();
+                                
                 services.AddTransient<IProviderService, ProviderService>();
-
-                services.AddTransient<ITokenHelper, TokenHelper>();
             }
             else
             {
                 services.AddTransient<IUserClaimService<TUser>, UserService<TUser>>();
                 services.AddTransient<IUserRoleService<TUser>, UserService<TUser>>();
                 services.AddTransient<IUserService<TUser>, UserService<TUser>>();
-
-                services.AddTransient<ISessionService, SessionService<TUser>>();
+                
                 services.AddTransient<IProviderService, ProviderService<TUser>>();
-
-                services.AddTransient<ITokenHelper<TUser>, TokenHelper<TUser>>();
             }
         }
 
@@ -265,8 +155,6 @@ namespace ChustaSoft.Tools.Authorization
                 })
                 .AddDefaultTokenProviders();
         }
-
-        #endregion
 
     }
 }
