@@ -23,10 +23,10 @@ namespace ChustaSoft.Tools.Authorization
             return identityServerBuilder;
         }
 
-        public static IApplicationBuilder SetupDatabase(this IApplicationBuilder applicationBuilder)
+        public static IAuthorizationBuilder SetupDatabase(this IApplicationBuilder applicationBuilder)
             => applicationBuilder.SetupDatabase<AuthIdentityContext, User, Role>();
 
-        public static IApplicationBuilder SetupDatabase<TAuthContext, TUser, TRole>(this IApplicationBuilder applicationBuilder)
+        public static IAuthorizationBuilder SetupDatabase<TAuthContext, TUser, TRole>(this IApplicationBuilder applicationBuilder)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
             where TUser : User, new()
             where TRole : Role, new()
@@ -38,7 +38,7 @@ namespace ChustaSoft.Tools.Authorization
                 serviceScope.ServiceProvider.GetRequiredService<TAuthContext>().Database.Migrate();
             }
 
-            return applicationBuilder;
+            return applicationBuilder.ApplicationServices.GetRequiredService<IAuthorizationBuilder>();
         }
 
 
