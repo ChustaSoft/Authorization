@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
 {
@@ -32,14 +33,16 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
                 .WithSqlServerProvider(_configuration.GetConnectionString(CONNECTIONSTRING_NAME));
         }
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseOAuthProvider().SetupDatabase();
+            app.ConfigureOAuthProvider(serviceProvider)
+                .SetupDatabase();
+
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }
