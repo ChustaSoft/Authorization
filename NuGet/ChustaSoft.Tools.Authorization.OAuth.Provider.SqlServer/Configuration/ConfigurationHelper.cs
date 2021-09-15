@@ -45,9 +45,9 @@ namespace ChustaSoft.Tools.Authorization
                 serviceScope.ServiceProvider.GetRequiredService<AuthConfigurationContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<AuthOperationContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetRequiredService<TAuthContext>().Database.Migrate();
-            }
 
-            return applicationBuilder.ApplicationServices.GetRequiredService<IAuthorizationBuilder>();
+                return serviceScope.ServiceProvider.GetRequiredService<IAuthorizationBuilder>();
+            }
         }
 
 
