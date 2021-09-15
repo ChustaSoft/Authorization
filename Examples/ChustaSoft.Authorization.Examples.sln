@@ -33,6 +33,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestOAuth.WebClient", "OAuth\ChustaSoft.Tools.Authorization.TestOAuth.WebClient\ChustaSoft.Tools.Authorization.TestOAuth.WebClient.csproj", "{E2EF2903-425A-447D-9227-2AD27F4A1942}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet", "..\NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{772B3504-7118-4C1E-BC4C-46D2601EA86E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.JWTBearer", "..\NuGet\ChustaSoft.Tools.Authorization.JWTBearer\ChustaSoft.Tools.Authorization.JWTBearer.csproj", "{C9BE51FF-E1E1-4601-93A9-F7FAB9C24305}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.OAuth.Provider", "..\NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider\ChustaSoft.Tools.Authorization.OAuth.Provider.csproj", "{C712F112-4759-4FF3-B414-53386B090B90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer", "..\NuGet\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer\ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer.csproj", "{9FC15312-1D85-42D6-AB3D-0D15535FBE68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +91,22 @@ Global
 		{E2EF2903-425A-447D-9227-2AD27F4A1942}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2EF2903-425A-447D-9227-2AD27F4A1942}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2EF2903-425A-447D-9227-2AD27F4A1942}.Release|Any CPU.Build.0 = Release|Any CPU
+		{772B3504-7118-4C1E-BC4C-46D2601EA86E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{772B3504-7118-4C1E-BC4C-46D2601EA86E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{772B3504-7118-4C1E-BC4C-46D2601EA86E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{772B3504-7118-4C1E-BC4C-46D2601EA86E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9BE51FF-E1E1-4601-93A9-F7FAB9C24305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9BE51FF-E1E1-4601-93A9-F7FAB9C24305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9BE51FF-E1E1-4601-93A9-F7FAB9C24305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9BE51FF-E1E1-4601-93A9-F7FAB9C24305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C712F112-4759-4FF3-B414-53386B090B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C712F112-4759-4FF3-B414-53386B090B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C712F112-4759-4FF3-B414-53386B090B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C712F112-4759-4FF3-B414-53386B090B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FC15312-1D85-42D6-AB3D-0D15535FBE68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FC15312-1D85-42D6-AB3D-0D15535FBE68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FC15312-1D85-42D6-AB3D-0D15535FBE68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FC15312-1D85-42D6-AB3D-0D15535FBE68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +123,10 @@ Global
 		{BBC2C5DC-43F8-4B25-AD34-09D255C2F06A} = {660AACB3-E921-4C37-992E-814768F9BC93}
 		{D1129058-48FB-4674-83AE-B12D109802F8} = {660AACB3-E921-4C37-992E-814768F9BC93}
 		{E2EF2903-425A-447D-9227-2AD27F4A1942} = {660AACB3-E921-4C37-992E-814768F9BC93}
+		{772B3504-7118-4C1E-BC4C-46D2601EA86E} = {A427C50F-A5B3-46D5-A491-EC93C839776F}
+		{C9BE51FF-E1E1-4601-93A9-F7FAB9C24305} = {A427C50F-A5B3-46D5-A491-EC93C839776F}
+		{C712F112-4759-4FF3-B414-53386B090B90} = {A427C50F-A5B3-46D5-A491-EC93C839776F}
+		{9FC15312-1D85-42D6-AB3D-0D15535FBE68} = {A427C50F-A5B3-46D5-A491-EC93C839776F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A343E741-D502-4FC7-AF4C-6D28DDD9468C}
