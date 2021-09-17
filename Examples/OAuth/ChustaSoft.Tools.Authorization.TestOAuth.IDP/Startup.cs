@@ -40,8 +40,12 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
                 app.UseDeveloperExceptionPage();
             }
 
-            app.ConfigureOAuthProvider(serviceProvider)
-                .SetupDatabase();
+            app.ConfigureOAuthProvider()
+                .SetupDatabase(serviceProvider)
+                .DefaultUsers(ub =>
+                {
+                    ub.Add("TestUser", "Test.Pa$w0rd").WithFullAccess().WithRole("Admin");
+                });
 
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();

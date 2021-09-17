@@ -50,7 +50,7 @@ namespace ChustaSoft.Tools.Authorization
             return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
         }
 
-        public static IApplicationBuilder ConfigureOAuthProvider(this IApplicationBuilder app, IServiceProvider serviceProvider)
+        public static IApplicationBuilder ConfigureOAuthProvider(this IApplicationBuilder app)
         {
             app.UseIdentityServer();
             app.UseAuthorization();

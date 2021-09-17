@@ -3,6 +3,7 @@ using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -32,22 +33,19 @@ namespace ChustaSoft.Tools.Authorization
             return identityBuilder;
         }
 
-        public static IAuthorizationBuilder SetupDatabase(this IApplicationBuilder applicationBuilder)
-            => applicationBuilder.SetupDatabase<AuthIdentityContext, User, Role>();
+        public static IAuthorizationBuilder SetupDatabase(this IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
+            => applicationBuilder.SetupDatabase<AuthIdentityContext, User, Role>(serviceProvider);
 
-        public static IAuthorizationBuilder SetupDatabase<TAuthContext, TUser, TRole>(this IApplicationBuilder applicationBuilder)
+        public static IAuthorizationBuilder SetupDatabase<TAuthContext, TUser, TRole>(this IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
             where TUser : User, new()
             where TRole : Role, new()
         {
-            using (var serviceScope = applicationBuilder.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                serviceScope.ServiceProvider.GetRequiredService<AuthConfigurationContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetRequiredService<AuthOperationContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetRequiredService<TAuthContext>().Database.Migrate();
+            serviceProvider.GetRequiredService<AuthConfigurationContext>().Database.Migrate();
+            serviceProvider.GetRequiredService<AuthOperationContext>().Database.Migrate();
+            serviceProvider.GetRequiredService<TAuthContext>().Database.Migrate();
 
-                return serviceScope.ServiceProvider.GetRequiredService<IAuthorizationBuilder>();
-            }
+            return serviceProvider.GetRequiredService<IAuthorizationBuilder>();
         }
 
 
