@@ -1,9 +1,12 @@
+using IdentityServer4;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 
 namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
 {
@@ -45,6 +48,32 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
                 .DefaultUsers(ub =>
                 {
                     ub.Add("TestUser", "Test.Pa$w0rd").WithFullAccess().WithRole("Admin");
+                })
+                .DefaultClients(new List<Client>
+                {
+                    new Client
+                    {
+                        UpdateAccessTokenClaimsOnRefresh = true,
+                        ClientName = "Client Test",
+                        ClientId = "client-test-web_ui",
+                        AllowedGrantTypes = GrantTypes.Code,
+                        RequirePkce = true,
+                        RedirectUris = new List<string>()
+                        {
+                            "https://localhost:44392/signin-oidc"
+                        },
+                        PostLogoutRedirectUris = new List<string>()
+                        {
+                            "https://localhost:44392/signout-callback-oidc"
+                        },
+                        AllowedScopes = {
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Profile,
+                            "roles",
+                            "client-test-web_api"
+                        },
+                        ClientSecrets = { new Secret("secret".Sha256()) }
+                    }
                 });
 
             app.UseStaticFiles();
