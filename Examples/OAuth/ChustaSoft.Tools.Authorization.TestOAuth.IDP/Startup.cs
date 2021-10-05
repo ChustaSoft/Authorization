@@ -74,6 +74,11 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
                         },
                         ClientSecrets = { new Secret("secret".Sha256()) }
                     }
+                })
+                .DefaultIdentityResources(new List<IdentityResource>
+                {
+                    new IdentityResources.OpenId(),
+                    new IdentityResources.Profile()
                 });
 
             app.UseStaticFiles();
