@@ -50,7 +50,7 @@
     <TypeScriptCompile Include="src\models\session.interface.ts" />
     <TypeScriptCompile Include="src\models\user-activation.interface.ts" />
     <TypeScriptCompile Include="src\models\user-validation.interface.ts" />
-    <TypeScriptCompile Include="src\services\athorization.services.ts" />
+    <TypeScriptCompile Include="src\services\authentication.service.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

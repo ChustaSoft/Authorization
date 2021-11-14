@@ -1,14 +1,14 @@
 import { Credentials, Session, UserActivation, UserValidation } from "..";
 import { HttpService } from '@chustasoft/cs-common'
 
-export class AuthorizationService {
+export class AuthenticationService {
 
     private httpService: HttpService;
     private authorizationApiUrl: string;
 
     
-    constructor(authorizationApiUrl: string) {
-        this.authorizationApiUrl = authorizationApiUrl;
+    constructor(authApiUrl: string) {
+        this.authorizationApiUrl = authApiUrl;
 
         this.httpService = new HttpService();
     }
