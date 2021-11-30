@@ -79,7 +79,7 @@ namespace ChustaSoft.Tools.Authorization
         /// <param name="password">Password for user</param>
         /// <param name="parameters">Parameters dictionary, that will be re-thrown to Clien API.</param>
         /// <returns>Result flag</returns>
-        Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters);
+        Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters = null);
 
         /// <summary>
         /// Update user action

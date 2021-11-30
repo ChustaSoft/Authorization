@@ -151,7 +151,7 @@ namespace ChustaSoft.Tools.Authorization
             throw new AuthenticationException("Invalid phone or token for confirmation");
         }
 
-        public async Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters)
+        public async Task<bool> CreateAsync(TUser user, string password, IDictionary<string, string> parameters = null)
         {
             Review(user);
             var result = await _userManager.CreateAsync(user, password);
@@ -306,7 +306,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private async Task TryAddConfirmationTokens(TUser user, IDictionary<string, string> parameters, IdentityResult result)
         {
-            if (result.Succeeded && _authorizationSettings.ConfirmationRequired)
+            if (result.Succeeded && _authorizationSettings.ConfirmationRequired && parameters != null)
             {
                 if (user.HasValidEmail())
                 {
@@ -325,7 +325,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private void TryRaiseUserCreatedEvent(TUser user, IDictionary<string, string> parameters, IdentityResult result)
         {
-            if (result.Succeeded)
+            if (result.Succeeded && parameters != null)
                 UserCreatedEventHandler?.Invoke(this, new UserEventArgs(user.Id, parameters));
         }
 
