@@ -34,25 +34,44 @@ namespace ChustaSoft.Tools.Authorization
             where TUser : User, new()
         {
             identityBuilder.Services.AddTransient<IUserCreated, TUserCreatedImpl>();
+            
+            identityBuilder.OverrideCurrentUserServiceInContainer<TUser>();
 
+            return identityBuilder;
+        }
+
+        public static IdentityBuilder WithUserCreatedActions<TUser, TUserCreatedImpl1, TUserCreatedImpl2>(this IdentityBuilder identityBuilder)
+            where TUserCreatedImpl1 : class, IUserCreated
+            where TUserCreatedImpl2 : class, IUserCreated
+            where TUser : User, new()
+        {
+            identityBuilder.Services.AddTransient<IUserCreated, TUserCreatedImpl1>();
+            identityBuilder.Services.AddTransient<IUserCreated, TUserCreatedImpl2>();
+
+            identityBuilder.OverrideCurrentUserServiceInContainer<TUser>();
+
+            return identityBuilder;
+        }
+
+
+        private static void OverrideCurrentUserServiceInContainer<TUser>(this IdentityBuilder identityBuilder) 
+            where TUser : User, new()
+        {
             ServiceDescriptor serviceDescriptor = null;
             if (typeof(TUser) == typeof(User))
                 serviceDescriptor = new ServiceDescriptor(typeof(IUserService),
-                    x => new UserService(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<User>>(), x.GetRequiredService<UserManager<User>>(), x.GetRequiredService<IUserCreated>().DoAfter), 
+                    x => new UserService(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<User>>(), x.GetRequiredService<UserManager<User>>(), x.GetServices<IUserCreated>()),
                     ServiceLifetime.Transient
                 );
             else
                 serviceDescriptor = new ServiceDescriptor(typeof(IUserService<TUser>),
-                    x => new UserService<TUser>(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<TUser>>(), x.GetRequiredService<UserManager<TUser>>(), x.GetRequiredService<IUserCreated>().DoAfter),
+                    x => new UserService<TUser>(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<TUser>>(), x.GetRequiredService<UserManager<TUser>>(), x.GetServices<IUserCreated>()),
                     ServiceLifetime.Transient
                 );
 
             identityBuilder.Services.Replace(serviceDescriptor);
-
-            return identityBuilder;
         }
-        
-        
+
         private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)
            where TUser : User, new()
            where TRole : Role, new()

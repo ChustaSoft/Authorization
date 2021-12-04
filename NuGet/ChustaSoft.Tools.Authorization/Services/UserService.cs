@@ -47,14 +47,15 @@ namespace ChustaSoft.Tools.Authorization
         public UserService(
                 AuthorizationSettings authorizationSettings,
                 SignInManager<TUser> signInManager, UserManager<TUser> userManager,
-                EventHandler<UserEventArgs> userCreatedEventHandler)
+                IEnumerable<IUserCreated> userCreatedActions)
             : base(authorizationSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
 
-            if (userCreatedEventHandler != null)
-                UserCreatedEventHandler += userCreatedEventHandler;
+            if (userCreatedActions != null && userCreatedActions.Any())            
+                foreach (var doAfterAction in userCreatedActions)                
+                    UserCreatedEventHandler += doAfterAction.DoAfter;
         }
 
         #endregion
@@ -325,8 +326,15 @@ namespace ChustaSoft.Tools.Authorization
 
         private void TryRaiseUserCreatedEvent(TUser user, IDictionary<string, string> parameters, IdentityResult result)
         {
-            if (result.Succeeded && parameters != null)
-                UserCreatedEventHandler?.Invoke(this, new UserEventArgs(user.Id, parameters));
+            if (result.Succeeded) 
+            {
+                var userEventArgs = parameters != null ?
+                    new UserEventArgs(user)
+                    :
+                    new UserEventArgs(user, parameters);
+
+                UserCreatedEventHandler?.Invoke(this, userEventArgs);
+            }   
         }
 
         private async Task TryPerformFakeEmailActions(TUser user)
@@ -376,8 +384,8 @@ namespace ChustaSoft.Tools.Authorization
             : base(authorizationSettings, signInManager, userManager)
         { }
 
-        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, EventHandler<UserEventArgs> func)
-           : base(authorizationSettings, signInManager, userManager, func)
+        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, IEnumerable<IUserCreated> userCreatedActions)
+           : base(authorizationSettings, signInManager, userManager, userCreatedActions)
         { }
     }
 
