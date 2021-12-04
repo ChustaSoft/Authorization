@@ -33,6 +33,16 @@ namespace ChustaSoft.Tools.Authorization
             return identityBuilder;
         }
 
+        public static IOAuthProviderAuthorizationBuilder WithUserCreatedActions<TUser, TUserCreatedImpl1, TUserCreatedImpl2>(this IOAuthProviderAuthorizationBuilder identityBuilder)
+           where TUser : User, new()
+           where TUserCreatedImpl1 : class, IUserCreated
+           where TUserCreatedImpl2 : class, IUserCreated
+        {
+            identityBuilder.IdentityBuilder.WithUserCreatedActions<TUser, TUserCreatedImpl1, TUserCreatedImpl2>();
+
+            return identityBuilder;
+        }
+
         public static IAuthorizationBuilder SetupDatabase(this IApplicationBuilder applicationBuilder, IServiceProvider serviceProvider)
             => applicationBuilder.SetupDatabase<AuthIdentityContext, User, Role>(serviceProvider);
 
