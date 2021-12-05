@@ -331,7 +331,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             if (result.Succeeded) 
             {
-                var userEventArgs = parameters != null ?
+                var userEventArgs = parameters == null ?
                     new UserEventArgs(user)
                     :
                     new UserEventArgs(user, parameters);

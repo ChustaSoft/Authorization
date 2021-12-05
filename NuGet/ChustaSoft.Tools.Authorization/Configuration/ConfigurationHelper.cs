@@ -79,7 +79,6 @@ namespace ChustaSoft.Tools.Authorization
             foreach (var item in serviceProvider.GetServices<IUserCreated>())
                 yield return item.DoAfter;
         }
-
         
         private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)
            where TUser : User, new()
