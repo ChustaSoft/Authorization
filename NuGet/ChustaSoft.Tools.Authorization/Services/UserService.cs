@@ -40,22 +40,25 @@ namespace ChustaSoft.Tools.Authorization
 
         #region Constructor
 
-        public UserService(AuthorizationSettings authorizationSettings, SignInManager<TUser> signInManager, UserManager<TUser> userManager)
+        public UserService(
+                AuthorizationSettings authorizationSettings, 
+                SignInManager<TUser> signInManager, 
+                UserManager<TUser> userManager)
             : this(authorizationSettings, signInManager, userManager, null)
         { }
 
         public UserService(
                 AuthorizationSettings authorizationSettings,
                 SignInManager<TUser> signInManager, UserManager<TUser> userManager,
-                IEnumerable<IUserCreated> userCreatedActions)
+                IEnumerable<EventHandler<UserEventArgs>> userCreatedEventHandlers)
             : base(authorizationSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
 
-            if (userCreatedActions != null && userCreatedActions.Any())            
-                foreach (var doAfterAction in userCreatedActions)                
-                    UserCreatedEventHandler += doAfterAction.DoAfter;
+            if (userCreatedEventHandlers != null && userCreatedEventHandlers.Any())            
+                foreach (var doAfterAction in userCreatedEventHandlers)                
+                    UserCreatedEventHandler += doAfterAction;
         }
 
         #endregion
@@ -380,12 +383,19 @@ namespace ChustaSoft.Tools.Authorization
 
     public class UserService : UserService<User>, IUserService, IUserRoleService, IUserClaimService
     {
-        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager)
+        public UserService(
+                AuthorizationSettings authorizationSettings, 
+                SignInManager<User> signInManager, 
+                UserManager<User> userManager)
             : base(authorizationSettings, signInManager, userManager)
         { }
 
-        public UserService(AuthorizationSettings authorizationSettings, SignInManager<User> signInManager, UserManager<User> userManager, IEnumerable<IUserCreated> userCreatedActions)
-           : base(authorizationSettings, signInManager, userManager, userCreatedActions)
+        public UserService(
+                AuthorizationSettings authorizationSettings, 
+                SignInManager<User> signInManager, 
+                UserManager<User> userManager, 
+                IEnumerable<EventHandler<UserEventArgs>> userCreatedEventHandlers)
+            : base(authorizationSettings, signInManager, userManager, userCreatedEventHandlers)
         { }
     }
 

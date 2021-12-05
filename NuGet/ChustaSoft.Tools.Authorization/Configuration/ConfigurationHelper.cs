@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -60,18 +62,25 @@ namespace ChustaSoft.Tools.Authorization
             ServiceDescriptor serviceDescriptor = null;
             if (typeof(TUser) == typeof(User))
                 serviceDescriptor = new ServiceDescriptor(typeof(IUserService),
-                    x => new UserService(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<User>>(), x.GetRequiredService<UserManager<User>>(), x.GetServices<IUserCreated>()),
+                    x => new UserService(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<User>>(), x.GetRequiredService<UserManager<User>>(), GetIUserCreatedEventHandlers(x)),
                     ServiceLifetime.Transient
                 );
             else
                 serviceDescriptor = new ServiceDescriptor(typeof(IUserService<TUser>),
-                    x => new UserService<TUser>(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<TUser>>(), x.GetRequiredService<UserManager<TUser>>(), x.GetServices<IUserCreated>()),
+                    x => new UserService<TUser>(x.GetRequiredService<AuthorizationSettings>(), x.GetRequiredService<SignInManager<TUser>>(), x.GetRequiredService<UserManager<TUser>>(), GetIUserCreatedEventHandlers(x)),
                     ServiceLifetime.Transient
                 );
 
             identityBuilder.Services.Replace(serviceDescriptor);
         }
 
+        private static IEnumerable<EventHandler<UserEventArgs>> GetIUserCreatedEventHandlers(IServiceProvider serviceProvider)
+        {
+            foreach (var item in serviceProvider.GetServices<IUserCreated>())
+                yield return item.DoAfter;
+        }
+
+        
         private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)
            where TUser : User, new()
            where TRole : Role, new()
