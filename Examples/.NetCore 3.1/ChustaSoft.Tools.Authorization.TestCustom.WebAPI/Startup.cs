@@ -78,8 +78,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseRouting();
-
+            
             app.ConfigureAuthorization(env, serviceProvider, "IdentityPolicy")
                 .SetupDatabase<AuthCustomContext, CustomUser, CustomRole>()
                 .DefaultUsers(ub =>
