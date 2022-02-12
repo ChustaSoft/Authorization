@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.AspNet</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>4.0.0-alpha.2</Version>
+    <Version>4.0.0-alpha.3</Version>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <FileVersion>4.0.0</FileVersion>
     <Description>ASPNET package for ChustaSoft.Tools.Authorization project configuration in AspNet projects</Description>

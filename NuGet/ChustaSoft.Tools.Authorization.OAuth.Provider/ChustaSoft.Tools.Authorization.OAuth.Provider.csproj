@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.OAuth.Provider</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>4.0.0-alpha.8</Version>
+    <Version>4.0.0-alpha.9</Version>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <FileVersion>4.0.0</FileVersion>
     <Description>OAuth 2.0 package for ChustaSoft.Tools.Authorization project</Description>
