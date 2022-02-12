@@ -21,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ChustaSoft.Tools.Authorization\ChustaSoft.Tools.Authorization.csproj" />
     
-    <PackageReference Include="ChustaSoft.Common.AspNet" Version="2.2.0" />
+    <PackageReference Include="ChustaSoft.Common.AspNet" Version="2.4.0" />
   </ItemGroup>
 
 </Project>
