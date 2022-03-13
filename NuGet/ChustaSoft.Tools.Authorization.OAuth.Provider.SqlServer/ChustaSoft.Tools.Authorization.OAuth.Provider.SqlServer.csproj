@@ -5,7 +5,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackageId>ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer</PackageId>
     <RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-    <Version>4.0.0-alpha.13</Version>
+    <Version>4.0.0-alpha.14</Version>
     <AssemblyVersion>4.0.0</AssemblyVersion>
     <FileVersion>4.0.0</FileVersion>
     <Description>OAuth 2.0 with SqlServer store integration package for ChustaSoft.Tools.Authorization project</Description>
