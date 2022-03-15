@@ -33,7 +33,13 @@ namespace ChustaSoft.Tools.Authorization
         {
             var dbContext = GetAuthConfigurationContext(authorizationBuilder);
 
-            foreach (var apiResource in apiResources.Select(x => x.ToEntity()))
+            foreach (var apiResource in apiResources.Select(x => x.ToEntity())) 
+            {
+                foreach (var scope in apiResource.Scopes)
+                {
+                    ManageApiScopes(dbContext, scope);
+                }
+
                 if (!dbContext.ApiResources.Any(x => x.Name == apiResource.Name))
                 {
                     dbContext.ApiResources.Add(apiResource);
@@ -42,6 +48,7 @@ namespace ChustaSoft.Tools.Authorization
                 {
                     //TODO: Take into account if the api resource configuration has changed to properly update in DB
                 }
+            }
 
             dbContext.SaveChanges();
 
@@ -68,10 +75,23 @@ namespace ChustaSoft.Tools.Authorization
         }
 
 
-
         private static AuthConfigurationContext GetAuthConfigurationContext(IAuthorizationBuilder authorizationBuilder)
         {
             return authorizationBuilder.ServiceProvider.GetRequiredService<AuthConfigurationContext>();
+        }
+
+        private static void ManageApiScopes(AuthConfigurationContext dbContext, IdentityServer4.EntityFramework.Entities.ApiResourceScope scope)
+        {
+            var apiScope = new ApiScope(scope.Scope).ToEntity();
+
+            if (!dbContext.ApiScopes.Any(x => x.Name == apiScope.Name))
+            {
+                dbContext.ApiScopes.Add(apiScope);
+            }
+            else
+            {
+                //TODO: Take into account if the api scope configuration has changed to properly update in DB
+            }
         }
 
     }
