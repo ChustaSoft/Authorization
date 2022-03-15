@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30621.155
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. NuGet", "1. NuGet", "{417789D4-9372-4C85-B9DF-68B2AAC2F2D5}"
 EndProject
@@ -51,7 +51,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorizat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JWTBearer", "JWTBearer", "{8D033238-5A83-4A5F-AD2C-DE8A20B6236F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.AspNet", "NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet", "NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.Basic", "NuGet\ChustaSoft.Tools.Authorization.Basic\ChustaSoft.Tools.Authorization.Basic.csproj", "{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basic", "Basic", "{FEFE06CE-40AE-4CF7-B71E-C72B06D2EF50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.Basic.WebAPI", "Examples\Basic\ChustaSoft.Tools.Authorization.Basic.WebAPI.csproj", "{77AD5715-93AF-4061-AF0B-85BEAC4CDA2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +133,14 @@ Global
 		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77AD5715-93AF-4061-AF0B-85BEAC4CDA2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77AD5715-93AF-4061-AF0B-85BEAC4CDA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77AD5715-93AF-4061-AF0B-85BEAC4CDA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77AD5715-93AF-4061-AF0B-85BEAC4CDA2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +167,9 @@ Global
 		{668A956C-6BE6-4EC5-B5DE-9458F4F7A832} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
 		{8D033238-5A83-4A5F-AD2C-DE8A20B6236F} = {1B02D724-E788-4821-9E5B-A16658888912}
 		{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
+		{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66} = {417789D4-9372-4C85-B9DF-68B2AAC2F2D5}
+		{FEFE06CE-40AE-4CF7-B71E-C72B06D2EF50} = {1B02D724-E788-4821-9E5B-A16658888912}
+		{77AD5715-93AF-4061-AF0B-85BEAC4CDA2E} = {FEFE06CE-40AE-4CF7-B71E-C72B06D2EF50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5056E0F-5434-434A-8A4E-A5214A704B64}
