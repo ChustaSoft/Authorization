@@ -48,7 +48,7 @@ namespace ChustaSoft.Tools.Authorization
 
             return services.RegisterAuthorizationServices<TUser, TRole>(privateKey, authSettings);
         }
-       
+
 
         private static void SetupJwtServices<TUser>(this IServiceCollection services)
             where TUser : User, new()
@@ -56,13 +56,13 @@ namespace ChustaSoft.Tools.Authorization
             if (typeof(TUser) == typeof(User))
             {
                 services.AddTransient<ISessionService, SessionService>();
-                
+
                 services.AddTransient<ITokenHelper, TokenHelper>();
             }
             else
             {
                 services.AddTransient<ISessionService, SessionService<TUser>>();
-                
+
                 services.AddTransient<ITokenHelper<TUser>, TokenHelper<TUser>>();
             }
         }

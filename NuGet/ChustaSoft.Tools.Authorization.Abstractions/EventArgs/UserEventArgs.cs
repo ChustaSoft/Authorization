@@ -13,9 +13,9 @@ namespace ChustaSoft.Tools.Authorization
         public IDictionary<string, string> Parameters { get; private set; }
 
 
-        public UserEventArgs(User user) 
-            : this(user, new Dictionary<string, string>()) 
-        { }        
+        public UserEventArgs(User user)
+            : this(user, new Dictionary<string, string>())
+        { }
 
         public UserEventArgs(User user, IDictionary<string, string> parameters)
             : base()

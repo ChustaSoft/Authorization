@@ -48,7 +48,7 @@ namespace ChustaSoft.Tools.Authorization
         #region Private methods
 
         private SecurityTokenDescriptor GenerateTokenDescriptor(Claim[] claims, string privateKey)
-        {            
+        {
             var signingKey = SecurityKeyHelper.GetSecurityKey(privateKey);
             var expiringDate = DateTime.UtcNow.AddMinutes(_authorizationSettings.MinutesToExpire);
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);

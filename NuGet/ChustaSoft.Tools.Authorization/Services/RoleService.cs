@@ -36,7 +36,7 @@ namespace ChustaSoft.Tools.Authorization
             return role;
         }
 
-        public async Task<bool> ExistAsync(string roleName) 
+        public async Task<bool> ExistAsync(string roleName)
         {
             var existingRole = await _roleManager.FindByNameAsync(roleName);
 

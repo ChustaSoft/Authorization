@@ -16,10 +16,10 @@ namespace ChustaSoft.Tools.Authorization.Helpers
 
         internal ClaimsIdentityBuilder(TUser user)
         {
-            _claims = new List<Claim> { 
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), 
-                new Claim(ClaimTypes.Name, user.UserName), 
-                new Claim(ClaimTypes.Email, user.Email) 
+            _claims = new List<Claim> {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
             };
         }
 
@@ -42,6 +42,6 @@ namespace ChustaSoft.Tools.Authorization.Helpers
 
         public Claim[] Build() => _claims.ToArray();
 
-        
+
     }
 }

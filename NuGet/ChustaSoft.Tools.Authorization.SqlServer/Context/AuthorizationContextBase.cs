@@ -6,16 +6,16 @@ using System;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public abstract class AuthorizationContextBase<TUser, TRole> 
+    public abstract class AuthorizationContextBase<TUser, TRole>
             : IdentityDbContext<TUser, TRole, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
         where TUser : User, new()
         where TRole : Role
-    {        
+    {
 
         #region Constructor
 
-        public AuthorizationContextBase(DbContextOptions options) 
-            : base(options) 
+        public AuthorizationContextBase(DbContextOptions options)
+            : base(options)
         { }
 
 
@@ -131,7 +131,7 @@ namespace ChustaSoft.Tools.Authorization
             });
         }
 
-#endregion
+        #endregion
 
     }
 

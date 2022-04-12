@@ -6,7 +6,7 @@ using System;
 namespace ChustaSoft.Tools.Authorization.AspNet
 {
     public static class ConfigurationHelper
-    {       
+    {
 
         /// <summary>
         /// Configuration extension method for main security settings

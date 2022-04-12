@@ -12,7 +12,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
 {
     public class Startup
     {
-        
+
         private const string CONNECTIONSTRING_NAME = "AuthorizationConnection";
 
 
@@ -35,7 +35,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.IDP
                 })
                 .WithSqlServerProvider(_configuration.GetConnectionString(CONNECTIONSTRING_NAME));
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())

@@ -31,7 +31,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Controllers
 
                 return View();
             }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden) 
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized || response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
                 return RedirectToAction("AccessDenied", "Authorization");
             }

@@ -46,7 +46,7 @@ namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChustaSoft.Tools.Authorization.TestBasic.WebAPI v1"));
             }
-            
+
             app.UseRouting();
 
             app.ConfigureAuthorization(env, serviceProvider, "TestPolicy")
@@ -56,7 +56,7 @@ namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI
             {
                 endpoints.MapControllers();
             });
-            
+
         }
     }
 }

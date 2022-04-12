@@ -9,7 +9,7 @@ namespace ChustaSoft.Tools.Authorization.Models
 
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        
+
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
 

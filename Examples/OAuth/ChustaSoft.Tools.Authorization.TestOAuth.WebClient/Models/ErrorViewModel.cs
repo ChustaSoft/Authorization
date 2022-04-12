@@ -1,5 +1,3 @@
-using System;
-
 namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Models
 {
     public class ErrorViewModel

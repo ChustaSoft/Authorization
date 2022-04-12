@@ -37,7 +37,7 @@ namespace ChustaSoft.Tools.Authorization
         public AuthorizationSettingsBuilder<TSettings> SetConfirmationRequired(bool flag)
         {
             AuthorizationSettings.ConfirmationRequired = flag;
-            
+
             return this;
         }
 

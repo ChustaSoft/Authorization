@@ -9,7 +9,7 @@ namespace ChustaSoft.Tools.Authorization
     public static class ConfigurationHelper
     {
 
-        public static void WithSqlServerProvider(this IdentityBuilder identityBuilder, string connectionString) 
+        public static void WithSqlServerProvider(this IdentityBuilder identityBuilder, string connectionString)
         {
             identityBuilder.AddIdentityStore<AuthIdentityContext, User, Role>(connectionString);
         }
@@ -23,7 +23,7 @@ namespace ChustaSoft.Tools.Authorization
         }
 
         public static IAuthorizationBuilder SetupDatabase(this IAuthorizationBuilder authorizationBuilder)
-            => authorizationBuilder.SetupDatabase<AuthIdentityContext, User, Role>();        
+            => authorizationBuilder.SetupDatabase<AuthIdentityContext, User, Role>();
 
         public static IAuthorizationBuilder SetupDatabase<TAuthContext, TUser, TRole>(this IAuthorizationBuilder authorizationBuilder)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>
@@ -36,7 +36,7 @@ namespace ChustaSoft.Tools.Authorization
 
             return authorizationBuilder;
         }
-        
+
 
         internal static void AddIdentityStore<TAuthContext, TUser, TRole>(this IdentityBuilder identityBuilder, string connectionString)
             where TAuthContext : AuthorizationContextBase<TUser, TRole>

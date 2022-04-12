@@ -8,7 +8,7 @@ namespace ChustaSoft.Tools.Authorization.Context
     public class AuthConfigurationContext : ConfigurationDbContext<AuthConfigurationContext>
     {
 
-        public AuthConfigurationContext(DbContextOptions<AuthConfigurationContext> options, ConfigurationStoreOptions storeOptions) 
+        public AuthConfigurationContext(DbContextOptions<AuthConfigurationContext> options, ConfigurationStoreOptions storeOptions)
             : base(options, storeOptions)
         { }
 

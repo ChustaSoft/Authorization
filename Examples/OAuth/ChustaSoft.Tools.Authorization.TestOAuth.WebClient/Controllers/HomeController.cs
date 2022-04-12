@@ -35,13 +35,13 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Controllers
             return View();
         }
 
-        public async Task Logout() 
+        public async Task Logout()
         {
             var client = _httpClientFactory.CreateClient("IDPClient");
 
             var discoveryDocumentResponse = await client.GetDiscoveryDocumentAsync();
-            if (discoveryDocumentResponse.IsError)            
-                throw new Exception(discoveryDocumentResponse.Error);            
+            if (discoveryDocumentResponse.IsError)
+                throw new Exception(discoveryDocumentResponse.Error);
 
             var accessTokenRevocationResponse = await client.RevokeTokenAsync(
                 new TokenRevocationRequest
@@ -88,14 +88,14 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Controllers
         }
 
 
-        public async Task WriteInfo() 
+        public async Task WriteInfo()
         {
             var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
 
 
             Debug.WriteLine($"Identity token: {identityToken}");
 
-            foreach(var claim in User.Claims)
+            foreach (var claim in User.Claims)
                 Debug.WriteLine($"Claim Type: {claim.Type} - Claim Value: {claim.Value}");
 
         }

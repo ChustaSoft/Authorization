@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI.Controllers
 {
-    
+
     [Authorize]
     [Route("api/[controller]")]
     public class TestController : ApiControllerBase<TestController>
@@ -20,7 +20,8 @@ namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return await Task.Factory.StartNew(() => {
+            return await Task.Factory.StartNew(() =>
+            {
 
                 _logger.LogInformation("Info requested");
 

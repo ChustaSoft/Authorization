@@ -14,7 +14,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Helpers
 {
     public class BearerTokenHandler : DelegatingHandler
     {
-        
+
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -33,8 +33,8 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Helpers
         {
             var accessToken = await GetAccessTokenAsync();
 
-            if (!string.IsNullOrWhiteSpace(accessToken))            
-                request.SetBearerToken(accessToken);            
+            if (!string.IsNullOrWhiteSpace(accessToken))
+                request.SetBearerToken(accessToken);
 
             return await base.SendAsync(request, cancellationToken);
         }
@@ -45,11 +45,11 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient.Helpers
             var expiresAt = await _httpContextAccessor.HttpContext.GetTokenAsync("expires_at");
             var expiresAtAsDateTimeOffset = DateTimeOffset.Parse(expiresAt, CultureInfo.InvariantCulture);
 
-            if ((expiresAtAsDateTimeOffset.AddSeconds(-60)).ToUniversalTime() > DateTime.UtcNow)            
+            if ((expiresAtAsDateTimeOffset.AddSeconds(-60)).ToUniversalTime() > DateTime.UtcNow)
                 return await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-            
+
             var idpClient = _httpClientFactory.CreateClient("IDPClient");
-            var discoveryReponse = await idpClient.GetDiscoveryDocumentAsync();            
+            var discoveryReponse = await idpClient.GetDiscoveryDocumentAsync();
             var refreshToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
 
             var refreshResponse = await idpClient.RequestRefreshTokenAsync(

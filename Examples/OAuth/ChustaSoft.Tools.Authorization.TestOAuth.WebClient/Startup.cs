@@ -22,7 +22,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
         {
             _configuration = configuration;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
@@ -51,7 +51,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebClient
                     opt.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, opt => 
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, opt =>
                 {
                     opt.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     opt.Authority = "https://localhost:44319/";

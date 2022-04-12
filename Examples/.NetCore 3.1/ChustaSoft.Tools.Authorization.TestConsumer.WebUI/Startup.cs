@@ -13,16 +13,16 @@ namespace ChustaSoft.Tools.Authorization.TestConsumer.WebUI
     {
 
         private const string CONNECTIONSTRING_NAME = "AuthorizationConnection";
-        
+
         private readonly IConfiguration _configuration;
 
-        
+
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterAuthorization(_configuration, "d5ab5e3f5799445fb9f68d1fcdda3b9f")
@@ -31,7 +31,7 @@ namespace ChustaSoft.Tools.Authorization.TestConsumer.WebUI
             services.AddMvc();
 
             services.AddControllersWithViews();
-            
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";

@@ -67,7 +67,7 @@ namespace ChustaSoft.Tools.Authorization
             identityServerBuilder.IdentityBuilder.AddIdentityStore<TAuthContext, TUser, TRole>(connectionString);
         }
 
-        private static void SetupIdentityServerDb<TUser>(IOAuthProviderAuthorizationBuilder identityServerBuilder, string connectionString) 
+        private static void SetupIdentityServerDb<TUser>(IOAuthProviderAuthorizationBuilder identityServerBuilder, string connectionString)
             where TUser : User, new()
         {
             const string MIGRATIONS_ASSEMBLY_NAME = "ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer";

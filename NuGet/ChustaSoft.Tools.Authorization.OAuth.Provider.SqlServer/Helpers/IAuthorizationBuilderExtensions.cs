@@ -15,11 +15,11 @@ namespace ChustaSoft.Tools.Authorization
             var dbContext = GetAuthConfigurationContext(authorizationBuilder);
 
             foreach (var client in clients.Select(x => x.ToEntity()))
-                if (!dbContext.Clients.Any(x => x.ClientId == client.ClientId)) 
+                if (!dbContext.Clients.Any(x => x.ClientId == client.ClientId))
                 {
                     dbContext.Clients.Add(client);
                 }
-                else 
+                else
                 {
                     //TODO: Take into account if the client configuration has changed to properly update in DB
                 }
@@ -33,7 +33,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var dbContext = GetAuthConfigurationContext(authorizationBuilder);
 
-            foreach (var apiResource in apiResources.Select(x => x.ToEntity())) 
+            foreach (var apiResource in apiResources.Select(x => x.ToEntity()))
             {
                 foreach (var scope in apiResource.Scopes)
                 {
@@ -55,7 +55,7 @@ namespace ChustaSoft.Tools.Authorization
             return authorizationBuilder;
         }
 
-        public static IAuthorizationBuilder DefaultIdentityResources(this IAuthorizationBuilder authorizationBuilder, IEnumerable<IdentityResource> identityResources) 
+        public static IAuthorizationBuilder DefaultIdentityResources(this IAuthorizationBuilder authorizationBuilder, IEnumerable<IdentityResource> identityResources)
         {
             var dbContext = GetAuthConfigurationContext(authorizationBuilder);
 

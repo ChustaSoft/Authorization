@@ -35,7 +35,7 @@ namespace ChustaSoft.Tools.Authorization.TestOAuth.WebAPI
                 .RequireAuthenticatedUser()
                 .Build();
 
-            services.AddControllers(config => 
+            services.AddControllers(config =>
             {
                 config.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
             });

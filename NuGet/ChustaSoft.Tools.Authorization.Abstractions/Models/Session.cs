@@ -11,7 +11,7 @@ namespace ChustaSoft.Tools.Authorization.Models
         public string Token { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string Culture { get; set; }
-        
+
 
         public Session() { }
 

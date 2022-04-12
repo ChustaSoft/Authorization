@@ -27,7 +27,7 @@ namespace ChustaSoft.Tools.Authorization.Basic.Handlers
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            return await Task.Run(() => 
+            return await Task.Run(() =>
             {
                 var endpoint = Context.GetEndpoint();
                 if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)

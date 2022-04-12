@@ -28,7 +28,7 @@ namespace ChustaSoft.Tools.Authorization
 
         #endregion
 
-        
+
         #region Constructor
 
         public Startup(IConfiguration configuration)
@@ -64,12 +64,12 @@ namespace ChustaSoft.Tools.Authorization
 
             app.ConfigureAuthorization(env, serviceProvider, "TestPolicy")
                 .SetupDatabase()
-                .DefaultUsers(ub => 
+                .DefaultUsers(ub =>
                     {
                         ub.Add("SYSTEM", "Sys.1234");
                         ub.Add("ADMIN", "Admn.1234").WithRole("Admin");
                     });
-                ;
+            ;
         }
 
         #endregion

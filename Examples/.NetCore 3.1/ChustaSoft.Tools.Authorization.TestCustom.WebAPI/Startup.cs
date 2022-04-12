@@ -27,7 +27,7 @@ namespace ChustaSoft.Tools.Authorization
 
         #endregion
 
-        
+
         #region Constructor
 
         public Startup(IConfiguration configuration)
@@ -78,7 +78,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             app.UseStaticFiles();
             app.UseRouting();
-            
+
             app.ConfigureAuthorization(env, serviceProvider, "IdentityPolicy")
                 .SetupDatabase<AuthCustomContext, CustomUser, CustomRole>()
                 .DefaultUsers(ub =>

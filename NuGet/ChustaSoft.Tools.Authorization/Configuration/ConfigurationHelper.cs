@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ChustaSoft.Tools.Authorization
 {
@@ -36,7 +35,7 @@ namespace ChustaSoft.Tools.Authorization
             where TUser : User, new()
         {
             identityBuilder.Services.AddTransient<IUserCreated, TUserCreatedImpl>();
-            
+
             identityBuilder.OverrideCurrentUserServiceInContainer<TUser>();
 
             return identityBuilder;
@@ -56,7 +55,7 @@ namespace ChustaSoft.Tools.Authorization
         }
 
 
-        private static void OverrideCurrentUserServiceInContainer<TUser>(this IdentityBuilder identityBuilder) 
+        private static void OverrideCurrentUserServiceInContainer<TUser>(this IdentityBuilder identityBuilder)
             where TUser : User, new()
         {
             ServiceDescriptor serviceDescriptor = null;
@@ -79,7 +78,7 @@ namespace ChustaSoft.Tools.Authorization
             foreach (var item in serviceProvider.GetServices<IUserCreated>())
                 yield return item.DoAfter;
         }
-        
+
         private static void SetupTypedServices<TUser, TRole>(IServiceCollection services)
            where TUser : User, new()
            where TRole : Role, new()
@@ -104,7 +103,7 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<IUserClaimService, UserService>();
                 services.AddTransient<IUserRoleService, UserService>();
                 services.AddTransient<IUserService, UserService>();
-                                
+
                 services.AddTransient<IProviderService, ProviderService>();
             }
             else
@@ -112,7 +111,7 @@ namespace ChustaSoft.Tools.Authorization
                 services.AddTransient<IUserClaimService<TUser>, UserService<TUser>>();
                 services.AddTransient<IUserRoleService<TUser>, UserService<TUser>>();
                 services.AddTransient<IUserService<TUser>, UserService<TUser>>();
-                
+
                 services.AddTransient<IProviderService, ProviderService<TUser>>();
             }
         }

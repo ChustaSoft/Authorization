@@ -30,7 +30,7 @@ namespace ChustaSoft.Tools.Authorization
 
     public class ProviderService : ProviderService<User>, IProviderService
     {
-        public ProviderService(SignInManager<User> signInManager) 
+        public ProviderService(SignInManager<User> signInManager)
             : base(signInManager)
         { }
     }

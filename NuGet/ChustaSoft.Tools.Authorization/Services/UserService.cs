@@ -41,8 +41,8 @@ namespace ChustaSoft.Tools.Authorization
         #region Constructor
 
         public UserService(
-                AuthorizationSettings authorizationSettings, 
-                SignInManager<TUser> signInManager, 
+                AuthorizationSettings authorizationSettings,
+                SignInManager<TUser> signInManager,
                 UserManager<TUser> userManager)
             : this(authorizationSettings, signInManager, userManager, null)
         { }
@@ -56,8 +56,8 @@ namespace ChustaSoft.Tools.Authorization
             _signInManager = signInManager;
             _userManager = userManager;
 
-            if (userCreatedEventHandlers != null && userCreatedEventHandlers.Any())            
-                foreach (var doAfterAction in userCreatedEventHandlers)                
+            if (userCreatedEventHandlers != null && userCreatedEventHandlers.Any())
+                foreach (var doAfterAction in userCreatedEventHandlers)
                     UserCreatedEventHandler += doAfterAction;
         }
 
@@ -201,7 +201,7 @@ namespace ChustaSoft.Tools.Authorization
             return result.Succeeded;
         }
 
-        public async Task<IEnumerable<string>> GetRolesAsync(TUser user) 
+        public async Task<IEnumerable<string>> GetRolesAsync(TUser user)
         {
             var result = await _userManager.GetRolesAsync(user);
 
@@ -237,7 +237,7 @@ namespace ChustaSoft.Tools.Authorization
             return result;
         }
 
-        public void Review(TUser user) 
+        public void Review(TUser user)
         {
             if (string.IsNullOrEmpty(user.Email) && !string.IsNullOrEmpty(user.PhoneNumber))
                 user.Email = $"{user.PhoneNumber}{AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT}";
@@ -302,7 +302,7 @@ namespace ChustaSoft.Tools.Authorization
             var user = await _userManager.FindByNameAsync(username);
             await _userManager.ResetPasswordAsync(user, token, newPassword);
         }
-        
+
         #endregion
 
 
@@ -329,7 +329,7 @@ namespace ChustaSoft.Tools.Authorization
 
         private void TryRaiseUserCreatedEvent(TUser user, IDictionary<string, string> parameters, IdentityResult result)
         {
-            if (result.Succeeded) 
+            if (result.Succeeded)
             {
                 var userEventArgs = parameters == null ?
                     new UserEventArgs(user)
@@ -337,7 +337,7 @@ namespace ChustaSoft.Tools.Authorization
                     new UserEventArgs(user, parameters);
 
                 UserCreatedEventHandler?.Invoke(this, userEventArgs);
-            }   
+            }
         }
 
         private async Task TryPerformFakeEmailActions(TUser user)
@@ -384,16 +384,16 @@ namespace ChustaSoft.Tools.Authorization
     public class UserService : UserService<User>, IUserService, IUserRoleService, IUserClaimService
     {
         public UserService(
-                AuthorizationSettings authorizationSettings, 
-                SignInManager<User> signInManager, 
+                AuthorizationSettings authorizationSettings,
+                SignInManager<User> signInManager,
                 UserManager<User> userManager)
             : base(authorizationSettings, signInManager, userManager)
         { }
 
         public UserService(
-                AuthorizationSettings authorizationSettings, 
-                SignInManager<User> signInManager, 
-                UserManager<User> userManager, 
+                AuthorizationSettings authorizationSettings,
+                SignInManager<User> signInManager,
+                UserManager<User> userManager,
                 IEnumerable<EventHandler<UserEventArgs>> userCreatedEventHandlers)
             : base(authorizationSettings, signInManager, userManager, userCreatedEventHandlers)
         { }

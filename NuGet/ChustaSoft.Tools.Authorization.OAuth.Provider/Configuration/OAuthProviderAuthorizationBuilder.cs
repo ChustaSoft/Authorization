@@ -9,12 +9,12 @@ namespace ChustaSoft.Tools.Authorization
         where TUser : User, new()
         where TRole : Role
     {
-        
+
         public IIdentityServerBuilder ProviderBuilder { private set; get; }
         public IdentityBuilder IdentityBuilder { private set; get; }
-        
-        
-        public OAuthProviderAuthorizationBuilder(IIdentityServerBuilder providerBuilder, IdentityBuilder identityBuilder) 
+
+
+        public OAuthProviderAuthorizationBuilder(IIdentityServerBuilder providerBuilder, IdentityBuilder identityBuilder)
         {
             ProviderBuilder = providerBuilder;
             IdentityBuilder = identityBuilder;

@@ -54,7 +54,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             app.UseIdentityServer();
             app.UseAuthorization();
-            
+
             return app;
         }
 
@@ -63,7 +63,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var builder = services.AddIdentityServer();
 
-            if(string.IsNullOrWhiteSpace(authSettings.ThumbPrint))
+            if (string.IsNullOrWhiteSpace(authSettings.ThumbPrint))
                 builder.AddDeveloperSigningCredential();
             else
                 builder.AddSigningCredential(LoadCertificate(authSettings.ThumbPrint));
@@ -71,9 +71,9 @@ namespace ChustaSoft.Tools.Authorization
             return builder;
         }
 
-        private static X509Certificate2 LoadCertificate(string thumbPrint) 
+        private static X509Certificate2 LoadCertificate(string thumbPrint)
         {
-            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine)) 
+            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
             {
                 store.Open(OpenFlags.ReadOnly);
 
