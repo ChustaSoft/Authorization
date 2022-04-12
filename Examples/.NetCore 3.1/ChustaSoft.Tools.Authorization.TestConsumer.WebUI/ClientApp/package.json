@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "~10.1.6",
     "@angular/router": "~10.1.6",
     "@chustasoft/cs-authorization-connector": "1.0.0",
-    "aspnet-prerendering": "3.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
