@@ -43,24 +43,20 @@ namespace ChustaSoft.Tools.Authorization.TestBasic.WebAPI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ChustaSoft.Tools.Authorization.TestBasic.WebAPI v1"));
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.ConfigureAuthorization(env, serviceProvider, "TestPolicy")
+                .SetupDatabase();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            app.ConfigureAuthorization(env, serviceProvider, "TestPolicy")
-                .SetupDatabase();
         }
     }
 }

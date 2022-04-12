@@ -16,7 +16,7 @@
 
 
 
-    public interface ISecuritySettings 
+    public interface ISecuritySettings
     {
         string PrivateKey { get; }
     }

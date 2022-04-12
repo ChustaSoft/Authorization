@@ -4,4 +4,4 @@ export { Credentials } from './models/credentials.interface';
 export { Session } from './models/session.interface';
 export { UserActivation } from './models/user-activation.interface';
 export { UserValidation } from './models/user-validation.interface';
-export { AuthorizationService } from './services/athorization.services';
+export { AuthenticationService } from './services/authentication.service';

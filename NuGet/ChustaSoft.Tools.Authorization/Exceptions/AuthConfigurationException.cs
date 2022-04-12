@@ -10,8 +10,8 @@ namespace ChustaSoft.Tools.Authorization
         public IEnumerable<ErrorMessage> Errors { get; private set; }
 
 
-        public AuthConfigurationException(string message, IEnumerable<ErrorMessage> errors) 
-            : base(message) 
+        public AuthConfigurationException(string message, IEnumerable<ErrorMessage> errors)
+            : base(message)
         {
             Errors = errors;
         }

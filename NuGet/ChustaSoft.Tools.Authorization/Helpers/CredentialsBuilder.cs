@@ -7,7 +7,7 @@ namespace ChustaSoft.Tools.Authorization
     {
 
         private readonly ICollection<(AutomaticCredentials Credentials, IEnumerable<string> Roles)> _usersCredentials;
-       
+
         private AutomaticCredentials _credentials;
         private ICollection<string> _rolesAssigned;
 
@@ -55,7 +55,7 @@ namespace ChustaSoft.Tools.Authorization
 
             return this;
         }
-        
+
         public IEnumerable<(AutomaticCredentials Credentials, IEnumerable<string> Roles)> Build()
         {
             CheckIfExistingCredentials();

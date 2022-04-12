@@ -20,7 +20,7 @@ namespace ChustaSoft.Tools.Authorization.Models
     }
 
 
-    public class AutomaticCredentials : ValidableCredentials 
+    public class AutomaticCredentials : ValidableCredentials
     {
 
         public bool FullAccess { get; set; }

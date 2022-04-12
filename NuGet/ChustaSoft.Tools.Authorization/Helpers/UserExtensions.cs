@@ -53,20 +53,20 @@ namespace ChustaSoft.Tools.Authorization
             {
                 UserName = credentials.Username,
                 Email = credentials.Email,
-                PhoneNumber = credentials.Phone,                
+                PhoneNumber = credentials.Phone,
                 IsActive = true
             };
         }
 
         internal static bool HasValidEmail<TUser>(this TUser user)
             where TUser : User, new()
-        { 
+        {
             return !string.IsNullOrWhiteSpace(user.Email) && !user.Email.EndsWith(AuthorizationConstants.NO_EMAIL_SUFFIX_FORMAT);
         }
 
         internal static bool HasValidPhone<TUser>(this TUser user)
             where TUser : User, new()
-        { 
+        {
             return !string.IsNullOrWhiteSpace(user.PhoneNumber);
         }
 
@@ -80,14 +80,14 @@ namespace ChustaSoft.Tools.Authorization
 
             string normalizedUsername = string.Empty;
 
-            if (!string.IsNullOrEmpty(username))            
+            if (!string.IsNullOrEmpty(username))
                 normalizedUsername = username;
-            
-            if (!string.IsNullOrEmpty(emailUsername))            
-                normalizedUsername += $"_{emailUsername}";            
 
-            if (normalizedUsername.StartsWith("_"))            
-                normalizedUsername = normalizedUsername.Substring(1);            
+            if (!string.IsNullOrEmpty(emailUsername))
+                normalizedUsername += $"_{emailUsername}";
+
+            if (normalizedUsername.StartsWith("_"))
+                normalizedUsername = normalizedUsername.Substring(1);
 
             return normalizedUsername;
         }

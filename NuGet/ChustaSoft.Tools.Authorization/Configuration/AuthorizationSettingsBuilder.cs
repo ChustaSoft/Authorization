@@ -1,13 +1,13 @@
-﻿using ChustaSoft.Common.Contracts;
-using ChustaSoft.Common.Utilities;
+﻿using ChustaSoft.Common.Utilities;
 using System.Collections.Generic;
 
 namespace ChustaSoft.Tools.Authorization
 {
-    public class AuthorizationSettingsBuilder : IAuthorizationSettingsBuilder
+    public class AuthorizationSettingsBuilder<TSettings>
+        where TSettings : AuthorizationSettings, new()
     {
 
-        private AuthorizationSettings AuthorizationSettings { get; set; }
+        protected TSettings AuthorizationSettings { get; set; }
 
 
         public ICollection<ErrorMessage> Errors { get; set; }
@@ -15,18 +15,18 @@ namespace ChustaSoft.Tools.Authorization
 
         public AuthorizationSettingsBuilder()
         {
-            AuthorizationSettings = new AuthorizationSettings();
+            AuthorizationSettings = new TSettings();
         }
 
 
-        public AuthorizationSettingsBuilder SetSiteName(string siteName)
+        public AuthorizationSettingsBuilder<TSettings> SetSiteName(string siteName)
         {
             AuthorizationSettings.SiteName = siteName;
 
             return this;
         }
 
-        public AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength)
+        public AuthorizationSettingsBuilder<TSettings> SetPasswordSecurity(bool flag, int minLength)
         {
             AuthorizationSettings.StrongSecurityPassword = flag;
             AuthorizationSettings.MinPasswordLength = minLength;
@@ -34,14 +34,14 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
-        public AuthorizationSettingsBuilder SetConfirmationRequired(bool flag)
+        public AuthorizationSettingsBuilder<TSettings> SetConfirmationRequired(bool flag)
         {
             AuthorizationSettings.ConfirmationRequired = flag;
-            
+
             return this;
         }
 
-        public AuthorizationSettingsBuilder SetAccountLock(int maxAttemps, int minutesToUnlock)
+        public AuthorizationSettingsBuilder<TSettings> SetAccountLock(int maxAttemps, int minutesToUnlock)
         {
             AuthorizationSettings.MaxAttemptsToLock = maxAttemps;
             AuthorizationSettings.MinutesToUnlock = minutesToUnlock;
@@ -49,56 +49,42 @@ namespace ChustaSoft.Tools.Authorization
             return this;
         }
 
-        public AuthorizationSettingsBuilder SetDefaultCulture(string defaultCulture)
+        public AuthorizationSettingsBuilder<TSettings> SetDefaultCulture(string defaultCulture)
         {
             AuthorizationSettings.DefaultCulture = defaultCulture;
 
             return this;
         }
 
-        public AuthorizationSettingsBuilder SetMinutesToExpire(int minutesToExpire)
+        public AuthorizationSettingsBuilder<TSettings> SetMinutesToExpire(int minutesToExpire)
         {
             AuthorizationSettings.MinutesToExpire = minutesToExpire;
 
             return this;
         }
 
-        public AuthorizationSettingsBuilder SetDefaultRole(string defaultRole)
+        public AuthorizationSettingsBuilder<TSettings> SetDefaultRole(string defaultRole)
         {
             AuthorizationSettings.DefaultRole = defaultRole;
 
             return this;
         }
 
-        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationSettings externalAuthenticationProviderSettings)
+        public AuthorizationSettingsBuilder<TSettings> AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationSettings externalAuthenticationProviderSettings)
         {
             AuthorizationSettings.ExternalProviders.Add(providerName, externalAuthenticationProviderSettings);
 
             return this;
         }
 
-        public AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret)
+        public AuthorizationSettingsBuilder<TSettings> AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret)
         {
             AddExternalProvider(providerName, new ExternalAuthenticationSettings { ClientId = clientId, ClientSecret = clientSecret });
 
             return this;
         }
 
-        public AuthorizationSettings Build() => AuthorizationSettings;
-
-    }
-
-    public interface IAuthorizationSettingsBuilder : IBuilder<AuthorizationSettings>
-    {
-        AuthorizationSettingsBuilder SetAccountLock(int maxAttemps, int minutesToUnlock);
-        AuthorizationSettingsBuilder SetDefaultCulture(string defaultCulture);
-        AuthorizationSettingsBuilder SetMinutesToExpire(int minutesToExpire);
-        AuthorizationSettingsBuilder SetPasswordSecurity(bool flag, int minLength);
-        AuthorizationSettingsBuilder SetConfirmationRequired(bool flag);
-        AuthorizationSettingsBuilder SetSiteName(string siteName);
-        AuthorizationSettingsBuilder SetDefaultRole(string defaultRole);
-        AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, ExternalAuthenticationSettings externalAuthenticationSettings);
-        AuthorizationSettingsBuilder AddExternalProvider(ExternalAuthenticationProviders providerName, string clientId, string clientSecret);
+        public TSettings Build() => AuthorizationSettings;
 
     }
 
