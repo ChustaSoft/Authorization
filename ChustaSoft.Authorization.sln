@@ -53,11 +53,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JWTBearer", "JWTBearer", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.AspNet", "NuGet\ChustaSoft.Tools.Authorization.AspNet\ChustaSoft.Tools.Authorization.AspNet.csproj", "{E49E0BFE-44C3-4B05-B718-B83BAE02AA0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.Basic", "NuGet\ChustaSoft.Tools.Authorization.Basic\ChustaSoft.Tools.Authorization.Basic.csproj", "{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.Basic", "NuGet\ChustaSoft.Tools.Authorization.Basic\ChustaSoft.Tools.Authorization.Basic.csproj", "{97CBC58B-25C6-421D-8E71-F5FC5C5BDD66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basic", "Basic", "{FEFE06CE-40AE-4CF7-B71E-C72B06D2EF50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChustaSoft.Tools.Authorization.Basic.WebAPI", "Examples\Basic\ChustaSoft.Tools.Authorization.Basic.WebAPI.csproj", "{77AD5715-93AF-4061-AF0B-85BEAC4CDA2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Documentation", "5. Documentation", "{F7119101-169A-4C37-ADCA-7BF6AE16A3CF}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
