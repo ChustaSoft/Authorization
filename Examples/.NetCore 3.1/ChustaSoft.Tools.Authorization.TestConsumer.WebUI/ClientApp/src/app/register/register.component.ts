@@ -29,7 +29,7 @@ export class RegisterComponent {
   };
 
 
-  public session: Session;
+  public session: Session = { } as Session;
 
   public hasEmailConfirmation() {
     return this.session !== undefined && this.session.parameters['EmailConfirmationToken'] !== undefined;
