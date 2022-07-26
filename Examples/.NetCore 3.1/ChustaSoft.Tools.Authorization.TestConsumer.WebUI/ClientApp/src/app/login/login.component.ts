@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class LoginComponent implements OnInit {
 
   private activateActionFlag: boolean = false;
-  private userNameRetrived: string;
+  private userNameRetrived: string = '';
 
   public credentials: Credentials = {
     username: '',
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     parameters: {}
   };
 
-  public session: Session;
+  public session: Session = { } as Session;
 
 
   constructor(
