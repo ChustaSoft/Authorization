@@ -53,6 +53,7 @@ namespace ChustaSoft.Tools.Authorization
         public static IApplicationBuilder ConfigureOAuthProvider(this IApplicationBuilder app)
         {
             app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             return app;
