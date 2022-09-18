@@ -18,13 +18,9 @@
 		<RepositoryUrl>https://github.com/ChustaSoft/Authorization.git</RepositoryUrl>
 		<PackageTags>Authorization;DotNetCore;DotNet;ASPNET;ASPMVC;Basic;Security</PackageTags>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="NewFolder\" />
 	</ItemGroup>
 
 </Project>
