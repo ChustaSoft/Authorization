@@ -5,9 +5,9 @@
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<PackageId>ChustaSoft.Tools.Authorization.JWTBearer</PackageId>
 		<RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-		<Version>4.0.0</Version>
-		<AssemblyVersion>4.0.0</AssemblyVersion>
-		<FileVersion>4.0.0</FileVersion>
+		<Version>4.1.0-beta.1</Version>
+		<AssemblyVersion>4.1.0</AssemblyVersion>
+		<FileVersion>4.1.0</FileVersion>
 		<Description>Authorization NuGet solution based on Microsoft Identity and JWT</Description>
 		<Copyright>ChustaSoft</Copyright>
 		<PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
