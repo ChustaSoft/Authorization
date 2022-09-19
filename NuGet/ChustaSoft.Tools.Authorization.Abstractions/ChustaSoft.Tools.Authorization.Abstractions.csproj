@@ -19,19 +19,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ChustaSoft.Common" Version="2.5.0" />
+		<PackageReference Include="ChustaSoft.Common" Version="2.7.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.22" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.29" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.14" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.17" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.9" />
 	</ItemGroup>
 
 </Project>
