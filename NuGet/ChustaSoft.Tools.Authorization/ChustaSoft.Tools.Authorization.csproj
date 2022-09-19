@@ -5,9 +5,9 @@
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<PackageId>ChustaSoft.Tools.Authorization</PackageId>
 		<RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-		<Version>4.0.0</Version>
-		<AssemblyVersion>4.0.0</AssemblyVersion>
-		<FileVersion>4.0.0</FileVersion>
+		<Version>4.1.0-beta.1</Version>
+		<AssemblyVersion>4.1.0</AssemblyVersion>
+		<FileVersion>4.1.0</FileVersion>
 		<Description>Authorization NuGet solution based on Microsoft Identity</Description>
 		<Copyright>ChustaSoft</Copyright>
 		<PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
@@ -25,18 +25,21 @@
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.22" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.22" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.29" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.29" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.29" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.14" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.14" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.17" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.17" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.17" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.9" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.9" />
 	</ItemGroup>
 
 </Project>

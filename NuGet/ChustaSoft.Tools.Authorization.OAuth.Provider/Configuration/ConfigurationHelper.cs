@@ -1,5 +1,6 @@
 ﻿using ChustaSoft.Tools.Authorization.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,7 +15,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var authSettings = AuthorizationSettings.GetFromFile<OAuthorizationSettings>(configuration, authSectionName);
             var identityServerBuilder = services.SetupOAuthProvider(authSettings);
-            var identityBuilder = services.RegisterAuthorizationServices<User, Role>(privateKey, authSettings);
+            var identityBuilder = services.RegisterIdentityServerAuthServices<User, Role>(privateKey, authSettings);
 
             return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
         }
@@ -25,16 +26,18 @@ namespace ChustaSoft.Tools.Authorization
         {
             var authSettings = AuthorizationSettings.GetFromFile<OAuthorizationSettings>(configuration, authSectionName);
             var identityServerBuilder = services.SetupOAuthProvider(authSettings);
-            var identityBuilder = services.RegisterAuthorizationServices<TUser, TRole>(privateKey, authSettings);
+            var identityBuilder = services.RegisterIdentityServerAuthServices<TUser, TRole>(privateKey, authSettings);
 
             return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
         }
+
+        
 
         public static IOAuthProviderAuthorizationBuilder RegisterAuthorization(this IServiceCollection services, string privateKey, Action<OAuthorizationSettingsBuilder> settingsBuildingAction)
         {
             var authSettings = AuthorizationSettings.GetFromBuilder<OAuthorizationSettings, OAuthorizationSettingsBuilder>(settingsBuildingAction);
             var identityServerBuilder = services.SetupOAuthProvider(authSettings);
-            var identityBuilder = services.RegisterAuthorizationServices<User, Role>(privateKey, authSettings);
+            var identityBuilder = services.RegisterIdentityServerAuthServices<User, Role>(privateKey, authSettings);
 
             return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
         }
@@ -45,7 +48,7 @@ namespace ChustaSoft.Tools.Authorization
         {
             var authSettings = AuthorizationSettings.GetFromBuilder<OAuthorizationSettings, OAuthorizationSettingsBuilder>(settingsBuildingAction);
             var identityServerBuilder = services.SetupOAuthProvider(authSettings);
-            var identityBuilder = services.RegisterAuthorizationServices<TUser, TRole>(privateKey, authSettings);
+            var identityBuilder = services.RegisterIdentityServerAuthServices<TUser, TRole>(privateKey, authSettings);
 
             return new OAuthProviderAuthorizationBuilder(identityServerBuilder, identityBuilder);
         }
@@ -85,6 +88,15 @@ namespace ChustaSoft.Tools.Authorization
 
                 return certCollection[0];
             }
+        }
+
+        private static IdentityBuilder RegisterIdentityServerAuthServices<TUser, TRole>(this IServiceCollection services, string privateKey, OAuthorizationSettings authSettings)
+            where TUser : User, new()
+            where TRole : Role, new()
+        {
+            return services
+                .RegisterAuthorizationServices<TUser, TRole>(privateKey, authSettings)
+                .AddCustomClaimsPrincipalFactory<AuthUserClaimsFactory<TUser>>();
         }
 
     }
