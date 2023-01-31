@@ -21,7 +21,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ChustaSoft.Tools.Authorization.Abstractions\ChustaSoft.Tools.Authorization.Abstractions.csproj" />
 
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
