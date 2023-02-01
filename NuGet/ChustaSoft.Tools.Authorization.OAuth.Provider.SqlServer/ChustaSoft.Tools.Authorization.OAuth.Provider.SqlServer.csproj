@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 		<RestoreProjectStyle>PackageReference</RestoreProjectStyle>
 		<PackageId>ChustaSoft.Tools.Authorization.OAuth.Provider.SqlServer</PackageId>
 		<RootNamespace>ChustaSoft.Tools.Authorization</RootNamespace>
-		<Version>4.0.0</Version>
-		<AssemblyVersion>4.0.0</AssemblyVersion>
-		<FileVersion>4.0.0</FileVersion>
+		<Version>4.1.0-beta.2</Version>
+		<AssemblyVersion>4.1.0</AssemblyVersion>
+		<FileVersion>4.1.0</FileVersion>
 		<Description>OAuth 2.0 with SqlServer store integration package for ChustaSoft.Tools.Authorization project</Description>
 		<Copyright>ChustaSoft</Copyright>
 		<PackageLicenseUrl>https://github.com/ChustaSoft/Authorization/blob/master/LICENSE</PackageLicenseUrl>
@@ -21,10 +21,7 @@
 	<ItemGroup>
 		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.2" />
 		<PackageReference Include="IdentityServer4.EntityFramework" Version="4.1.2" />
-	</ItemGroup>
 
-
-	<ItemGroup>
 		<ProjectReference Include="..\ChustaSoft.Tools.Authorization.OAuth.Provider\ChustaSoft.Tools.Authorization.OAuth.Provider.csproj" />
 		<ProjectReference Include="..\ChustaSoft.Tools.Authorization.SqlServer\ChustaSoft.Tools.Authorization.SqlServer.csproj" />
 	</ItemGroup>

@@ -54,6 +54,14 @@ namespace ChustaSoft.Tools.Authorization
             return identityBuilder;
         }
 
+        public static IdentityBuilder AddCustomClaimsPrincipalFactory<TFactory>(this IdentityBuilder identityBuilder)
+            where TFactory : class
+        {
+            identityBuilder.AddClaimsPrincipalFactory<TFactory>();
+
+            return identityBuilder;
+        }
+
 
         private static void OverrideCurrentUserServiceInContainer<TUser>(this IdentityBuilder identityBuilder)
             where TUser : User, new()
