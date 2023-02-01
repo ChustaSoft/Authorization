@@ -23,9 +23,10 @@
 | Framework     | From   | Latest  | Current support    |
 |---------------|--------|---------|--------------------|
 | .Net Core 2.2 | 1.0.0  | 1.0.0   | :x:                |
-| .Net Core 3.1 | 1.0.1  | Current | :heavy_check_mark: |
-| .Net 5.0      | 3.4.0  | Current | :heavy_check_mark: |
+| .Net Core 3.1 | 1.0.1  | 3.4.1   | :x:                |
+| .Net 5.0      | 3.4.0  | 3.4.1   | :x:                |
 | .Net 6.0      | 4.0.0  | Current | :heavy_check_mark: |
+| .Net 7.0      | 4.0.0  | Current | :heavy_check_mark: |
 
 #### npm
 
