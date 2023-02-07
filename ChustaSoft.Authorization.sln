@@ -53,7 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Documentation", "5. Docu
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", "Examples\JWTBearer\ChustaSoft.Tools.Authorization.TestBasic.WebAPI\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{4B3174D7-48E8-4BFF-B47D-A3A1024E3817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChustaSoft.Tools.Authorization.TestBasic.WebAPI", "Examples\JWTBearer\ChustaSoft.Tools.Authorization.TestBasic.WebAPI.csproj", "{4B3174D7-48E8-4BFF-B47D-A3A1024E3817}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
